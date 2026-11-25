@@ -239,7 +239,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.0";
+const APP_VERSION = "1.1";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -741,9 +741,17 @@ async function shareScore() {
     "⏳ J-" + days + " avant le départ"].join("\n");
   try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch (e) { if (e && e.name === "AbortError") return; }
   try { await navigator.clipboard.writeText(txt); toast("Score copié : colle-le dans le groupe !"); }
-  catch (e) { const ta = $("bk"); if (ta) { ta.value = txt; ta.closest("details").open = true; ta.select(); } toast("Copie le texte affiché dans la sauvegarde"); }
+  catch (e) { const ta = $("bk"); if (ta) { ta.value = txt; ta.closest("details").open = true; ta.select(); toast("Copie le texte affiché dans la sauvegarde"); } else toast("Copie impossible sur ce navigateur"); }
 }
 function backupBox() {
+  if (CLOUD) {
+    const box2 = "margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px";
+    if (linked()) return h("div", { style: box2 }, h("b", {}, "☁️ Progression sauvegardée en ligne"),
+      h("p", { class: "muted", style: "font-size:14px;margin:4px 0 0" }, "Connecté : " + (cloudUser.email || "compte Google") + ". Sur un autre appareil, connecte-toi avec le même compte dans l’onglet Groupe : tout est déjà là."));
+    return h("div", { style: box2 }, h("b", {}, "📱 💻 Ta progression sur tous tes appareils"),
+      h("p", { class: "muted", style: "font-size:14px;margin:4px 0 8px" }, "Connecte-toi avec Google ou avec ton adresse e-mail (on t’envoie un lien, aucun mot de passe). Sur ton autre appareil, connecte-toi avec la même adresse : ta progression arrive toute seule."),
+      h("button", { class: "btn small", onclick: () => go("groupe") }, "Me connecter"));
+  }
   const ta = h("textarea", { id: "bk", rows: "3", placeholder: "Colle ici un code de progression", style: "width:100%;font:inherit;font-size:13px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);resize:vertical" });
   const msg = h("p", { class: "hint", "aria-live": "polite" });
   const copy = () => {
@@ -1188,9 +1196,9 @@ function viewGroupe() {
     wrap.append(
       h("div", { class: "today", style: "grid-template-columns:1fr;margin-top:0" },
         h("div", {}, h("div", { class: "eyebrow" }, "Crée ton compte en 10 secondes"), h("h2", {}, "Sauvegarde ta progression et défie tes potes"),
-          h("ul", { style: "margin:10px 0 0;padding-left:18px" }, h("li", {}, "Ta progression te suit sur tous tes appareils."), h("li", {}, "Tu rejoins le classement de la semaine avec un code de groupe."), h("li", {}, "Ce que tu as déjà appris est gardé."))),
+          h("ul", { style: "margin:10px 0 0;padding-left:18px" }, h("li", {}, "Ta progression te suit sur tous tes appareils : connecte-toi avec la même adresse sur ton téléphone et ton ordinateur."), h("li", {}, "Tu rejoins le classement de la semaine avec un code de groupe."), h("li", {}, "Ce que tu as déjà appris est gardé."))),
         h("button", { class: "btn", onclick: signInGoogle, disabled: cloudBusy }, "Continuer avec Google"),
-        h("div", { class: "muted", style: "text-align:center;font-size:13px" }, "ou reçois un lien de connexion par e-mail"),
+        h("div", { class: "muted", style: "text-align:center;font-size:14px" }, "Pas de compte Google ? Reçois un lien de connexion par e-mail, sans mot de passe :"),
         h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, inp, h("button", { class: "btn ghost", onclick: () => sendEmailLink(inp.value), disabled: cloudBusy }, "Recevoir le lien"))),
       msg);
     return wrap;

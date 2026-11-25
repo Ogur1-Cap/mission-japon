@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 1.1 · 25 novembre 2026
+- Fin du code de transfert : pour changer d'appareil, on se connecte avec le même compte (Google ou lien par e-mail)
+- La connexion par e-mail, sans mot de passe, est mise en avant pour ceux qui n'ont pas de compte Google
+
 ## 1.0.1 · 25 novembre 2026
 - Toucher l'onglet où l'on est déjà ramène à sa page d'accueil (ex. sortir d'une scène)
 - Lexique : « % de progression » au lieu de « % maîtrisé », pour ne plus contredire le compteur de l'accueil
