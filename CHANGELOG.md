@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 1.4 · 25 novembre 2026
+- Scènes : nouveau mode examen en bas de l'onglet. Pas de traduction ni de rōmaji, une seule chance par réplique, réponses mélangées, score sur 100 (80 pour réussir), meilleur score gardé, bilan réplique par réplique à la fin
+- Deux exploits : « Sans filet » (100/100 à un examen, ¥300) et « Bon pour le départ » (les 4 examens réussis, ¥500)
+- Barre du bas réduite à 5 onglets : Réglages s'ouvre avec ton avatar ⚙ sur l'accueil (ou dans Missions)
+- Profil et réglages : ta collection est rangée par onglets (Thèmes, Cadres, Animations, Titres) avec ton compteur, la page est trois fois plus courte
+- Accueil : le bouton rōmaji passe sous « Commencer », et le second encart « connecte-toi » disparaît (il faisait doublon)
+
 ## 1.3.1 · 25 novembre 2026
 - Scènes : bouton « Traduire les réponses » sous les choix, masqué par défaut pour garder l'entraînement à la lecture
 - Une fois ta réponse choisie, sa traduction s'affiche dans ta bulle
