@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 1.3.1 · 25 novembre 2026
+- Scènes : bouton « Traduire les réponses » sous les choix, masqué par défaut pour garder l'entraînement à la lecture
+- Une fois ta réponse choisie, sa traduction s'affiche dans ta bulle
+
 ## 1.3 · 25 novembre 2026
 - Chaque thème a son fond animé, très léger : train qui passe, pétales de sakura, bulles de matcha, vagues de Hokusai, neige sur le Fuji, paillettes d'or, feuilles d'érable de Kyoto, néons de Shibuya
 - Aperçu des thèmes avant de les acheter : bouton « 👁 Aperçu » dans la boutique, ou toucher un thème 🔒 dans Réglages. On peut acheter ou équiper directement depuis le bandeau d'aperçu

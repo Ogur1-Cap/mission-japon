@@ -374,6 +374,9 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .pvbar .btn{padding:8px 12px;font-size:14px;flex:none;width:auto}
 .pvbar .x{flex:none;background:none;border:1px solid currentColor;color:inherit;border-radius:10px;width:36px;height:36px;font-size:15px;display:grid;place-items:center}
 body.pv #app{padding-top:calc(var(--pvh,58px) + 4px)}
+.tr-ans{background:none;border:0;padding:10px 0 4px;font-size:14px;color:var(--accent);font-weight:700}
+.bub.me .f{color:inherit;opacity:.85}
+.ans-fr{display:block;font-family:var(--f-body);font-size:13px;font-weight:500;color:var(--muted);margin-top:3px}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -400,7 +403,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.3";
+const APP_VERSION = "1.3.1";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -1134,6 +1137,21 @@ function viewLex() {
 
 /* ---- roles ---- */
 let sample = null; (async () => { try { if (window.claude) { sample = await claude.use("sample"); if (view === "roles" && !role) render(); } } catch (e) {} })();
+/* traduction des réponses proposées dans les scènes guidées */
+const ANS_FR = {
+  "こんにちは": "Bonjour", "いただきます": "Bon appétit (avant de manger)", "ごちそうさまでした": "Merci pour le repas (après avoir mangé)",
+  "はい、お願いします": "Oui, s'il vous plaît", "いくらですか？": "C'est combien ?", "一人です": "Je suis seul(e)",
+  "袋はいりません": "Pas besoin de sac", "道に迷いました": "Je me suis perdu(e)", "カードで払えますか？": "Je peux payer par carte ?",
+  "おすすめは何ですか？": "Qu'est-ce que vous me conseillez ?", "何番線ですか？": "C'est quel quai ?", "ありがとうございます": "Merci beaucoup",
+  "もう一度お願いします": "Vous pouvez répéter ?", "寒いですね": "Il fait froid, hein", "トイレはどこですか？": "Où sont les toilettes ?",
+  "助けてください": "Aidez-moi, s'il vous plaît", "これをください": "Je vais prendre ça", "予約しています": "J'ai une réservation",
+  "大丈夫です": "Ça va, c'est bon", "お会計をお願いします": "L'addition, s'il vous plaît", "温泉はどこですか？": "Où est le bain (onsen) ?",
+  "きれいですね": "C'est beau, hein", "金沢までの切符を一枚ください": "Un billet pour Kanazawa, s'il vous plaît",
+  "指定席をお願いします": "Une place réservée, s'il vous plaît", "次の駅は何ですか？": "C'est quoi la prochaine gare ?",
+  "窓側をお願いします": "Côté fenêtre, s'il vous plaît", "通路側をお願いします": "Côté couloir, s'il vous plaît",
+  "鹿せんべいをください": "Des biscuits pour les cerfs, s'il vous plaît", "予約しています。名前は（…）です": "J'ai une réservation, au nom de (…)",
+  "はい、どうぞ": "Oui, tenez / allez-y", "荷物を預けられますか？": "Je peux laisser mes bagages ?",
+  "Wi-Fiのパスワードは何ですか？": "C'est quoi le mot de passe du Wi-Fi ?" };
 function stopRole() { if (role && role.abort) role.abort.abort(); role = null; }
 function startScripted(sc) { role = { mode: "script", sc, step: 0, log: [], score: 0 }; render(); window.scrollTo(0, 0); }
 function startFree(f) { role = { mode: "free", sc: f, log: [], busy: false, turns: 0, done: false }; render(); claudeTurn(null); window.scrollTo(0, 0); }
@@ -1162,7 +1180,7 @@ function viewRoles() {
       f, fr ? h("button", { class: "tr", onclick: e => { f.hidden = !f.hidden; e.currentTarget.textContent = f.hidden ? "Traduire" : "Masquer"; } }, "Traduire") : null); };
   role.log.forEach(m => {
     if (m.t === "npc") chat.append(npcBub(m.jp, m.ro, m.fr, m.kana));
-    else if (m.t === "me") chat.append(h("div", { class: "bub me" }, h("div", { class: "j jp" }, m.text), m.ro && S.romaji ? h("div", { class: "ro" }, m.ro) : null));
+    else if (m.t === "me") chat.append(h("div", { class: "bub me" }, h("div", { class: "j jp" }, m.text), m.ro && S.romaji ? h("div", { class: "ro" }, m.ro) : null, m.fr ? h("div", { class: "f" }, m.fr) : null));
     else chat.append(h("div", { class: "note " + (m.ok ? "ok" : "ko") }, m.text, m.better ? h("div", { class: "jp", style: "margin-top:4px;font-weight:700" }, "→ " + m.better + (m.betterRo ? "  (" + m.betterRo + ")" : "")) : null));
   });
   wrap.append(chat);
@@ -1171,11 +1189,13 @@ function viewRoles() {
     if (role.shown !== role.step) { role.shown = role.step; role.log.push({ t: "npc", jp: st[0], ro: st[1], fr: st[2] }); setTimeout(() => say(st[0]), 200); return viewRoles(); }
     if (st[3]) {
       wrap.append(h("div", { class: "choices one" }, st[3].map(o => h("button", { class: "choice long jp", onclick: () => {
-        role.log.push({ t: "me", text: o[0], ro: o[1] });
+        role.log.push({ t: "me", text: o[0], ro: o[1], fr: ANS_FR[o[0]] });
         role.log.push({ t: "note", ok: !!o[2], text: (o[2] ? "✓ " : "✗ ") + o[3] });
         if (o[2]) { role.score++; role.step++; }
         render(); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 30);
-      } }, h("span", {}, o[0], S.romaji ? h("span", { class: "muted", style: "display:block;font-size:12px;font-weight:500" }, o[1]) : null)))));
+      } }, h("span", {}, o[0], S.romaji ? h("span", { class: "muted", style: "display:block;font-size:12px;font-weight:500" }, o[1]) : null,
+        role.trAns && ANS_FR[o[0]] ? h("span", { class: "ans-fr" }, ANS_FR[o[0]]) : null)))),
+        h("button", { class: "tr-ans", "aria-pressed": role.trAns ? "true" : "false", onclick: () => { role.trAns = !role.trAns; render(); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 30); } }, role.trAns ? "Masquer la traduction des réponses" : "Traduire les réponses"));
     } else {
       wrap.append(h("div", { class: "done", style: "padding:18px 0" }, h("div", { class: "stamp jp stamp-drop", style: "width:90px;height:90px;font-size:24px" }, "合格"), (role.celebrated ? null : (role.celebrated = true, setTimeout(confetti, 300), (rw().st.sc = Object.assign({}, rw().st.sc, { [role.sc.id]: 1 }), track("scene"), persist(), rwCheck()), (CLOUD && !(S.scenes || {})[role.sc.id] ? (S.scenes = Object.assign({}, S.scenes, { [role.sc.id]: todayKey() }), addPts(30), persist(), cloudSync()) : 0), null)),
         h("p", {}, "Scène réussie. Prêt pour la vraie ?"),
