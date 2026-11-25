@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2B3A8C">
+<meta name="description" content="Apprendre le japonais du voyage, 15 minutes par jour.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mission Japon">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Mission Japon</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Layout: une ligne de train Osaka → Tokyo ; chaque étape est un panneau de gare (ekimeihyō), le compte à rebours est un tableau des départs LED. */
+:root{
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F6F8FB; --ink:#141C2B; --muted:#5A6577; --line:#D6DCE5;
+  --accent:#2B3A8C; --accent-ink:#FFFFFF; --ok:#1F8A4C; --ok-bg:#E3F4EA; --ko:#C93A3A; --ko-bg:#FBE7E6;
+  --led-bg:#121212; --led-fg:#FFB21E; --led-dim:#5a4612;
+  --c-osaka:#EE7B00; --c-nara:#A8662A; --c-kyoto:#7E3FA0; --c-kanazawa:#0E93A0; --c-fuji:#2F66D0; --c-tokyo:#5AA62A;
+  --f-display:"Dela Gothic One","Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-led:"DotGothic16","Zen Kaku Gothic New",monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D121A; --surface:#161D28; --surface-2:#1C2533; --ink:#E8EDF5; --muted:#9AA5B7; --line:#2A3445;
+  --accent:#8EA0FF; --accent-ink:#0D121A; --ok:#4CC783; --ok-bg:#15301F; --ko:#FF7A73; --ko-bg:#3A1A1A;
+  --c-osaka:#FF9A2E; --c-nara:#C98A4E; --c-kyoto:#B77AD9; --c-kanazawa:#2EC0CC; --c-fuji:#6E9CFF; --c-tokyo:#86CF55;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D121A; --surface:#161D28; --surface-2:#1C2533; --ink:#E8EDF5; --muted:#9AA5B7; --line:#2A3445;
+  --accent:#8EA0FF; --accent-ink:#0D121A; --ok:#4CC783; --ok-bg:#15301F; --ko:#FF7A73; --ko-bg:#3A1A1A;
+  --c-osaka:#FF9A2E; --c-nara:#C98A4E; --c-kyoto:#B77AD9; --c-kanazawa:#2EC0CC; --c-fuji:#6E9CFF; --c-tokyo:#86CF55;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 110px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.jp{font-family:var(--f-body);font-weight:700}
+.muted{color:var(--muted)}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+/* header */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .seal{width:46px;height:46px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-body);font-weight:700;font-size:22px;flex:none}
+.brand h1{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,5vw,34px);line-height:1.05;letter-spacing:.01em}
+.brand small{display:block;color:var(--muted);font-size:13px}
+.toggle{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px}
+.toggle[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* LED board */
+.led{background:var(--led-bg);color:var(--led-fg);border-radius:var(--r);padding:14px 18px;font-family:var(--f-led);display:grid;grid-template-columns:auto 1fr auto;gap:6px 18px;align-items:center;box-shadow:inset 0 0 0 2px #2a2a2a}
+.led .lbl{font-size:12px;color:#c9c9c9;letter-spacing:.08em}
+.led .big{font-size:clamp(30px,7vw,44px);line-height:1;text-shadow:0 0 8px rgba(255,178,30,.45)}
+.led .row{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;border-top:1px dashed #333;padding-top:8px}
+.led .dest{font-size:clamp(16px,3.6vw,20px)}
+.led .blink{animation:blink 1.4s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+
+/* today card */
+.today{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.today h2{font-size:20px}
+.stats{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums;font-family:var(--f-display);font-weight:400}
+.stat span{font-size:12px;color:var(--muted)}
+.btn{border:0;border-radius:12px;padding:13px 20px;font-weight:700;background:var(--accent);color:var(--accent-ink);font-size:16px;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.small{padding:8px 14px;font-size:14px}
+@media (max-width:520px){.today{grid-template-columns:1fr}.today .btn{width:100%}}
+
+/* route */
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:28px 0 10px;gap:12px}
+.sec-h h2{font-size:18px}
+.route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.route{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.board{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;position:relative;transition:transform .15s}
+.board:hover{transform:translateY(-2px)}
+.board .num{position:absolute;top:10px;left:10px;width:30px;height:30px;border:3px solid var(--lc);border-radius:6px;display:grid;place-items:center;font-size:10px;font-weight:700;line-height:1;background:var(--surface)}
+.board .num em{font-style:normal;font-size:13px}
+.board .body{padding:44px 12px 10px;text-align:center}
+.board .kana{font-size:12px;color:var(--muted)}
+.board .kanji{font-size:clamp(28px,6vw,38px);font-weight:700;line-height:1.1;letter-spacing:.06em}
+.board .ro{font-size:13px;font-weight:500}
+.board .theme{font-size:12px;color:var(--muted);margin-top:4px;min-height:2.6em}
+.board .stripe{background:var(--lc);color:#fff;display:flex;justify-content:space-between;font-size:11px;padding:5px 8px;font-weight:700;gap:6px}
+.board .stripe span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.board .prog{height:5px;background:var(--surface-2)}
+.board .prog i{display:block;height:100%;background:var(--lc)}
+.board.current{box-shadow:0 0 0 3px var(--lc)}
+.board .here{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;background:var(--lc);color:#fff;border-radius:999px;padding:2px 8px}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+.nav .in{max-width:860px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav button{background:none;border:0;padding:9px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--muted)}
+.nav button .g{font-size:20px;font-weight:700;line-height:1.1}
+.nav button[aria-current="page"]{color:var(--accent)}
+.nav button[aria-current="page"] .g{transform:scale(1.1)}
+
+/* session */
+.sbar{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.sbar .track{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.sbar .track i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.sbar .time{font-family:var(--f-led);font-size:18px;font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 18px;text-align:center}
+.card .kind{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--surface-2);color:var(--muted)}
+.card .prompt{margin:18px 0 6px;font-size:clamp(56px,16vw,96px);line-height:1.1;font-weight:700;word-break:keep-all;overflow-wrap:anywhere}
+.card .prompt.mid{font-size:clamp(24px,6.5vw,36px)}
+.card .prompt.fr{font-size:clamp(20px,5vw,28px);font-weight:500}
+.card .sub{color:var(--muted);min-height:1.5em}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
+.choices.one{grid-template-columns:1fr}
+.choice{border:2px solid var(--line);background:var(--surface-2);border-radius:12px;padding:14px 10px;font-size:18px;font-weight:700;min-height:58px;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center}
+.choice.long{font-size:16px;font-weight:500}
+.choice .k{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:0 5px;font-weight:500}
+.choice.ok{border-color:var(--ok);background:var(--ok-bg)}
+.choice.ko{border-color:var(--ko);background:var(--ko-bg)}
+.choice:disabled{cursor:default}
+.feedback{margin-top:16px;border-radius:12px;padding:12px 14px;text-align:left;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:var(--ok-bg)}
+.feedback.ko{background:var(--ko-bg)}
+.feedback .t{font-weight:700}
+.typein{display:flex;gap:8px;margin-top:18px}
+.typein input{flex:1;min-width:0;font:inherit;font-size:20px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--surface-2);color:var(--ink)}
+.audio{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;width:44px;height:44px;display:inline-grid;place-items:center;font-size:18px;vertical-align:middle}
+.audio.big{width:84px;height:84px;font-size:34px;margin:18px auto 6px}
+.done{text-align:center;padding:30px 18px}
+.done .stamp{font-family:var(--f-body);font-weight:700;width:120px;height:120px;border-radius:50%;border:5px solid var(--ko);color:var(--ko);display:grid;place-items:center;margin:0 auto 14px;font-size:30px;transform:rotate(-8deg)}
+
+/* lexique */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:9px 16px;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.kgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:14px}
+.kcell{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 2px 6px;text-align:center;position:relative}
+.kcell .c{font-size:26px;font-weight:700;line-height:1.2}
+.kcell .r{font-size:11px;color:var(--muted)}
+.kcell .m{position:absolute;left:6px;right:6px;bottom:3px;height:3px;border-radius:3px;background:var(--line)}
+.kcell.empty{visibility:hidden}
+.lv0 .m{background:var(--line)} .lv1 .m{background:var(--ko)} .lv2 .m{background:#E6A23C} .lv3 .m{background:#C9B53A} .lv4 .m,.lv5 .m,.lv6 .m{background:var(--ok)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:14px;height:4px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.klist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}
+.kj{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;position:relative;overflow:hidden}
+.kj .c{grid-row:span 2;font-size:28px;font-weight:700}
+.kj .r{font-size:12px;color:var(--muted)}
+.kj .f{font-size:14px;font-weight:500}
+.kj .m{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--line)}
+
+/* chapter */
+.chap-head{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.chap-head .body{padding:18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.chap-head .kanji{font-size:44px;font-weight:700;letter-spacing:.06em;line-height:1}
+.chap-head .stripe{height:10px;background:var(--lc)}
+.plist{display:grid;gap:8px;margin-top:14px}
+.ph{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}
+.ph .j{font-size:19px;font-weight:700;overflow-wrap:anywhere}
+.ph .k,.ph .ro{font-size:13px;color:var(--muted)}
+.ph .f{font-size:14px}
+.ph .audio{grid-row:1/span 4;grid-column:2}
+.back{background:none;border:0;color:var(--accent);font-weight:700;padding:6px 0;margin-bottom:8px}
+
+/* roles */
+.scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+.scene{border:1px solid var(--line);border-left:6px solid var(--lc);background:var(--surface);border-radius:12px;padding:14px;text-align:left;display:grid;gap:4px}
+.scene b{font-size:16px}
+.scene span{font-size:13px;color:var(--muted)}
+.chat{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.bub{max-width:88%;padding:10px 14px;border-radius:16px;min-width:0}
+.bub.npc{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.bub.me{align-self:flex-end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px}
+.bub .j{font-size:19px;font-weight:700;overflow-wrap:anywhere}
+.bub .ro{font-size:13px;opacity:.75}
+.bub .f{font-size:13px;margin-top:4px;color:var(--muted)}
+.bub .tr{background:none;border:0;padding:0;font-size:12px;color:var(--accent);font-weight:700;margin-top:4px}
+.bub .who{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.note{align-self:stretch;font-size:14px;border-radius:12px;padding:10px 12px}
+.note.ok{background:var(--ok-bg)} .note.ko{background:var(--ko-bg)}
+.composer{position:sticky;bottom:calc(70px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;margin-top:14px;background:var(--bg);padding-block:8px}
+.composer input{flex:1;min-width:0;font:inherit;font-size:17px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
+.toast.on{opacity:1}
+.sync{font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap" id="app"></div>
+<nav class="nav" aria-label="Navigation"><div class="in" id="nav"></div></nav>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+"use strict";
+/* ---------- helpers ---------- */
+const h = (t, a = {}, ...c) => { const e = document.createElement(t);
+  for (const [k, v] of Object.entries(a || {})) {
+    if (k === "class") e.className = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (k === "style") e.style.cssText = v; else if (v !== false && v != null) e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const x of c.flat()) { if (x == null || x === false) continue; e.append(x instanceof Node ? x : document.createTextNode(String(x))); }
+  return e; };
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = (arr, n, exclude) => shuffle(arr.filter(x => !exclude(x))).slice(0, n);
+const DAY = 864e5;
+const todayKey = (d = new Date()) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); };
+
+/* ---------- data ---------- */
+const DEPART = new Date(2027, 1, 18);
+const APP_VERSION = "0.1";
+const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
+const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+const RB = "a i u e o ka ki ku ke ko sa shi su se so ta chi tsu te to na ni nu ne no ha hi fu he ho ma mi mu me mo ya yu yo ra ri ru re ro wa wo n".split(" ");
+const HD = "がぎぐげござじずぜぞだでどばびぶべぼぱぴぷぺぽ";
+const KD = "ガギグゲゴザジズゼゾダデドバビブベボパピプペポ";
+const RD = "ga gi gu ge go za ji zu ze zo da de do ba bi bu be bo pa pi pu pe po".split(" ");
+const ALT = { shi: ["si"], chi: ["ti"], tsu: ["tu"], fu: ["hu"], ji: ["zi"], wo: ["o"], n: ["nn"], sha: ["sya"], shu: ["syu"], sho: ["syo"], cha: ["tya", "cya"], chu: ["tyu", "cyu"], cho: ["tyo", "cyo"], ja: ["zya", "jya"], ju: ["zyu", "jyu"], jo: ["zyo", "jyo"] };
+const HY = "きゃ きゅ きょ しゃ しゅ しょ ちゃ ちゅ ちょ にゃ にゅ にょ ひゃ ひゅ ひょ みゃ みゅ みょ りゃ りゅ りょ ぎゃ ぎゅ ぎょ じゃ じゅ じょ びゃ びゅ びょ ぴゃ ぴゅ ぴょ".split(" ");
+const KY = "キャ キュ キョ シャ シュ ショ チャ チュ チョ ニャ ニュ ニョ ヒャ ヒュ ヒョ ミャ ミュ ミョ リャ リュ リョ ギャ ギュ ギョ ジャ ジュ ジョ ビャ ビュ ビョ ピャ ピュ ピョ".split(" ");
+const RY = "kya kyu kyo sha shu sho cha chu cho nya nyu nyo hya hyu hyo mya myu myo rya ryu ryo gya gyu gyo ja ju jo bya byu byo pya pyu pyo".split(" ");
+
+const CH = [
+ { id: "osaka", n: "01", name: "大阪", kana: "おおさか", ro: "Ōsaka", lc: "--c-osaka", theme: "Konbini et street food", phrases: [
+  ["いらっしゃいませ", "", "irasshaimase", "Bienvenue ! (ce qu’on te lance en entrant)"],
+  ["これをください", "", "kore o kudasai", "Je voudrais ceci, s’il vous plaît"],
+  ["袋はいりません", "ふくろはいりません", "fukuro wa irimasen", "Je n’ai pas besoin de sac"],
+  ["温めますか？", "あたためますか？", "atatamemasu ka?", "Je vous le réchauffe ?"],
+  ["はい、お願いします", "はい、おねがいします", "hai, onegai shimasu", "Oui, s’il vous plaît"],
+  ["カードで払えますか？", "カードではらえますか？", "kādo de haraemasu ka?", "Je peux payer par carte ?"],
+  ["いくらですか？", "", "ikura desu ka?", "C’est combien ?"]]},
+ { id: "nara", n: "02", name: "奈良", kana: "なら", ro: "Nara", lc: "--c-nara", theme: "Temples, sanctuaires et cerfs", phrases: [
+  ["すみません", "", "sumimasen", "Excusez-moi / pardon"],
+  ["写真を撮ってもいいですか？", "しゃしんをとってもいいですか？", "shashin o totte mo ii desu ka?", "Je peux prendre une photo ?"],
+  ["鹿せんべいをください", "しかせんべいをください", "shika senbei o kudasai", "Des biscuits pour les cerfs, s’il vous plaît"],
+  ["トイレはどこですか？", "", "toire wa doko desu ka?", "Où sont les toilettes ?"],
+  ["入場料はいくらですか？", "にゅうじょうりょうはいくらですか？", "nyūjōryō wa ikura desu ka?", "Combien coûte l’entrée ?"],
+  ["ありがとうございます", "", "arigatō gozaimasu", "Merci beaucoup"]]},
+ { id: "kyoto", n: "03", name: "京都", kana: "きょうと", ro: "Kyōto", lc: "--c-kyoto", theme: "Restaurant et ryokan", phrases: [
+  ["何名様ですか？", "なんめいさまですか？", "nanmei-sama desu ka?", "Vous êtes combien ?"],
+  ["一人です", "ひとりです", "hitori desu", "Je suis seul"],
+  ["英語のメニューはありますか？", "えいごのメニューはありますか？", "eigo no menyū wa arimasu ka?", "Vous avez un menu en anglais ?"],
+  ["おすすめは何ですか？", "おすすめはなんですか？", "osusume wa nan desu ka?", "Qu’est-ce que vous recommandez ?"],
+  ["いただきます", "", "itadakimasu", "Bon appétit (juste avant de manger)"],
+  ["お会計をお願いします", "おかいけいをおねがいします", "okaikei o onegai shimasu", "L’addition, s’il vous plaît"],
+  ["ごちそうさまでした", "", "gochisōsama deshita", "Merci pour le repas (en partant)"]]},
+ { id: "kanazawa", n: "04", name: "金沢", kana: "かなざわ", ro: "Kanazawa", lc: "--c-kanazawa", theme: "Gare, billets et shinkansen", phrases: [
+  ["金沢までの切符を一枚ください", "かなざわまでのきっぷをいちまいください", "Kanazawa made no kippu o ichimai kudasai", "Un billet pour Kanazawa, s’il vous plaît"],
+  ["この電車は東京に行きますか？", "このでんしゃはとうきょうにいきますか？", "kono densha wa Tōkyō ni ikimasu ka?", "Ce train va à Tokyo ?"],
+  ["何番線ですか？", "なんばんせんですか？", "nanbansen desu ka?", "C’est quelle voie ?"],
+  ["指定席をお願いします", "していせきをおねがいします", "shiteiseki o onegai shimasu", "Une place réservée, s’il vous plaît"],
+  ["乗り換えはどこですか？", "のりかえはどこですか？", "norikae wa doko desu ka?", "Où est la correspondance ?"],
+  ["次の駅は何ですか？", "つぎのえきはなんですか？", "tsugi no eki wa nan desu ka?", "Quelle est la prochaine gare ?"]]},
+ { id: "fuji", n: "05", name: "富士", kana: "ふじ", ro: "Fuji", lc: "--c-fuji", theme: "Onsen, météo et nature", phrases: [
+  ["今日は富士山が見えますか？", "きょうはふじさんがみえますか？", "kyō wa Fujisan ga miemasu ka?", "On voit le Fuji aujourd’hui ?"],
+  ["寒いですね", "さむいですね", "samui desu ne", "Il fait froid, hein"],
+  ["温泉はどこですか？", "おんせんはどこですか？", "onsen wa doko desu ka?", "Où est l’onsen ?"],
+  ["バス停はどこですか？", "バスていはどこですか？", "basutei wa doko desu ka?", "Où est l’arrêt de bus ?"],
+  ["きれいですね", "", "kirei desu ne", "C’est magnifique"],
+  ["大丈夫です", "だいじょうぶです", "daijōbu desu", "Ça va / non merci, ça ira"]]},
+ { id: "tokyo", n: "06", name: "東京", kana: "とうきょう", ro: "Tōkyō", lc: "--c-tokyo", theme: "Seul en ville et capsule", phrases: [
+  ["予約しています", "よやくしています", "yoyaku shite imasu", "J’ai une réservation"],
+  ["荷物を預けられますか？", "にもつをあずけられますか？", "nimotsu o azukeraremasu ka?", "Je peux laisser mes bagages ?"],
+  ["渋谷駅へはどう行けばいいですか？", "しぶやえきへはどういけばいいですか？", "Shibuya-eki e wa dō ikeba ii desu ka?", "Comment aller à la gare de Shibuya ?"],
+  ["道に迷いました", "みちにまよいました", "michi ni mayoimashita", "Je suis perdu"],
+  ["もう一度お願いします", "もういちどおねがいします", "mō ichido onegai shimasu", "Encore une fois, s’il vous plaît"],
+  ["ゆっくり話してください", "ゆっくりはなしてください", "yukkuri hanashite kudasai", "Parlez lentement, s’il vous plaît"],
+  ["日本語を少し話します", "にほんごをすこしはなします", "nihongo o sukoshi hanashimasu", "Je parle un peu japonais"],
+  ["助けてください", "たすけてください", "tasukete kudasai", "Aidez-moi !"]]}
+];
+
+const KANJI = [
+ ["一","ichi","un (1)"],["二","ni","deux (2)"],["三","san","trois (3)"],["四","yon","quatre (4)"],["五","go","cinq (5)"],["六","roku","six (6)"],
+ ["七","nana","sept (7)"],["八","hachi","huit (8)"],["九","kyū","neuf (9)"],["十","jū","dix (10)"],["百","hyaku","cent (100)"],["千","sen","mille (1 000)"],["万","man","dix mille (10 000)"],
+ ["駅","eki","gare"],["出口","deguchi","sortie"],["入口","iriguchi","entrée"],["円","en","yen"],["大人","otona","adulte (tarif)"],
+ ["小人","kodomo","enfant (tarif)"],["男","otoko","homme (toilettes, onsen)"],["女","onna","femme (toilettes, onsen)"],["湯","yu","eau chaude, bain (onsen)"],
+ ["北","kita","nord"],["南","minami","sud"],["東","higashi","est"],["西","nishi","ouest"],["切符","kippu","billet"],["改札","kaisatsu","portiques de contrôle"],
+ ["番線","bansen","voie n°"],["新幹線","shinkansen","train à grande vitesse"],["指定席","shiteiseki","place réservée"],["自由席","jiyūseki","place non réservée"],
+ ["号車","gōsha","voiture n°"],["乗換","norikae","correspondance"],["大阪","Ōsaka","Osaka"],["奈良","Nara","Nara"],["京都","Kyōto","Kyoto"],
+ ["金沢","Kanazawa","Kanazawa"],["富士山","Fujisan","mont Fuji"],["東京","Tōkyō","Tokyo"],["寺","tera","temple bouddhiste"],["神社","jinja","sanctuaire shintō"],
+ ["営業中","eigyōchū","ouvert"],["準備中","junbichū","fermé (en préparation)"],["押","osu","pousser (porte)"],["引","hiku","tirer (porte)"],
+ ["非常口","hijōguchi","sortie de secours"],["無料","muryō","gratuit"],["税込","zeikomi","taxes comprises"],["禁煙","kin’en","non-fumeur"],
+ ["水","mizu","eau"],["肉","niku","viande"],["魚","sakana","poisson"],["鶏","tori","poulet"],["豚","buta","porc"],["牛","gyū","bœuf"],
+ ["人","hito","personne"],["日本","Nihon","Japon"],["山","yama","montagne"]
+];
+
+/* scripted scenes: [npc jp, npc romaji, npc fr, [[jp, romaji, ok, feedback], ...]] */
+const SCENES = [
+ { id: "konbini", ch: "osaka", title: "Le konbini du coin", desc: "Tu achètes un bento et tu paies par carte.", role: "le caissier d’un konbini (supérette) à Osaka", steps: [
+  ["いらっしゃいませ！", "irasshaimase!", "Bienvenue !", [["こんにちは", "konnichiwa", 1, "Ça passe. En vrai, un petit signe de tête suffit : on ne répond pas forcément à « irasshaimase »."], ["いただきます", "itadakimasu", 0, "Ça se dit juste avant de manger."], ["ごちそうさまでした", "gochisōsama deshita", 0, "Ça se dit après un repas, pas en entrant."]]],
+  ["お弁当、温めますか？", "obentō, atatamemasu ka?", "Je vous réchauffe le bento ?", [["はい、お願いします", "hai, onegai shimasu", 1, "Parfait, la réponse polie classique."], ["いくらですか？", "ikura desu ka?", 0, "Il te demande s’il doit réchauffer, pas le prix."], ["一人です", "hitori desu", 0, "Ça, c’est pour dire combien vous êtes au restaurant."]]],
+  ["袋はご利用ですか？", "fukuro wa go-riyō desu ka?", "Vous voulez un sac ?", [["袋はいりません", "fukuro wa irimasen", 1, "Très bien, et les sacs sont payants au Japon."], ["はい、お願いします", "hai, onegai shimasu", 1, "Ok, tu prends un sac (quelques yens)."], ["道に迷いました", "michi ni mayoimashita", 0, "Ça veut dire « je suis perdu »."]]],
+  ["８５０円です。", "happyaku gojū en desu.", "Ça fera 850 yens.", [["カードで払えますか？", "kādo de haraemasu ka?", 1, "Exactement ce qu’il fallait."], ["おすすめは何ですか？", "osusume wa nan desu ka?", 0, "Tu demandes une recommandation, pas le moyen de paiement."], ["何番線ですか？", "nanbansen desu ka?", 0, "C’est pour demander la voie à la gare."]]],
+  ["はい、こちらにタッチしてください。", "hai, kochira ni tatchi shite kudasai.", "Oui, posez votre carte ici.", [["ありがとうございます", "arigatō gozaimasu", 1, "Impeccable."], ["もう一度お願いします", "mō ichido onegai shimasu", 1, "Bon réflexe si tu n’as pas compris."], ["ごちそうさまでした", "gochisōsama deshita", 0, "Pas au konbini : c’est pour un repas servi."]]],
+  ["ありがとうございました！", "arigatō gozaimashita!", "Merci beaucoup !", null]]},
+ { id: "ramen", ch: "kyoto", title: "Dîner à Kyoto", desc: "Tu entres dans un petit restaurant, tu commandes et tu paies.", role: "le serveur d’un petit restaurant de ramen à Kyoto", steps: [
+  ["いらっしゃいませ。何名様ですか？", "irasshaimase. nanmei-sama desu ka?", "Bienvenue. Vous êtes combien ?", [["一人です", "hitori desu", 1, "Parfait. À plusieurs : 二人 (futari), 三人 (sannin)…"], ["いくらですか？", "ikura desu ka?", 0, "Il demande combien de personnes, pas le prix."], ["寒いですね", "samui desu ne", 0, "Sympa, mais hors sujet."]]],
+  ["こちらへどうぞ。", "kochira e dōzo.", "Par ici, je vous prie.", [["ありがとうございます", "arigatō gozaimasu", 1, "Simple et poli."], ["トイレはどこですか？", "toire wa doko desu ka?", 0, "Possible, mais pas maintenant !"], ["助けてください", "tasukete kudasai", 0, "« Au secours ! » : un peu dramatique."]]],
+  ["ご注文はお決まりですか？", "go-chūmon wa o-kimari desu ka?", "Vous avez choisi ?", [["おすすめは何ですか？", "osusume wa nan desu ka?", 1, "Très bon réflexe : on te conseille souvent le plat maison."], ["これをください", "kore o kudasai", 1, "Parfait en montrant la carte du doigt."], ["袋はいりません", "fukuro wa irimasen", 0, "C’est pour refuser un sac au magasin."]]],
+  ["お待たせしました。どうぞ。", "omatase shimashita. dōzo.", "Merci d’avoir patienté. Voilà.", [["いただきます", "itadakimasu", 1, "Exactement, juste avant la première bouchée."], ["ごちそうさまでした", "gochisōsama deshita", 0, "Trop tôt : c’est pour la fin du repas."], ["予約しています", "yoyaku shite imasu", 0, "C’est pour annoncer une réservation."]]],
+  ["お飲み物はいかがですか？", "o-nomimono wa ikaga desu ka?", "Vous voulez une boisson ?", [["大丈夫です", "daijōbu desu", 1, "Bien vu : ici ça veut dire « non merci, ça ira »."], ["お会計をお願いします", "okaikei o onegai shimasu", 1, "Ok, tu demandes l’addition directement."], ["温泉はどこですか？", "onsen wa doko desu ka?", 0, "Tu demandes où est l’onsen."]]],
+  ["１２００円になります。", "sen nihyaku en ni narimasu.", "Ça fera 1 200 yens.", [["ごちそうさまでした", "gochisōsama deshita", 1, "La formule parfaite en payant ou en partant."], ["いただきます", "itadakimasu", 0, "Ça, c’est avant de manger."], ["きれいですね", "kirei desu ne", 0, "« C’est joli » : pas vraiment adapté."]]],
+  ["ありがとうございました。またどうぞ！", "arigatō gozaimashita. mata dōzo!", "Merci, à bientôt !", null]]},
+ { id: "jr", ch: "kanazawa", title: "Guichet JR", desc: "Tu achètes un billet de shinkansen pour Kanazawa.", role: "l’agent d’un guichet de billets JR à la gare de Kyoto", steps: [
+  ["いらっしゃいませ。", "irasshaimase.", "Bonjour, je vous écoute.", [["金沢までの切符を一枚ください", "Kanazawa made no kippu o ichimai kudasai", 1, "Parfait : destination + nombre de billets."], ["これをください", "kore o kudasai", 0, "Il ne sait pas ce que « ceci » désigne."], ["一人です", "hitori desu", 0, "C’est plutôt pour le restaurant."]]],
+  ["指定席と自由席、どちらにしますか？", "shiteiseki to jiyūseki, dochira ni shimasu ka?", "Place réservée ou non réservée ?", [["指定席をお願いします", "shiteiseki o onegai shimasu", 1, "Bon choix en période chargée."], ["カードで払えますか？", "kādo de haraemasu ka?", 0, "Il demande le type de place, pas le paiement."], ["次の駅は何ですか？", "tsugi no eki wa nan desu ka?", 0, "Tu demandes la prochaine gare."]]],
+  ["窓側と通路側、どちらがいいですか？", "madogawa to tsūrogawa, dochira ga ii desu ka?", "Côté fenêtre ou côté couloir ?", [["窓側をお願いします", "madogawa o onegai shimasu", 1, "Côté fenêtre, pour la vue."], ["通路側をお願いします", "tsūrogawa o onegai shimasu", 1, "Côté couloir, c’est noté."], ["いただきます", "itadakimasu", 0, "Pas de repas ici."]]],
+  ["７０００円です。", "nanasen en desu.", "Ça fera 7 000 yens.", [["カードで払えますか？", "kādo de haraemasu ka?", 1, "Exactement."], ["鹿せんべいをください", "shika senbei o kudasai", 0, "Les cerfs sont à Nara !"], ["寒いですね", "samui desu ne", 0, "Hors sujet."]]],
+  ["はい、どうぞ。１１番線から出ます。", "hai, dōzo. jūichi-bansen kara demasu.", "Voilà. Il part de la voie 11.", [["ありがとうございます", "arigatō gozaimasu", 1, "Et tu as compris la voie 11 (じゅういちばんせん)."], ["何番線ですか？", "nanbansen desu ka?", 0, "Il vient de le dire : voie 11 (じゅういちばんせん)."], ["道に迷いました", "michi ni mayoimashita", 0, "Pas encore !"]]],
+  ["お気をつけて。", "o-ki o tsukete.", "Bon voyage, faites attention à vous.", null]]},
+ { id: "capsule", ch: "tokyo", title: "Check-in en capsule", desc: "Seul à Tokyo, tu arrives à ton hôtel capsule.", role: "le réceptionniste d’un hôtel capsule à Tokyo", steps: [
+  ["こんばんは。ご予約のお名前は？", "konbanwa. go-yoyaku no o-namae wa?", "Bonsoir. Le nom de la réservation ?", [["予約しています。名前は（…）です", "yoyaku shite imasu. namae wa (…) desu", 1, "Parfait, tu remplaces (…) par ton nom."], ["一人です", "hitori desu", 0, "Il demande ton nom."], ["お会計をお願いします", "okaikei o onegai shimasu", 0, "Tu demandes l’addition."]]],
+  ["パスポートをお願いします。", "pasupōto o onegai shimasu.", "Votre passeport, s’il vous plaît.", [["はい、どうぞ", "hai, dōzo", 1, "« Oui, tenez » : parfait en tendant le passeport."], ["いただきます", "itadakimasu", 0, "Ce n’est pas un repas."], ["大丈夫です", "daijōbu desu", 0, "Ça pourrait sonner comme un refus."]]],
+  ["こちらが鍵です。カプセルは上の段です。", "kochira ga kagi desu. kapuseru wa ue no dan desu.", "Voici la clé. Votre capsule est en haut.", [["ありがとうございます", "arigatō gozaimasu", 1, "Simple et efficace."], ["何番線ですか？", "nanbansen desu ka?", 0, "On n’est pas à la gare."], ["もう一度お願いします", "mō ichido onegai shimasu", 1, "Bon réflexe si tu n’as pas tout compris."]]],
+  ["ほかに何かございますか？", "hoka ni nanika gozaimasu ka?", "Autre chose ?", [["荷物を預けられますか？", "nimotsu o azukeraremasu ka?", 1, "Très utile en capsule : les grosses valises ne rentrent pas."], ["Wi-Fiのパスワードは何ですか？", "waifai no pasuwādo wa nan desu ka?", 1, "Indispensable !"], ["鹿せんべいをください", "shika senbei o kudasai", 0, "Pas de cerfs à Tokyo !"]]],
+  ["はい、大丈夫です。ごゆっくりどうぞ。", "hai, daijōbu desu. go-yukkuri dōzo.", "Oui, pas de souci. Reposez-vous bien.", null]]}
+];
+const FREE = [
+ { id: "f-konbini", ch: "osaka", title: "Konbini à Osaka", role: "le caissier d’un konbini à Osaka", desc: "le voyageur achète à manger et paie" },
+ { id: "f-nara", ch: "nara", title: "Temple à Nara", role: "un employé à l’entrée d’un temple de Nara", desc: "le voyageur demande le prix d’entrée, les photos et où acheter des biscuits pour cerfs" },
+ { id: "f-ryokan", ch: "kyoto", title: "Ryokan à Kyoto", role: "l’hôtesse d’un ryokan à Kyoto", desc: "check-in, heure du dîner et du bain" },
+ { id: "f-jr", ch: "kanazawa", title: "Gare de Kanazawa", role: "un agent JR en gare de Kanazawa", desc: "le voyageur cherche son train pour la région du Fuji" },
+ { id: "f-onsen", ch: "fuji", title: "Onsen près du Fuji", role: "le gérant d’un onsen près du lac Kawaguchi", desc: "règles du bain, serviettes, vue sur le Fuji" },
+ { id: "f-street", ch: "tokyo", title: "Perdu à Tokyo", role: "un passant sympathique à Shinjuku", desc: "le voyageur est perdu et cherche la gare de Shibuya" }
+];
+
+/* ---------- items ---------- */
+const ITEMS = {}; const ORDER = { kana: [], phrase: [], kanji: [] };
+const addKana = (script, chars, ros) => (Array.isArray(chars) ? chars : [...chars]).forEach((c, i) => { const id = script + ":" + c; ITEMS[id] = { id, cat: "kana", script, c, ro: ros[i] }; ORDER.kana.push(id); });
+addKana("h", HB, RB); addKana("h", HD, RD); addKana("h", HY, RY); addKana("k", KB, RB); addKana("k", KD, RD); addKana("k", KY, RY);
+CH.forEach(ch => ch.phrases.forEach((p, i) => { const id = "p:" + ch.id + ":" + i; ITEMS[id] = { id, cat: "phrase", ch: ch.id, jp: p[0], kana: p[1], ro: p[2], fr: p[3] }; ORDER.phrase.push(id); }));
+KANJI.forEach(k => { const id = "j:" + k[0]; ITEMS[id] = { id, cat: "kanji", c: k[0], ro: k[1], fr: k[2] }; ORDER.kanji.push(id); });
+const INTERVAL = [0, 10 * 60e3, DAY, 3 * DAY, 7 * DAY, 14 * DAY, 30 * DAY];
+
+/* ---------- state & storage ---------- */
+const LS = "missionJapon.v1";
+const blank = () => ({ srs: {}, daily: {}, streak: { last: null, n: 0 }, romaji: false, updatedAt: 0 });
+const LP = "missionJapon.profiles";
+const LEVELS = { zero: { label: "Débutant", sub: "On apprend les kana pas à pas", cap: { kana: 12, phrase: 2, kanji: 2 }, shortcut: false },
+  kana: { label: "Relance", sub: "Tu revois vite les kana, puis les phrases", cap: { kana: 15, phrase: 4, kanji: 3 }, shortcut: true },
+  voyageur: { label: "Voyageur", sub: "Les kana sont acquis : place aux phrases et aux kanji", cap: { kana: 15, phrase: 5, kanji: 5 }, shortcut: true },
+  kanji: { label: "Confirmé", sub: "Plus de kanji et de phrases chaque jour", cap: { kana: 15, phrase: 6, kanji: 6 }, shortcut: true } };
+const PLAN = ["les hiragana", "les katakana et les nombres", "Osaka : acheter et payer", "Nara : temples et politesse", "Kyoto : le restaurant", "Kyoto : ryokan et onsen", "Kanazawa : le train", "Fuji et Tokyo", "la révision générale"];
+function weekInfo() {
+  const p = prof() || {}; const start = new Date((p.start || todayKey()) + "T00:00:00");
+  const total = Math.max(1, Math.ceil((DEPART - start) / (7 * DAY)));
+  const wk = Math.min(total, Math.floor((new Date(new Date().toDateString()) - start) / (7 * DAY)) + 1);
+  let slot = Math.min(8, Math.floor((wk - 1) * 9 / total));
+  const floor = { zero: 0, kana: 1, voyageur: 2, kanji: 3 }[p.level] || 0;
+  return { wk, total, goal: PLAN[Math.max(slot, Math.min(floor, 8))] };
+}
+let P = { list: [], cur: null };
+try { const raw = localStorage.getItem(LP); if (raw) P = Object.assign(P, JSON.parse(raw)); } catch (e) {}
+const saveP = () => { try { localStorage.setItem(LP, JSON.stringify(P)); } catch (e) {} };
+const prof = () => P.list.find(x => x.id === P.cur) || null;
+const isMain = () => !!P.list.length && P.cur === P.list[0].id;
+const keyFor = id => (P.list.length && id === P.list[0].id) ? LS : LS + ":" + id;
+const mainLocalTs = () => { try { return (JSON.parse(localStorage.getItem(LS) || "{}").updatedAt) || 0; } catch (e) { return 0; } };
+const levelOf = () => LEVELS[(prof() || {}).level] || LEVELS.kana;
+let S = blank();
+function loadProfile() { S = blank(); if (!P.cur) return; try { const raw = localStorage.getItem(keyFor(P.cur)); if (raw) S = Object.assign(blank(), JSON.parse(raw)); } catch (e) {} }
+loadProfile();
+let dbRef = null, saveTimer = null, saving = false, pendingSave = false, syncState = "local";
+function persist() {
+  S.updatedAt = Date.now();
+  if (!P.cur) return;
+  try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
+  clearTimeout(saveTimer); saveTimer = setTimeout(pushDb, 1500);
+}
+async function pushDb() {
+  if (!dbRef || !isMain()) return; if (saving) { pendingSave = true; return; }
+  saving = true;
+  try { await dbRef.set({ json: JSON.stringify(S), updatedAt: S.updatedAt }); syncState = "cloud"; }
+  catch (e) { syncState = "local"; }
+  saving = false; if (pendingSave) { pendingSave = false; pushDb(); }
+  updateSync();
+}
+function updateSync() { const el = $("sync"); if (el) el.textContent = syncState === "cloud" && isMain() ? "Progression synchronisée sur tous tes appareils" : "Progression enregistrée sur cet appareil"; }
+(async () => {
+  try {
+    if (!window.claude) return;
+    const [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    if (!db || !user) return;
+    const id = await user.id(); if (!id) return;
+    dbRef = db.collection("data/users/" + id).doc("progress");
+    const snap = await Promise.race([dbRef.get(), new Promise((_, r) => setTimeout(() => r(new Error("timeout")), 10000))]);
+    if (snap.exists) {
+      const d = snap.data();
+      if (d && typeof d.json === "string" && d.updatedAt > mainLocalTs()) {
+        try { localStorage.setItem(LS, d.json); } catch (e) {}
+        if (isMain()) S = Object.assign(blank(), JSON.parse(d.json));
+        if (!session) render();
+      }
+      syncState = "cloud";
+    } else if (S.updatedAt) { await pushDb(); }
+    else syncState = "cloud";
+    updateSync();
+  } catch (e) { updateSync(); }
+})();
+
+/* ---------- audio ---------- */
+let tts = null;
+(async () => { try { if (window.claude) tts = await claude.use("tts"); } catch (e) {} })();
+let jaVoice = null;
+const loadVoices = () => { try { jaVoice = speechSynthesis.getVoices().find(v => /^ja/i.test(v.lang)) || null; } catch (e) {} };
+try { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; } catch (e) {}
+async function say(text) {
+  const clean = text.replace(/（…）/g, "");
+  if (tts) { try { await tts.speak(clean, { language: "ja", rate: 0.9 }); return; } catch (e) { if (e && e.code === "not_granted") tts = null; } }
+  try {
+    if (!("speechSynthesis" in window)) throw 0;
+    speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(clean); u.lang = "ja-JP"; u.rate = 0.85; if (jaVoice) u.voice = jaVoice; speechSynthesis.speak(u);
+  } catch (e) { toast("Audio indisponible sur cet appareil"); }
+}
+const audioBtn = (text, big) => h("button", { class: "audio" + (big ? " big" : ""), "aria-label": "Écouter", title: "Écouter", onclick: e => { e.stopPropagation(); say(text); } }, "🔊");
+
+/* ---------- SRS ---------- */
+const now = () => Date.now();
+const box = id => (S.srs[id] ? S.srs[id][0] : 0);
+const today = () => { const k = todayKey(); return S.daily[k] || (S.daily[k] = { kana: 0, phrase: 0, kanji: 0, cards: 0, ok: 0 }); };
+function dueIds() { const t = now(); return Object.keys(S.srs).filter(id => ITEMS[id] && S.srs[id][1] <= t).sort((a, b) => S.srs[a][1] - S.srs[b][1]); }
+function newIds() {
+  const d = today(); const out = [];
+  for (const cat of ["kana", "phrase", "kanji"]) {
+    const left = Math.max(0, levelOf().cap[cat] - d[cat]);
+    out.push(...ORDER[cat].filter(id => !S.srs[id]).slice(0, left));
+  }
+  return out;
+}
+function grade(id, ok, first) {
+  const cur = S.srs[id] || [0, 0, 0];
+  let b = cur[0];
+  if (ok) b = (b === 0 && first && ITEMS[id].cat === "kana" && levelOf().shortcut) ? 3 : Math.min(6, Math.max(1, b) + 1);
+  else b = 1;
+  if (!S.srs[id]) { const d = today(); d[ITEMS[id].cat]++; }
+  S.srs[id] = [b, now() + INTERVAL[b], cur[2] + 1];
+}
+const masteredPct = ids => ids.length ? Math.round(100 * ids.reduce((s, id) => s + Math.min(box(id), 4), 0) / (ids.length * 4)) : 0;
+const chapterIds = ch => ORDER.phrase.filter(id => ITEMS[id].ch === ch);
+
+/* ---------- card building ---------- */
+const normRo = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z]/g, "");
+function buildCard(id) {
+  const it = ITEMS[id], b = box(id);
+  if (it.cat === "kana") {
+    const pool = Object.values(ITEMS).filter(x => x.cat === "kana" && x.script === it.script);
+    const script = it.script === "h" ? "Hiragana" : "Katakana";
+    if (b >= 3 && Math.random() < .45) return { id, kind: script + " · écris la lecture", type: "type", prompt: it.c, answer: it.ro, sub: "Tape la lecture en rōmaji" };
+    if (b >= 2 && Math.random() < .35) {
+      const opts = shuffle([it, ...pick(pool, 3, x => x.ro === it.ro)]);
+      return { id, kind: script + " · trouve le kana", type: "choose", prompt: it.ro, promptCls: "mid", opts: opts.map(o => ({ label: o.c, ok: o.id === it.id, big: true })), reveal: it.c + " = " + it.ro };
+    }
+    const opts = shuffle([it, ...pick(pool, 3, x => x.ro === it.ro)]);
+    return { id, kind: script + (b === 0 ? " · nouveau" : ""), type: "choose", prompt: it.c, opts: opts.map(o => ({ label: o.ro, ok: o.id === it.id })), reveal: it.c + " = " + it.ro, speak: it.c };
+  }
+  if (it.cat === "kanji") {
+    const pool = Object.values(ITEMS).filter(x => x.cat === "kanji");
+    const others = pick(pool, 3, x => x.id === it.id || x.fr === it.fr);
+    if (b >= 3 && Math.random() < .5) {
+      const opts = shuffle([it, ...others]);
+      return { id, kind: "Kanji · trouve le kanji", type: "choose", prompt: it.fr, promptCls: "fr", opts: opts.map(o => ({ label: o.c, ok: o.id === it.id, big: true })), reveal: it.c + " (" + it.ro + ") = " + it.fr };
+    }
+    const opts = shuffle([it, ...others]);
+    return { id, kind: "Kanji" + (b === 0 ? " · nouveau" : ""), type: "choose", prompt: it.c, promptCls: it.c.length > 2 ? "mid" : "", opts: opts.map(o => ({ label: o.fr, ok: o.id === it.id, long: true })), reveal: it.c + " se lit « " + it.ro + " » : " + it.fr };
+  }
+  const pool = Object.values(ITEMS).filter(x => x.cat === "phrase");
+  const others = pick(pool, 3, x => x.id === it.id);
+  const chObj = CH.find(c => c.id === it.ch);
+  const reveal = it.jp + " · " + it.ro + " · " + it.fr;
+  if (b >= 4 && Math.random() < .5) {
+    const opts = shuffle([it, ...others]);
+    return { id, kind: chObj.ro + " · écoute", type: "choose", listen: it.jp, opts: opts.map(o => ({ label: o.fr, ok: o.id === it.id, long: true })), reveal, speak: it.jp, autoplay: true };
+  }
+  if (b >= 2) {
+    const opts = shuffle([it, ...others]);
+    return { id, kind: chObj.ro + " · comment on dit ?", type: "choose", prompt: it.fr, promptCls: "fr", opts: opts.map(o => ({ label: o.jp, ok: o.id === it.id, long: true, sub: o.ro })), reveal, speak: it.jp };
+  }
+  const opts = shuffle([it, ...others]);
+  return { id, kind: chObj.ro + (b === 0 ? " · nouvelle phrase" : ""), type: "choose", prompt: it.jp, promptCls: "mid", promptRo: it.ro, opts: opts.map(o => ({ label: o.fr, ok: o.id === it.id, long: true })), reveal, speak: it.jp };
+}
+
+/* ---------- views ---------- */
+let view = "trajet", session = null, chapter = null, lexMode = "h", role = null;
+const TABS = [["trajet", "道", "Trajet"], ["session", "練", "Session"], ["lexique", "字", "Lexique"], ["roles", "話", "Jeux de rôle"]];
+function renderNav() {
+  const n = $("nav"); n.replaceChildren(...TABS.map(([id, g, l]) => h("button", { "aria-current": view === id ? "page" : false, onclick: () => go(id) }, h("span", { class: "g jp" }, g), l)));
+}
+function go(v) { view = v; if (v !== "trajet") chapter = null; if (v !== "roles") stopRole(); render(); window.scrollTo(0, 0); }
+function render() {
+  const app = $("app"); app.replaceChildren();
+  if (!P.cur || adding) { $("nav").replaceChildren(); app.append(viewWelcome()); return; }
+  if (test) { $("nav").replaceChildren(); app.append(viewTest()); return; }
+  renderNav();
+  if (view === "trajet") app.append(chapter ? viewChapter() : viewHome());
+  else if (view === "session") app.append(viewSession());
+  else if (view === "lexique") app.append(viewLex());
+  else app.append(viewRoles());
+  updateSync();
+}
+const romajiToggle = () => h("button", { class: "toggle", "aria-pressed": S.romaji ? "true" : "false", onclick: () => { S.romaji = !S.romaji; persist(); render(); } }, S.romaji ? "Rōmaji affiché" : "Rōmaji masqué");
+
+function currentChapter() { return CH.find(c => masteredPct(chapterIds(c.id)) < 70) || CH[CH.length - 1]; }
+
+function viewHome() {
+  const days = Math.max(0, Math.ceil((DEPART - new Date(new Date().toDateString())) / DAY));
+  const due = dueIds().length, nw = newIds().length;
+  const all = Object.keys(ITEMS);
+  const mastered = all.filter(id => box(id) >= 4).length;
+  const kanaPct = masteredPct(ORDER.kana);
+  const cur = currentChapter();
+  const doneToday = (S.daily[todayKey()] || {}).cards || 0;
+  return h("div", {},
+    h("header", { class: "top" },
+      h("div", { class: "brand" }, h("div", { class: "seal jp", "aria-hidden": "true" }, "旅"), h("div", {}, h("h1", {}, "Mission Japon"), h("small", {}, "Bonjour " + prof().name + ", 15 minutes par jour jusqu’au départ"))),
+      h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, h("button", { class: "toggle", "aria-expanded": showProfiles ? "true" : "false", onclick: () => { showProfiles = !showProfiles; render(); } }, "👤 " + prof().name + " ▾"), romajiToggle())),
+    showProfiles ? profilesPanel() : null,
+    h("section", { class: "led", "aria-label": "Compte à rebours" },
+      h("div", { class: "lbl" }, "発車まで"), h("div", { class: "dest" }, "関西空港 · Kansai"), h("div", { class: "lbl" }, "M01"),
+      h("div", { class: "big", style: "grid-column:1/-1" }, days > 0 ? "あと " + days + " 日" : "出発！"),
+      h("div", { class: "row" }, h("span", {}, days > 0 ? "Départ dans " + days + " jours · 18 février 2027" : "C’est le grand départ !"), h("span", { class: "blink" }, "● 定刻"))),
+    h("section", { class: "today" },
+      h("div", {},
+        h("div", { class: "eyebrow" }, (() => { const w = weekInfo(); return "Semaine " + w.wk + " sur " + w.total + " · objectif : " + w.goal; })()),
+        h("h2", {}, doneToday >= 20 ? "Session faite aujourd’hui, bravo." : due + nw > 0 ? "Ton entraînement est prêt" : "Tout est à jour"),
+        h("div", { class: "stats" },
+          h("div", { class: "stat" }, h("b", {}, due), h("span", {}, "à revoir")),
+          h("div", { class: "stat" }, h("b", {}, nw), h("span", {}, "nouveautés")),
+          h("div", { class: "stat" }, h("b", {}, S.streak.n || 0), h("span", {}, "jours d’affilée")),
+          h("div", { class: "stat" }, h("b", {}, mastered + "/" + all.length), h("span", {}, "maîtrisés")))),
+      h("button", { class: "btn", onclick: startSession }, doneToday ? "Continuer" : "Commencer")),
+    h("div", { class: "sec-h" }, h("h2", {}, "Ta ligne Osaka → Tokyo"), h("span", { class: "muted", style: "font-size:13px" }, "Kana : " + kanaPct + " %")),
+    h("div", { class: "route" }, CH.map((c, i) => {
+      const pct = masteredPct(chapterIds(c.id));
+      const prev = CH[i - 1], next = CH[i + 1];
+      return h("button", { class: "board" + (c === cur ? " current" : ""), style: "--lc:var(" + c.lc + ")", onclick: () => { chapter = c; render(); window.scrollTo(0, 0); } },
+        h("span", { class: "num" }, h("span", {}, "M", h("br"), h("em", {}, c.n))),
+        c === cur ? h("span", { class: "here" }, "ICI") : null,
+        h("div", { class: "body" }, h("div", { class: "kana jp" }, c.kana), h("div", { class: "kanji jp" }, c.name), h("div", { class: "ro" }, c.ro), h("div", { class: "theme" }, c.theme)),
+        h("div", { class: "prog", "aria-label": pct + " % maîtrisé" }, h("i", { style: "width:" + pct + "%" })),
+        h("div", { class: "stripe" }, h("span", {}, prev ? "← " + prev.kana : "← 関空"), h("span", {}, pct + " %"), h("span", {}, next ? next.kana + " →" : "空港 →")));
+    })),
+    h("p", { class: "hint" }, "La gare entourée, c’est ton étape en cours. Elle passe à la suivante quand tu en maîtrises 70 %. Touche une gare pour revoir ses phrases."),
+    h("div", { style: "display:flex;gap:10px;flex-wrap:wrap;margin-top:14px" }, h("button", { class: "btn", onclick: shareScore }, "Partager mon score au groupe")),
+    h("p", { class: "sync", id: "sync" }),
+    backupBox(),
+    h("p", { class: "sync", style: "margin-top:14px" }, "Mission Japon · version " + APP_VERSION));
+}
+let adding = false, showProfiles = false;
+function viewWelcome() {
+  const name = h("input", { id: "pname", maxlength: "24", autocomplete: "off", placeholder: "Ton prénom", style: "width:100%;font:inherit;font-size:18px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink)" });
+  const err = h("p", { class: "hint", "aria-live": "polite" });
+  const go2 = withTest => {
+    const n = name.value.trim(); if (!n) { err.textContent = "Écris ton prénom pour créer ton profil."; name.focus(); return; }
+    const id = "p" + Date.now().toString(36);
+    P.list.push({ id, name: n, level: "zero", start: todayKey() }); P.cur = id; saveP(); adding = false; showProfiles = false;
+    if (P.list.length === 1) { loadProfile(); } else { S = blank(); }
+    persist(); view = "trajet";
+    if (withTest) startTest(); else { render(); window.scrollTo(0, 0); }
+  };
+  name.addEventListener("keydown", e => { if (e.key === "Enter") go2(true); });
+  setTimeout(() => name.focus(), 50);
+  return h("div", { style: "max-width:520px;margin:0 auto" },
+    h("div", { class: "brand", style: "margin:10px 0 18px" }, h("div", { class: "seal jp", "aria-hidden": "true" }, "旅"), h("div", {}, h("h1", {}, "Mission Japon"), h("small", {}, "Le japonais du voyage, 15 minutes par jour"))),
+    h("section", { class: "led", "aria-hidden": "true" }, h("div", { class: "lbl" }, "ようこそ"), h("div", { class: "dest" }, "Bienvenue à bord"), h("div", { class: "lbl" }, "M00")),
+    h("h2", { style: "margin-top:22px;font-size:18px" }, P.list.length ? "Nouveau profil" : "Crée ton profil"),
+    h("p", { class: "muted", style: "margin-top:4px" }, "Ta progression reste sur cet appareil. Chacun peut avoir son profil."),
+    name, err,
+    h("p", { class: "muted", style: "margin-top:14px" }, "Un test de 4 minutes cale l’appli sur ton niveau : ce que tu sais déjà ne te sera pas redemandé tous les jours."),
+    h("div", { style: "display:flex;gap:10px;margin-top:10px;flex-wrap:wrap" },
+      h("button", { class: "btn", onclick: () => go2(true) }, "Faire le test de niveau"),
+      h("button", { class: "btn ghost", onclick: () => go2(false) }, "Je pars de zéro"),
+      adding ? h("button", { class: "btn ghost", onclick: () => { adding = false; render(); } }, "Annuler") : null));
+}
+
+/* ---- test de niveau ---- */
+let test = null;
+function startTest() {
+  const ids = (sc, chars) => [...chars].map(c => sc + ":" + c);
+  const bh = ids("h", HB), dh = ids("h", HD), bk = ids("k", KB), dk = ids("k", KD);
+  const blocks = [
+    { name: "Hiragana", ids: [...shuffle(bh).slice(0, 7), ...shuffle(dh).slice(0, 3)], all: [...bh, ...dh] },
+    { name: "Katakana", ids: [...shuffle(bk).slice(0, 7), ...shuffle(dk).slice(0, 3)], all: [...bk, ...dk] },
+    { name: "Kanji du voyage", ids: ["j:人", "j:日本", "j:円", "j:出口", "j:駅", "j:東京", "j:切符", "j:改札"] },
+    { name: "Phrases", ids: ["p:osaka:6", "p:osaka:1", "p:nara:3", "p:kyoto:1", "p:kanazawa:2", "p:tokyo:3"] }];
+  test = { b: 0, i: 0, streak: 0, blocks, res: blocks.map(() => ({ ok: 0, n: 0, right: [] })), q: null, done: false };
+  view = "trajet"; nextTestQ();
+}
+function nextTestQ() {
+  const t = test;
+  if (t.b >= t.blocks.length) return finishTest();
+  const B = t.blocks[t.b];
+  if (t.i >= B.ids.length || t.streak >= 2) {
+    if (t.b === 0 && t.res[0].ok / B.ids.length < .5) { t.b = t.blocks.length; return finishTest(); }
+    t.b++; t.i = 0; t.streak = 0; return nextTestQ();
+  }
+  const id = B.ids[t.i], it = ITEMS[id];
+  let prompt, opts, cls = "";
+  if (it.cat === "kana") { const pool = Object.values(ITEMS).filter(x => x.cat === "kana" && x.script === it.script && x.c.length === 1); prompt = it.c; opts = shuffle([it, ...pick(pool, 3, x => x.ro === it.ro)]).map(o => ({ label: o.ro, ok: o.id === id })); }
+  else if (it.cat === "kanji") { const pool = Object.values(ITEMS).filter(x => x.cat === "kanji"); prompt = it.c; cls = it.c.length > 2 ? "mid" : ""; opts = shuffle([it, ...pick(pool, 3, x => x.id === id)]).map(o => ({ label: o.fr, ok: o.id === id, long: true })); }
+  else { const pool = Object.values(ITEMS).filter(x => x.cat === "phrase"); prompt = it.jp; cls = "mid"; opts = shuffle([it, ...pick(pool, 3, x => x.id === id)]).map(o => ({ label: o.fr, ok: o.id === id, long: true })); }
+  t.q = { id, prompt, opts, cls }; render(); window.scrollTo(0, 0);
+}
+function answerTest(ok) {
+  const t = test; if (!t || !t.q) return;
+  t.res[t.b].n++;
+  if (ok) { t.res[t.b].ok++; t.res[t.b].right.push(t.q.id); t.streak = 0; } else t.streak++;
+  t.i++; t.q = null; nextTestQ();
+}
+function finishTest() {
+  const t = test, r = k => t.res[k].ok / t.blocks[k].ids.length, pass = k => r(k) >= .7;
+  const level = !pass(0) ? "zero" : !pass(1) ? "kana" : (r(2) < .5 || r(3) < .5) ? "voyageur" : "kanji";
+  const known = (id, days) => { if (box(id) < 3) S.srs[id] = [3, now() + days * DAY, 1]; };
+  [0, 1].forEach(k => { if (pass(k)) t.blocks[k].all.forEach(id => known(id, 3 + Math.floor(Math.random() * 8))); else t.res[k].right.forEach(id => known(id, 5)); });
+  [2, 3].forEach(k => t.res[k].right.forEach(id => known(id, 7)));
+  const p = prof(); p.level = level; saveP(); persist();
+  t.done = true; t.level = level; render(); window.scrollTo(0, 0);
+}
+function viewTest() {
+  const t = test;
+  if (t.done) {
+    const L = LEVELS[t.level];
+    return h("div", { class: "done", style: "max-width:560px;margin:0 auto" },
+      h("div", { class: "stamp jp" }, { zero: "初", kana: "再", voyageur: "旅", kanji: "達" }[t.level]),
+      h("div", { class: "eyebrow" }, "Ton niveau"), h("h2", { style: "font-size:26px;margin:4px 0 6px" }, L.label), h("p", { class: "muted" }, L.sub),
+      h("div", { class: "plist", style: "text-align:left" }, t.blocks.map((B, k) => h("div", { class: "ph" }, h("div", { class: "f" }, B.name), h("div", { class: "j" }, t.res[k].n ? t.res[k].ok + "/" + B.ids.length : "pas testé")))),
+      h("p", { class: "hint" }, "Ce que tu as réussi est marqué comme connu et reviendra seulement en révision espacée. Tu peux refaire le test depuis ton profil."),
+      h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px" },
+        h("button", { class: "btn", onclick: () => { test = null; startSession(); } }, "Commencer ma première session"),
+        h("button", { class: "btn ghost", onclick: () => { test = null; go("trajet"); } }, "Voir mon trajet")));
+  }
+  const B = t.blocks[t.b], q = t.q;
+  return h("div", { style: "max-width:640px;margin:0 auto" },
+    h("div", { class: "sbar" }, h("button", { class: "back", style: "margin:0", onclick: () => { test = null; render(); } }, "✕ Passer"),
+      h("div", { class: "track" }, h("i", { style: "width:" + Math.round(100 * (t.b + t.i / B.ids.length) / t.blocks.length) + "%" })),
+      h("div", { class: "time", style: "font-family:var(--f-body);font-size:13px;min-width:auto" }, "Bloc " + (t.b + 1) + "/" + t.blocks.length)),
+    h("div", { class: "card" }, h("div", { class: "kind" }, "Test de niveau · " + B.name),
+      h("div", { class: "prompt jp " + q.cls }, q.prompt),
+      h("div", { class: "choices" + (q.opts.some(o => o.long) ? " one" : "") }, q.opts.map((o, i) => h("button", { class: "choice jp" + (o.long ? " long" : ""), onclick: () => answerTest(o.ok) }, h("span", { class: "k" }, i + 1), h("span", {}, o.label)))),
+      h("button", { class: "btn ghost small", style: "margin-top:14px", onclick: () => answerTest(false) }, "Je ne sais pas")),
+    h("p", { class: "hint", style: "text-align:center" }, "Pas de pression : le test s’arrête tout seul quand ça devient trop dur."));
+}
+function profilesPanel() {
+  return h("section", { style: "margin-bottom:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px" },
+    h("div", { class: "eyebrow" }, "Profils sur cet appareil"),
+    h("div", { style: "display:flex;gap:8px;flex-wrap:wrap;margin-top:8px" },
+      P.list.map(x => h("button", { class: "toggle", "aria-pressed": x.id === P.cur ? "true" : "false", onclick: () => { P.cur = x.id; saveP(); loadProfile(); session = null; showProfiles = false; render(); } }, x.name + " · " + (LEVELS[x.level] || LEVELS.kana).label)),
+      h("button", { class: "toggle", onclick: () => { adding = true; render(); } }, "+ Ajouter"),
+      h("button", { class: "toggle", onclick: () => { showProfiles = false; startTest(); } }, "Refaire le test de niveau")));
+}
+async function shareScore() {
+  const days = Math.max(0, Math.ceil((DEPART - new Date(new Date().toDateString())) / DAY));
+  const all = Object.keys(ITEMS), cur = currentChapter();
+  const txt = ["🇯🇵 Mission Japon · " + prof().name,
+    "🔥 Série : " + (S.streak.n || 0) + " jour(s)",
+    "🚉 Gare actuelle : " + cur.ro + " (M" + cur.n + ")",
+    "✅ Maîtrisés : " + all.filter(id => box(id) >= 4).length + "/" + all.length + " · kana " + masteredPct(ORDER.kana) + " %",
+    "⏳ J-" + days + " avant le départ"].join("\n");
+  try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch (e) { if (e && e.name === "AbortError") return; }
+  try { await navigator.clipboard.writeText(txt); toast("Score copié : colle-le dans le groupe !"); }
+  catch (e) { const ta = $("bk"); if (ta) { ta.value = txt; ta.closest("details").open = true; ta.select(); } toast("Copie le texte affiché dans la sauvegarde"); }
+}
+function backupBox() {
+  const ta = h("textarea", { id: "bk", rows: "3", placeholder: "Colle ici un code de progression", style: "width:100%;font:inherit;font-size:13px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);resize:vertical" });
+  const msg = h("p", { class: "hint", "aria-live": "polite" });
+  const copy = () => {
+    const code = btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+    ta.value = code;
+    const done = () => { msg.textContent = "Code copié. Colle-le dans l’appli sur ton autre appareil."; };
+    try { navigator.clipboard.writeText(code).then(done, () => { ta.select(); msg.textContent = "Code affiché ci-dessus : sélectionne-le et copie-le."; }); }
+    catch (e) { ta.select(); msg.textContent = "Code affiché ci-dessus : sélectionne-le et copie-le."; }
+  };
+  let armed = false;
+  const imp = e => {
+    let data;
+    try { data = JSON.parse(decodeURIComponent(escape(atob(ta.value.trim())))); if (!data || typeof data.srs !== "object") throw 0; }
+    catch (err) { msg.textContent = "Ce code n’est pas valide. Vérifie que tu l’as copié en entier."; return; }
+    if (!armed) { armed = true; e.currentTarget.textContent = "Confirmer : remplacer ma progression"; msg.textContent = "Ta progression actuelle sur cet appareil sera remplacée."; return; }
+    S = Object.assign(blank(), data); persist(); render(); toast("Progression importée dans le profil " + prof().name);
+  };
+  return h("details", { style: "margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px" },
+    h("summary", { style: "cursor:pointer;font-weight:700" }, "Sauvegarder ou transférer ma progression"),
+    h("p", { class: "muted", style: "font-size:14px" }, "Pour passer de l’ordinateur au téléphone : copie ton code ici, puis importe-le sur l’autre appareil."),
+    ta,
+    h("div", { style: "display:flex;gap:8px;flex-wrap:wrap;margin-top:8px" },
+      h("button", { class: "btn small", onclick: copy }, "Copier mon code"),
+      h("button", { class: "btn small ghost", onclick: imp }, "Importer ce code")),
+    msg);
+}
+
+function viewChapter() {
+  const c = chapter, ids = chapterIds(c.id), pct = masteredPct(ids);
+  const sc = SCENES.find(s => s.ch === c.id);
+  return h("div", { style: "--lc:var(" + c.lc + ")" },
+    h("button", { class: "back", onclick: () => { chapter = null; render(); } }, "← Toute la ligne"),
+    h("div", { class: "chap-head" },
+      h("div", { class: "body" }, h("div", { class: "kanji jp" }, c.name),
+        h("div", { style: "flex:1;min-width:160px" }, h("div", { class: "eyebrow" }, "Gare M" + c.n + " · " + c.ro), h("h2", {}, c.theme), h("div", { class: "muted" }, pct + " % maîtrisé · " + ids.length + " phrases")),
+        romajiToggle()),
+      h("div", { class: "stripe" })),
+    h("div", { class: "plist" }, ids.map(id => { const p = ITEMS[id];
+      return h("div", { class: "ph" }, h("div", { class: "j jp" }, p.jp), audioBtn(p.jp), p.kana ? h("div", { class: "k jp" }, p.kana) : null, S.romaji ? h("div", { class: "ro" }, p.ro) : null, h("div", { class: "f" }, p.fr)); })),
+    h("div", { style: "display:flex;gap:10px;flex-wrap:wrap;margin-top:16px" },
+      sc ? h("button", { class: "btn", onclick: () => { view = "roles"; startScripted(sc); } }, "Jouer la scène : " + sc.title) : null,
+      !window.claude ? null : h("button", { class: "btn ghost", disabled: !sample, title: sample ? "" : "Disponible quand la page est ouverte dans Claude", onclick: () => { view = "roles"; const f = FREE.find(x => x.ch === c.id); startFree(f); } }, "Conversation libre")));
+}
+
+/* ---- session ---- */
+function startSession() {
+  const ids = [...dueIds().slice(0, 45), ...newIds()];
+  if (!ids.length) { toast("Rien à réviser pour l’instant. Reviens plus tard ou joue une scène !"); return; }
+  // interleave: due first mixed with new
+  const queue = shuffle(ids.slice(0, 60)).map(id => ({ id, first: !S.srs[id] }));
+  session = { queue, total: queue.length, done: 0, ok: 0, start: now(), card: null, answered: false, timeUp: false };
+  view = "session"; nextCard();
+}
+function nextCard() {
+  if (!session) return;
+  const elapsed = now() - session.start;
+  if (!session.queue.length || (elapsed > 15 * 60e3 && !session.timeUp)) { if (session.queue.length) session.timeUp = true; finishSession(); return; }
+  const q = session.queue.shift(); const it0 = ITEMS[q.id];
+  if (q.first && !q.introDone && box(q.id) === 0 && !(it0.cat === "kana" && levelOf().shortcut)) {
+    session.card = { id: q.id, type: "intro", speak: it0.cat === "phrase" ? it0.jp : it0.c, autoplay: true }; session.answered = false;
+    session.pendingIntro = q; render(); window.scrollTo(0, 0); setTimeout(() => say(session.card.speak), 250); return;
+  }
+  session.card = Object.assign(buildCard(q.id), { first: q.first }); session.answered = false;
+  render(); window.scrollTo(0, 0);
+  if (session.card.autoplay) setTimeout(() => say(session.card.speak), 250);
+}
+function finishSession() {
+  const k = todayKey();
+  if (session.done >= 10 && S.streak.last !== k) {
+    const y = todayKey(new Date(Date.now() - DAY));
+    S.streak.n = S.streak.last === y ? S.streak.n + 1 : 1; S.streak.last = k;
+  }
+  persist(); session.finished = true; render();
+}
+function answer(ok, btn) {
+  const s = session; if (!s || s.answered) return; s.answered = true;
+  const c = s.card; grade(c.id, ok, c.first);
+  s.done++; if (ok) s.ok++;
+  const d = today(); d.cards++; if (ok) d.ok++;
+  if (!ok) s.queue.splice(Math.min(3, s.queue.length), 0, { id: c.id, first: false });
+  persist();
+  document.querySelectorAll(".choice").forEach(b => { b.disabled = true; if (b.dataset.ok === "1") b.classList.add("ok"); });
+  if (btn && !ok) btn.classList.add("ko");
+  const fb = $("fb"); fb.className = "feedback show " + (ok ? "ok" : "ko");
+  fb.replaceChildren(h("div", { class: "t" }, ok ? "Bien joué !" : "Pas tout à fait."), h("div", { class: "jp" }, c.reveal),
+    h("div", { style: "display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap" }, c.speak ? audioBtn(c.speak) : null, h("button", { class: "btn small", id: "next", onclick: nextCard }, "Continuer ↵")));
+  $("bar").style.width = Math.round(100 * s.done / (s.done + s.queue.length)) + "%";
+  if (ok && ITEMS[c.id].cat !== "phrase") setTimeout(() => { if (session && session.card === c) nextCard(); }, 900);
+  else $("next") && $("next").focus();
+}
+function viewSession() {
+  if (!session) {
+    const due = dueIds().length, nw = newIds().length;
+    return h("div", { class: "done" }, h("div", { class: "stamp jp" }, "練習"), h("h2", {}, "Session du jour"),
+      h("p", { class: "muted" }, due + " cartes à revoir · " + nw + " nouveautés. Une session dure 15 minutes maximum."),
+      h("button", { class: "btn", onclick: startSession }, "Lancer la session"));
+  }
+  const s = session;
+  if (s.finished) {
+    const rate = s.done ? Math.round(100 * s.ok / s.done) : 0;
+    return h("div", { class: "done" }, h("div", { class: "stamp jp" }, rate >= 80 ? "優" : rate >= 60 ? "良" : "可"),
+      h("h2", {}, s.timeUp ? "15 minutes, c’est bouclé !" : "Session terminée !"),
+      h("p", { class: "muted" }, s.done + " cartes · " + rate + " % de bonnes réponses · série : " + (S.streak.n || 0) + " jour(s)"),
+      h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
+        s.timeUp ? h("button", { class: "btn ghost", onclick: () => { s.finished = false; nextCard(); } }, "Encore quelques cartes") : null,
+        h("button", { class: "btn", onclick: () => { session = null; go("trajet"); } }, "Retour au trajet")));
+  }
+  const c = s.card; const elapsed = now() - s.start;
+  if (c.type === "intro") return viewIntro(s, c);
+  const mm = Math.floor(elapsed / 60e3), ss = Math.floor(elapsed / 1000) % 60;
+  const kids = [h("div", { class: "kind" }, c.kind)];
+  if (c.listen) kids.push(h("div", {}, audioBtn(c.listen, true)), h("div", { class: "sub" }, "Écoute et choisis le sens"));
+  else kids.push(h("div", { class: "prompt jp " + (c.promptCls || "") }, c.prompt), h("div", { class: "sub" }, c.type === "type" ? c.sub : (c.promptRo && S.romaji ? c.promptRo : (c.speak && c.promptCls !== "fr" ? audioBtn(c.speak) : ""))));
+  if (c.type === "type") {
+    const inp = h("input", { id: "typein", autocomplete: "off", autocapitalize: "off", spellcheck: "false", placeholder: "ex. shi", "aria-label": "Lecture en rōmaji" });
+    const check = () => { const v = normRo(inp.value); if (!v) return; const ok = v === c.answer || (ALT[c.answer] || []).includes(v); inp.disabled = true; answer(ok); };
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); s.answered ? nextCard() : check(); } });
+    kids.push(h("div", { class: "typein" }, inp, h("button", { class: "btn", onclick: check }, "Valider")));
+    setTimeout(() => inp.focus(), 50);
+  } else {
+    kids.push(h("div", { class: "choices" + (c.opts.some(o => o.long) ? " one" : "") }, c.opts.map((o, i) =>
+      h("button", { class: "choice jp" + (o.long ? " long" : ""), "data-ok": o.ok ? "1" : "0", style: o.big ? "font-size:30px" : "", onclick: e => answer(o.ok, e.currentTarget) },
+        h("span", { class: "k" }, i + 1), h("span", {}, o.label, o.sub && S.romaji ? h("span", { class: "muted", style: "display:block;font-size:12px;font-weight:500" }, o.sub) : null)))));
+  }
+  kids.push(h("div", { class: "feedback", id: "fb", "aria-live": "polite" }));
+  return h("div", {},
+    h("div", { class: "sbar" }, h("button", { class: "back", style: "margin:0", onclick: () => { finishSession(); } }, "✕ Arrêter"),
+      h("div", { class: "track" }, h("i", { id: "bar", style: "width:" + Math.round(100 * s.done / Math.max(1, s.done + s.queue.length + 1)) + "%" })),
+      h("div", { class: "time", id: "clock" }, String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0"))),
+    h("div", { class: "card" }, kids),
+    h("p", { class: "hint", style: "text-align:center" }, "Raccourcis : touches 1 à 4 pour répondre, Entrée pour continuer."));
+}
+function viewIntro(s, c) {
+  const it = ITEMS[c.id];
+  const big = it.cat === "phrase" ? it.jp : it.c;
+  const lines = it.cat === "kana" ? [h("div", { class: "sub", style: "font-size:22px;color:var(--ink);font-weight:700" }, it.ro)]
+    : it.cat === "kanji" ? [h("div", { class: "sub", style: "font-size:20px;color:var(--ink);font-weight:700" }, it.ro), h("div", { class: "sub", style: "font-size:18px" }, it.fr)]
+    : [it.kana ? h("div", { class: "sub jp" }, it.kana) : null, h("div", { class: "sub" }, it.ro), h("div", { class: "sub", style: "font-size:18px;color:var(--ink)" }, it.fr)];
+  const goOn = () => { const q = s.pendingIntro; s.queue.splice(Math.min(2, s.queue.length), 0, { id: q.id, first: true, introDone: true }); s.pendingIntro = null; nextCard(); };
+  return h("div", {},
+    h("div", { class: "sbar" }, h("button", { class: "back", style: "margin:0", onclick: () => { finishSession(); } }, "✕ Arrêter"),
+      h("div", { class: "track" }, h("i", { style: "width:" + Math.round(100 * s.done / Math.max(1, s.done + s.queue.length + 1)) + "%" })), h("div", { class: "time", id: "clock" }, "")),
+    h("div", { class: "card" }, h("div", { class: "kind" }, "Découverte"),
+      h("div", { class: "prompt jp " + (it.cat === "phrase" ? "mid" : big.length > 2 ? "mid" : "") }, big), ...lines,
+      h("div", { style: "margin-top:14px" }, audioBtn(c.speak)),
+      h("button", { class: "btn", id: "introgo", style: "margin-top:18px;width:100%", onclick: goOn }, "Je retiens, on continue")),
+    h("p", { class: "hint", style: "text-align:center" }, "Regarde, écoute, puis on vérifie juste après."));
+}
+setInterval(() => { const el = $("clock"); if (el && session && !session.finished) { const e = now() - session.start; el.textContent = String(Math.floor(e / 60e3)).padStart(2, "0") + ":" + String(Math.floor(e / 1000) % 60).padStart(2, "0"); } }, 1000);
+document.addEventListener("keydown", e => {
+  if (test && !test.done && test.q && /^[1-4]$/.test(e.key) && e.target.tagName !== "INPUT") { const o = test.q.opts[+e.key - 1]; if (o) answerTest(o.ok); return; }
+  if (view === "session" && session && session.card && session.card.type === "intro" && e.key === "Enter") { e.preventDefault(); const b = $("introgo"); if (b) b.click(); return; }
+  if (view !== "session" || !session || session.finished || e.target.tagName === "INPUT") return;
+  if (/^[1-4]$/.test(e.key) && !session.answered) { const b = document.querySelectorAll(".choice")[+e.key - 1]; if (b) b.click(); }
+  else if (e.key === "Enter" && session.answered) { e.preventDefault(); nextCard(); }
+});
+
+/* ---- lexique ---- */
+function viewLex() {
+  const seg = h("div", { class: "seg", role: "group", "aria-label": "Écriture" }, [["h", "ひらがな"], ["k", "カタカナ"], ["j", "漢字"]].map(([k, l]) =>
+    h("button", { class: "jp", "aria-pressed": lexMode === k ? "true" : "false", onclick: () => { lexMode = k; render(); } }, l)));
+  const legend = h("div", { class: "legend" }, h("span", {}, h("i", { style: "background:var(--line)" }), "pas vu"), h("span", {}, h("i", { style: "background:var(--ko)" }), "à retravailler"), h("span", {}, h("i", { style: "background:#E6A23C" }), "en cours"), h("span", {}, h("i", { style: "background:var(--ok)" }), "maîtrisé"));
+  let body;
+  if (lexMode === "j") {
+    body = h("div", { class: "klist" }, ORDER.kanji.map(id => { const k = ITEMS[id], b = box(id);
+      return h("div", { class: "kj lv" + b }, h("div", { class: "c jp" }, k.c), h("div", { class: "r" }, k.ro), h("div", { class: "f" }, k.fr), h("div", { class: "m", style: "background:" + (b >= 4 ? "var(--ok)" : b >= 2 ? "#E6A23C" : b === 1 ? "var(--ko)" : "var(--line)") })); }));
+  } else {
+    const base = lexMode === "h" ? HB : KB, dk = lexMode === "h" ? HD : KD;
+    const cells = [];
+    const layout = (chars, ros) => { const arr = [...chars]; arr.forEach((c, i) => cells.push([c, ros[i]])); };
+    // basic grid with gaps for ya/wa rows
+    const b = [...base];
+    const rows = [b.slice(0, 35), [b[35], null, b[36], null, b[37]], b.slice(38, 43), [b[43], null, null, null, b[44]], [b[45], null, null, null, null]];
+    const rr = [RB.slice(0, 35), [RB[35], null, RB[36], null, RB[37]], RB.slice(38, 43), [RB[43], null, null, null, RB[44]], [RB[45], null, null, null, null]];
+    rows.forEach((r, i) => r.forEach((c, j) => cells.push(c ? [c, rr[i][j]] : null)));
+    layout(dk, RD);
+    body = h("div", { class: "kgrid" }, cells.map(x => {
+      if (!x) return h("div", { class: "kcell empty", "aria-hidden": "true" });
+      const id = lexMode + ":" + x[0], bx = box(id);
+      return h("button", { class: "kcell lv" + bx, onclick: () => say(x[0]), "aria-label": x[0] + " " + x[1] }, h("div", { class: "c jp" }, x[0]), h("div", { class: "r" }, x[1]), h("div", { class: "m" }));
+    }));
+  }
+  const ids = lexMode === "j" ? ORDER.kanji : ORDER.kana.filter(id => id.startsWith(lexMode + ":"));
+  if (lexMode !== "j") {
+    const yo = lexMode === "h" ? HY : KY;
+    body = h("div", {}, body, h("h3", { style: "margin-top:18px;font-size:15px" }, "Combinaisons"), h("div", { class: "kgrid", style: "grid-template-columns:repeat(3,minmax(0,1fr))" }, yo.map((c, i) => {
+      const id = lexMode + ":" + c, bx = box(id);
+      return h("button", { class: "kcell lv" + bx, onclick: () => say(c), "aria-label": c + " " + RY[i] }, h("div", { class: "c jp" }, c), h("div", { class: "r" }, RY[i]), h("div", { class: "m" }));
+    })));
+  }
+  return h("div", {}, h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Lexique"), h("span", { class: "muted" }, masteredPct(ids) + " % maîtrisé")),
+    seg, legend, body, h("p", { class: "hint" }, lexMode === "j" ? "Les kanji que tu croiseras vraiment : gares, portes, menus, onsen." : "Touche un caractère pour l’entendre."));
+}
+
+/* ---- roles ---- */
+let sample = null; (async () => { try { if (window.claude) { sample = await claude.use("sample"); if (view === "roles" && !role) render(); } } catch (e) {} })();
+function stopRole() { if (role && role.abort) role.abort.abort(); role = null; }
+function startScripted(sc) { role = { mode: "script", sc, step: 0, log: [], score: 0 }; render(); window.scrollTo(0, 0); }
+function startFree(f) { role = { mode: "free", sc: f, log: [], busy: false, turns: 0, done: false }; render(); claudeTurn(null); window.scrollTo(0, 0); }
+function viewRoles() {
+  if (!role) {
+    return h("div", {},
+      h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Jeux de rôle"), romajiToggle()),
+      h("p", { class: "muted" }, window.claude ? "Des scènes que tu vas vraiment vivre. Choisis la bonne réplique, puis passe en conversation libre." : "Des scènes que tu vas vraiment vivre. Choisis la bonne réplique à chaque étape."),
+      h("h3", { style: "margin-top:18px;font-size:16px" }, "Scènes guidées"),
+      h("div", { class: "scenes" }, SCENES.map(sc => { const c = CH.find(x => x.id === sc.ch);
+        return h("button", { class: "scene", style: "--lc:var(" + c.lc + ")", onclick: () => startScripted(sc) }, h("span", { class: "jp" }, c.name + " · " + c.ro), h("b", {}, sc.title), h("span", {}, sc.desc)); })),
+      !window.claude ? null : h("h3", { style: "margin-top:22px;font-size:16px" }, "Conversation libre avec Claude"),
+      !window.claude ? null : h("p", { class: "muted", style: "margin:4px 0 0" }, sample ? "Claude joue le personnage. Réponds comme tu peux, en rōmaji, en kana ou même en français : il te corrige à chaque réplique." : "La conversation libre marche seulement dans la version Claude de l’appli. Les scènes guidées marchent partout."),
+      !window.claude ? null : h("div", { class: "scenes" }, FREE.map(f => { const c = CH.find(x => x.id === f.ch);
+        return h("button", { class: "scene", style: "--lc:var(" + c.lc + ")", disabled: !sample, onclick: () => startFree(f) }, h("span", { class: "jp" }, c.name + " · " + c.ro), h("b", {}, f.title), h("span", {}, f.desc.charAt(0).toUpperCase() + f.desc.slice(1))); })));
+  }
+  const c = CH.find(x => x.id === role.sc.ch);
+  const wrap = h("div", { style: "--lc:var(" + c.lc + ")" },
+    h("div", { style: "display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap" },
+      h("button", { class: "back", onclick: () => { stopRole(); render(); } }, "← Toutes les scènes"), romajiToggle()),
+    h("div", { class: "eyebrow" }, c.name + " · " + c.ro + (role.mode === "free" ? " · conversation libre" : " · scène guidée")),
+    h("h2", {}, role.sc.title));
+  const chat = h("div", { class: "chat" });
+  const npcBub = (jp, ro, fr, kana) => { const f = h("div", { class: "f", hidden: true }, fr);
+    return h("div", { class: "bub npc" }, h("div", { style: "display:flex;gap:10px;align-items:flex-start" }, h("div", { style: "flex:1;min-width:0" }, h("div", { class: "j jp" }, jp), kana && kana !== jp ? h("div", { class: "ro jp" }, kana) : null, S.romaji && ro ? h("div", { class: "ro" }, ro) : null), audioBtn(jp)),
+      f, fr ? h("button", { class: "tr", onclick: e => { f.hidden = !f.hidden; e.currentTarget.textContent = f.hidden ? "Traduire" : "Masquer"; } }, "Traduire") : null); };
+  role.log.forEach(m => {
+    if (m.t === "npc") chat.append(npcBub(m.jp, m.ro, m.fr, m.kana));
+    else if (m.t === "me") chat.append(h("div", { class: "bub me" }, h("div", { class: "j jp" }, m.text), m.ro && S.romaji ? h("div", { class: "ro" }, m.ro) : null));
+    else chat.append(h("div", { class: "note " + (m.ok ? "ok" : "ko") }, m.text, m.better ? h("div", { class: "jp", style: "margin-top:4px;font-weight:700" }, "→ " + m.better + (m.betterRo ? "  (" + m.betterRo + ")" : "")) : null));
+  });
+  wrap.append(chat);
+  if (role.mode === "script") {
+    const st = role.sc.steps[role.step];
+    if (role.shown !== role.step) { role.shown = role.step; role.log.push({ t: "npc", jp: st[0], ro: st[1], fr: st[2] }); setTimeout(() => say(st[0]), 200); return viewRoles(); }
+    if (st[3]) {
+      wrap.append(h("div", { class: "choices one" }, st[3].map(o => h("button", { class: "choice long jp", onclick: () => {
+        role.log.push({ t: "me", text: o[0], ro: o[1] });
+        role.log.push({ t: "note", ok: !!o[2], text: (o[2] ? "✓ " : "✗ ") + o[3] });
+        if (o[2]) { role.score++; role.step++; }
+        render(); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 30);
+      } }, h("span", {}, o[0], S.romaji ? h("span", { class: "muted", style: "display:block;font-size:12px;font-weight:500" }, o[1]) : null)))));
+    } else {
+      wrap.append(h("div", { class: "done", style: "padding:18px 0" }, h("div", { class: "stamp jp", style: "width:90px;height:90px;font-size:24px" }, "合格"),
+        h("p", {}, "Scène réussie. Prêt pour la vraie ?"),
+        h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
+          h("button", { class: "btn ghost", onclick: () => startScripted(role.sc) }, "Rejouer"),
+          sample ? h("button", { class: "btn", onclick: () => startFree(FREE.find(x => x.ch === role.sc.ch)) }, "Version libre avec Claude") : null)));
+    }
+  } else {
+    if (role.busy) chat.append(h("div", { class: "bub npc muted" }, "…"));
+    if (role.error) chat.append(h("div", { class: "note ko" }, role.error));
+    if (role.done) wrap.append(h("div", { class: "done", style: "padding:18px 0" }, h("div", { class: "stamp jp", style: "width:90px;height:90px;font-size:24px" }, "完了"), h("button", { class: "btn ghost", onclick: () => startFree(role.sc) }, "Recommencer")));
+    else {
+      const inp = h("input", { id: "say", placeholder: "Ta réponse (rōmaji, kana ou français)", autocomplete: "off", disabled: role.busy, "aria-label": "Ta réponse" });
+      const send = () => { const v = inp.value.trim(); if (!v || role.busy) return; claudeTurn(v); };
+      inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); send(); } });
+      wrap.append(h("div", { class: "composer" }, inp, h("button", { class: "btn", onclick: send, disabled: role.busy }, "Envoyer")),
+        h("p", { class: "hint" }, "Bloqué ? Écris en français ce que tu veux dire : Claude te donne la phrase en japonais."));
+      if (!role.busy) setTimeout(() => { const i = $("say"); if (i && document.activeElement !== i) i.focus({ preventScroll: true }); }, 30);
+    }
+  }
+  return wrap;
+}
+async function claudeTurn(userText) {
+  if (!sample || !role || role.mode !== "free") return;
+  const r = role; r.busy = true; r.error = null;
+  if (userText) r.log.push({ t: "me", text: userText });
+  render(); window.scrollTo(0, document.body.scrollHeight);
+  const transcript = r.log.filter(m => m.t !== "note").map(m => (m.t === "npc" ? "PERSONNAGE: " + m.jp : "VOYAGEUR: " + m.text)).join("\n");
+  const prompt = [
+    "Tu fais un jeu de rôle pour aider un Français qui réapprend le japonais avant un voyage. Il relit les hiragana et katakana et reconnaît quelques kanji.",
+    "Scène : " + r.sc.desc + ". Tu joues " + r.sc.role + ".",
+    "Parle un japonais naturel, phrases courtes et simples, registre poli de service. Une seule réplique à la fois.",
+    "Conversation jusqu'ici :", transcript || "(début de la scène)",
+    userText ? "Le voyageur vient d'écrire : « " + userText + " ». Il peut écrire en rōmaji, en kana, en kanji ou en français, avec des fautes." : "Commence la scène avec ta première réplique.",
+    "Réponds UNIQUEMENT avec un objet JSON de cette forme :",
+    '{"feedback": ' + (userText ? '{"ok": true ou false, "note": "1 phrase en français, bienveillante : ce qui est bien ou ce qu\'il faut corriger", "better_jp": "la formulation naturelle en japonais (vide si sa phrase était déjà parfaite)", "better_romaji": "la même en rōmaji"}' : "null") + ', "npc": {"jp": "ta réplique en japonais", "kana": "la même entièrement en hiragana/katakana", "romaji": "la même en rōmaji", "fr": "traduction française"}, "done": false}',
+    "Si sa réponse était en français, mets ok à false, explique gentiment et donne better_jp. Mets done à true quand la scène se termine naturellement (après 5 à 7 échanges), avec une réplique de clôture."
+  ].join("\n");
+  try {
+    const out = await sample.json(prompt, { modelTier: "default" });
+    if (role !== r) return;
+    if (out && out.feedback && userText) r.log.push({ t: "note", ok: !!out.feedback.ok, text: (out.feedback.ok ? "✓ " : "✗ ") + String(out.feedback.note || ""), better: out.feedback.better_jp ? String(out.feedback.better_jp) : "", betterRo: out.feedback.better_romaji ? String(out.feedback.better_romaji) : "" });
+    if (out && out.npc && out.npc.jp) { r.log.push({ t: "npc", jp: String(out.npc.jp), kana: String(out.npc.kana || ""), ro: String(out.npc.romaji || ""), fr: String(out.npc.fr || "") }); say(String(out.npc.jp)); }
+    r.done = !!(out && out.done); r.turns++;
+  } catch (e) {
+    if (role !== r) return;
+    r.error = e && e.code === "not_granted" ? "Tu as refusé l’accès à Claude pour cette page. Les scènes guidées restent disponibles." : e && e.code === "rate_limited" ? "Trop de messages d’un coup. Attends une minute et réessaie." : "Claude n’a pas pu répondre. Réessaie ton message.";
+    if (userText && e && e.code !== "not_granted") { r.log.pop(); }
+  }
+  r.busy = false; if (role === r) { render(); window.scrollTo(0, document.body.scrollHeight); }
+}
+
+render();
+})();
+</script>
+
+<script>
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+}
+</script>
+</body>
+</html>
