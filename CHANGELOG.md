@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 1.2 · 25 novembre 2026
+- Onglet Missions : 3 missions du jour, 3 de la semaine, omikuji quotidien, boutique en yens et 29 exploits
+- Récompenses : 15 cadres, 8 animations de profil, 8 thèmes d'appli, 22 titres, gel de série
+- Onglet Réglages : photo de profil, pseudo, mode clair, sombre ou auto, choix du thème, du cadre, de l'animation et du titre
+- Le classement du groupe affiche la photo, le cadre, l'animation et le titre de chacun
+- La session se lance depuis l'accueil (l'onglet Session disparaît pour faire de la place)
+- La série de jours affichée retombe à 0 si elle est cassée
+
 ## 1.1 · 25 novembre 2026
 - Fin du code de transfert : pour changer d'appareil, on se connecte avec le même compte (Google ou lien par e-mail)
 - La connexion par e-mail, sans mot de passe, est mise en avant pour ceux qui n'ont pas de compte Google

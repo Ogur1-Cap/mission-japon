@@ -213,6 +213,120 @@ h1,h2,h3{text-wrap:balance;margin:0}
 @keyframes introPop{from{opacity:0;transform:scale(.6) rotate(-6deg)}to{opacity:1;transform:none}}
 .stat b{transition:color .3s}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ---- thèmes débloquables (data-pal) ---- */
+:root[data-pal="sakura"][data-theme="light"]{--bg:#FBF0F3;--surface-2:#FDF5F7;--line:#EED3DB;--accent:#B8235A;--accent-ink:#fff}
+:root[data-pal="sakura"][data-theme="dark"]{--bg:#1A1015;--surface:#24161D;--surface-2:#2C1B24;--line:#3E2632;--accent:#FF8FB8;--accent-ink:#1A1015}
+:root[data-pal="matcha"][data-theme="light"]{--bg:#EEF3E6;--surface-2:#F5F8EF;--line:#D3DEC4;--accent:#4A7424;--accent-ink:#fff}
+:root[data-pal="matcha"][data-theme="dark"]{--bg:#0E140B;--surface:#172012;--surface-2:#1D2817;--line:#2C3A22;--accent:#A5D66F;--accent-ink:#0E140B}
+:root[data-pal="indigo"][data-theme="light"]{--bg:#ECEFF6;--surface-2:#F4F6FB;--line:#D2D8E8;--accent:#1F3A68;--accent-ink:#fff}
+:root[data-pal="indigo"][data-theme="dark"]{--bg:#0A0F1C;--surface:#121A2C;--surface-2:#182238;--line:#26324D;--accent:#8FB0E8;--accent-ink:#0A0F1C}
+:root[data-pal="fuji"][data-theme="light"]{--bg:#E9F2FA;--surface-2:#F2F7FC;--line:#CFDFEE;--accent:#1F5FB0;--accent-ink:#fff}
+:root[data-pal="fuji"][data-theme="dark"]{--bg:#0A1320;--surface:#101C2E;--surface-2:#16243A;--line:#223450;--accent:#7FB8FF;--accent-ink:#0A1320}
+:root[data-pal="kyoto"][data-theme="light"]{--bg:#F4ECDF;--surface:#FFFBF4;--surface-2:#FAF3E7;--line:#E3D5BF;--accent:#9A2A1C;--accent-ink:#fff}
+:root[data-pal="kyoto"][data-theme="dark"]{--bg:#17110C;--surface:#221A13;--surface-2:#2A2018;--line:#3D3024;--accent:#E8875D;--accent-ink:#17110C}
+:root[data-pal="shibuya"][data-theme="light"]{--bg:#F2EFFF;--surface-2:#F8F6FF;--line:#DCD4FA;--accent:#6E22E8;--accent-ink:#fff}
+:root[data-pal="shibuya"][data-theme="dark"]{--bg:#0A0614;--surface:#140E24;--surface-2:#1B1330;--line:#30244F;--accent:#FF3FD8;--accent-ink:#0A0614}
+:root[data-pal="or"][data-theme="light"]{--bg:#F6F1E2;--surface:#FFFDF6;--surface-2:#FAF5E6;--line:#E6DABA;--accent:#8A650C;--accent-ink:#fff}
+:root[data-pal="or"][data-theme="dark"]{--bg:#100D05;--surface:#1B160A;--surface-2:#231D0E;--line:#3A3018;--accent:#EBC764;--accent-ink:#100D05}
+
+/* ---- avatar, cadres, animations ---- */
+.av{--s:48px;position:relative;width:var(--s);height:var(--s);flex:none;border-radius:50%}
+.av .fr{position:absolute;inset:0;border-radius:50%;background:var(--line)}
+.av .pic{position:absolute;inset:calc(var(--s) * .08);border-radius:50%;overflow:hidden;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:700;font-size:calc(var(--s) * .4);border:2px solid var(--surface);z-index:1}
+.av .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.av .orn{position:absolute;right:-6%;bottom:-6%;font-size:calc(var(--s) * .3);line-height:1;z-index:3;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.av .fr.spin{animation:spin 5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.f-bois .fr{background:linear-gradient(135deg,#C58B4E,#7A4B22 55%,#B07A40)}
+.f-bambou .fr{background:repeating-conic-gradient(#78B83E 0 26deg,#4E8A24 26deg 30deg)}
+.f-torii .fr{background:#D23B2A}
+.f-vague .fr{background:repeating-radial-gradient(circle at 30% 70%,#1C4E8A 0 4px,#5B97D1 4px 7px,#EAF3FB 7px 8px)}
+.f-momiji .fr{background:conic-gradient(#E0502A,#F4A13B,#C02A2A,#E0502A)}
+.f-sakura .fr{background:conic-gradient(#FFC2D1,#FF8FAB,#FFE0E8,#FF9DB7,#FFC2D1)}
+.f-cerf .fr{background:radial-gradient(circle at 30% 30%,#E7C49B 0 3px,transparent 4px) 0 0/12px 12px,#A8662A}
+.f-shinkansen .fr{background:linear-gradient(180deg,#F4F7FB 0 42%,#1D4FBF 42% 52%,#F4F7FB 52% 100%)}
+.f-kinpaku .fr{background:conic-gradient(#8A650C,#F7E08A,#C9A227,#FFF3C2,#8A650C)}
+.f-fuji .fr{background:conic-gradient(from 200deg,#FFFFFF,#9CC3F0,#2F66D0,#9CC3F0,#FFFFFF)}
+.f-flamme .fr{background:conic-gradient(#FF3B1F,#FFB21E,#FF6A00,#FFE066,#FF3B1F)}
+.f-neon .fr{background:conic-gradient(#FF2FD6,#2FF3FF,#7B2FF7,#FF2FD6)}
+.f-couronne .fr{background:conic-gradient(#C9A227,#FFF3C2,#E9B949,#8A650C,#C9A227)}
+.f-omikuji .fr{background:repeating-linear-gradient(45deg,#FFFFFF 0 5px,#D23B2A 5px 7px)}
+.av .fx{position:absolute;inset:-30%;pointer-events:none;z-index:2;overflow:visible}
+.av .fx i{position:absolute;font-style:normal;line-height:1;opacity:0}
+.av .fx i:nth-child(1){left:8%;animation-delay:0s}.av .fx i:nth-child(2){left:30%;animation-delay:.7s}.av .fx i:nth-child(3){left:52%;animation-delay:1.4s}.av .fx i:nth-child(4){left:72%;animation-delay:2.1s}.av .fx i:nth-child(5){left:88%;animation-delay:2.8s}
+.a-sakura .fx i{top:0;font-size:calc(var(--s) * .2);animation:petal 3.5s linear infinite}
+@keyframes petal{0%{opacity:0;transform:translate(0,0) rotate(0)}12%{opacity:1}100%{opacity:0;transform:translate(calc(var(--s) * .25),calc(var(--s) * 1.35)) rotate(240deg)}}
+.a-hotaru .fx i{top:40%;width:5px;height:5px;border-radius:50%;background:#F4F59B;box-shadow:0 0 8px 3px rgba(240,240,120,.7);animation:firefly 3.5s ease-in-out infinite}
+@keyframes firefly{0%,100%{opacity:0;transform:translate(0,10px)}30%{opacity:1}50%{opacity:.3;transform:translate(8px,-18px)}70%{opacity:1;transform:translate(-6px,-30px)}}
+.a-onsen .fx i{bottom:30%;width:calc(var(--s) * .22);height:calc(var(--s) * .22);border-radius:50%;background:radial-gradient(rgba(255,255,255,.95),rgba(255,255,255,0) 70%);filter:blur(1px);animation:steam 3.5s ease-out infinite}
+@keyframes steam{0%{opacity:0;transform:translateY(0) scale(.6)}25%{opacity:.9}100%{opacity:0;transform:translateY(calc(var(--s) * -1.1)) scale(1.8)}}
+.a-hanabi .fx i{top:10%;width:calc(var(--s) * .35);height:calc(var(--s) * .35);border-radius:50%;border:2px dotted;color:#FF5E7E;animation:burst 3.5s ease-out infinite}
+.a-hanabi .fx i:nth-child(2n){color:#FFC53D;top:55%}.a-hanabi .fx i:nth-child(3){color:#47C1FF}
+@keyframes burst{0%{opacity:0;transform:scale(.1)}8%{opacity:1}30%{opacity:0;transform:scale(1.4)}100%{opacity:0}}
+.a-lanterne .fx i{top:35%;font-size:calc(var(--s) * .26);animation:bob2 3s ease-in-out infinite}
+.a-lanterne .fx i:nth-child(n+3){display:none}.a-lanterne .fx i:nth-child(1){left:-4%}.a-lanterne .fx i:nth-child(2){left:auto;right:-4%}
+@keyframes bob2{0%,100%{opacity:1;transform:translateY(0) rotate(-6deg)}50%{opacity:1;transform:translateY(-8px) rotate(6deg)}}
+.a-eclair .fx i{top:45%;width:calc(var(--s) * .5);height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#FFE066);animation:dash 1.8s linear infinite}
+.a-eclair .fx i:nth-child(2n){top:62%}.a-eclair .fx i:nth-child(3){top:30%}
+@keyframes dash{0%{opacity:0;transform:translateX(calc(var(--s) * -.6))}20%{opacity:1}100%{opacity:0;transform:translateX(calc(var(--s) * 1.2))}}
+.a-neon .fr{animation:neon 1.8s ease-in-out infinite}
+@keyframes neon{0%,100%{box-shadow:0 0 4px 1px var(--accent)}50%{box-shadow:0 0 16px 5px var(--accent)}}
+.a-neon.f-neon .fr,.a-neon .fr.spin{animation:spin 5s linear infinite,neon 1.8s ease-in-out infinite}
+.me-btn{background:none;border:0;padding:4px;border-radius:50%;display:flex;align-items:center;gap:8px}
+.ttl{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--accent);white-space:nowrap}
+
+/* ---- missions ---- */
+.nav button{position:relative}
+.nav .dot{position:absolute;top:7px;left:calc(50% + 9px);width:9px;height:9px;border-radius:50%;background:var(--ko);border:2px solid var(--surface)}
+.wallet{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.wallet .who{flex:1;min-width:0}
+.wallet .who b{display:block;font-size:18px;overflow-wrap:anywhere}
+.yen{font-family:var(--f-display);font-weight:400;font-size:24px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.yen small{display:block;font-family:var(--f-body);font-size:11px;color:var(--muted);text-align:right}
+.mlist{display:grid;gap:8px}
+.mis{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.mis .lab{font-weight:700;font-size:15px}
+.mis .bar{grid-column:1;height:7px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.mis .bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .6s}
+.mis .rw{grid-row:1/span 2;grid-column:2;text-align:right;font-size:13px;color:var(--muted)}
+.mis.ready{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.mis.claimed{opacity:.6}
+.mis.claimed .lab::after{content:" ✓";color:var(--ok)}
+.claim{animation:pulse2 1.4s ease-in-out infinite}
+@keyframes pulse2{50%{transform:scale(1.06)}}
+.omi{margin-top:12px;border-radius:var(--r);padding:16px;background:linear-gradient(135deg,#B8231B,#7E1610);color:#fff;display:flex;gap:14px;align-items:center}
+.omi .bx{font-size:40px;line-height:1}
+.omi.locked{background:var(--surface);color:var(--ink);border:1px dashed var(--line)}
+.omi .btn{background:#fff;color:#7E1610}
+.omi .shake{animation:shakeBox .9s ease-in-out}
+@keyframes shakeBox{10%,50%,90%{transform:rotate(-14deg)}30%,70%{transform:rotate(14deg)}}
+.paper{background:#FFFDF6;color:#2A1A10;border-radius:6px;padding:18px 14px;margin:6px auto 12px;max-width:180px;box-shadow:0 6px 18px rgba(0,0,0,.25);border-top:6px solid #B8231B;animation:unfold .6s cubic-bezier(.2,1.3,.4,1) both;transform-origin:top}
+.paper .k{font-size:44px;font-weight:700;letter-spacing:.1em;writing-mode:vertical-rl;margin:0 auto;line-height:1.1}
+@keyframes unfold{from{transform:scaleY(.05);opacity:0}to{transform:none;opacity:1}}
+.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;min-width:0}
+.item .nm{font-weight:700;font-size:14px}
+.item .how{font-size:12px;color:var(--muted)}
+.item.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.item .btn{width:100%}
+.swatch{width:64px;height:48px;border-radius:10px;border:1px solid var(--line);overflow:hidden;display:grid;grid-template-rows:1fr 14px}
+.swatch i:first-child{display:block}
+.swatch i:last-child{display:block}
+.ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.stampc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center;display:grid;gap:4px;justify-items:center}
+.stampc .st2{width:58px;height:58px;border-radius:50%;border:3px dashed var(--line);display:grid;place-items:center;font-size:22px;font-weight:700;color:var(--muted)}
+.stampc.got .st2{border:3px solid var(--ko);color:var(--ko);transform:rotate(-8deg);background:var(--ko-bg)}
+.stampc b{font-size:13px}
+.stampc span{font-size:11.5px;color:var(--muted)}
+.stampc .pg{width:100%;height:4px;border-radius:2px;background:var(--surface-2);overflow:hidden}.stampc .pg i{display:block;height:100%;background:var(--accent)}
+.coin{position:fixed;z-index:60;font-weight:700;color:#C9A227;font-size:22px;pointer-events:none;animation:floatUp 1s ease-out forwards}
+.set{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-top:14px}
+.set h2{font-size:16px;margin-bottom:10px}
+.pick{display:flex;gap:10px;flex-wrap:wrap}
+.pick button{background:var(--surface-2);border:2px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;min-width:76px;position:relative}
+.pick button[aria-pressed="true"]{border-color:var(--accent)}
+.pick button:disabled{opacity:.45;cursor:not-allowed}
+.pick .lk{position:absolute;top:4px;right:6px;font-size:12px}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -239,7 +353,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.1";
+const APP_VERSION = "1.2";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -515,9 +629,9 @@ function buildCard(id) {
 
 /* ---------- views ---------- */
 let view = "trajet", session = null, chapter = null, lexMode = "h", role = null;
-const TABS = [["trajet", "道", "Trajet"], ["session", "練", "Session"], ["lexique", "字", "Lexique"], ["roles", "話", "Scènes"]].concat(CLOUD ? [["groupe", "組", "Groupe"]] : []);
+const TABS = [["trajet", "道", "Trajet"], ["lexique", "字", "Lexique"], ["roles", "話", "Scènes"], ["missions", "賞", "Missions"]].concat(CLOUD ? [["groupe", "組", "Groupe"]] : [], [["reglages", "設", "Réglages"]]);
 function renderNav() {
-  const n = $("nav"); n.replaceChildren(...TABS.map(([id, g, l]) => h("button", { "aria-current": view === id ? "page" : false, onclick: () => go(id) }, h("span", { class: "g jp" }, g), l)));
+  const n = $("nav"); n.replaceChildren(...TABS.map(([id, g, l]) => h("button", { "aria-current": view === id ? "page" : false, onclick: () => go(id) }, h("span", { class: "g jp" }, g), l, id === "missions" && claimable() ? h("span", { class: "dot", "aria-label": "Récompense à récupérer" }) : null)));
 }
 function go(v) { const again = v === view; view = v; if (v !== "trajet" || again) chapter = null; if (v !== "roles" || again) stopRole(); render(); window.scrollTo(0, 0); }
 let lastViewKey = "";
@@ -548,7 +662,7 @@ function checkArrival(idx) {
           h("div", { class: "eyebrow" }, "Nouvelle gare atteinte"), h("h2", { style: "margin:4px 0 6px" }, c.ro),
           h("p", { class: "muted" }, "Prochain thème : " + c.theme.toLowerCase() + "."),
           h("button", { class: "btn", style: "margin-top:8px", onclick: close }, "En voiture !")));
-      document.body.append(ov); confetti();
+      document.body.append(ov); confetti(); setTimeout(rwCheck, 400);
     }, 1700);
   } else if (typeof S.station !== "number") { S.station = idx; }
 }
@@ -576,8 +690,11 @@ function render() {
   else if (view === "session") app.append(viewSession());
   else if (view === "lexique") app.append(viewLex());
   else if (view === "groupe") app.append(viewGroupe());
+  else if (view === "missions") app.append(viewMissions());
+  else if (view === "reglages") app.append(viewSettings());
   else app.append(viewRoles());
   updateSync();
+  if (!session || session.finished) setTimeout(flushOverlays, 600);
 }
 const romajiToggle = () => h("button", { class: "toggle", "aria-pressed": S.romaji ? "true" : "false", onclick: () => { S.romaji = !S.romaji; persist(); render(); } }, S.romaji ? "Rōmaji affiché" : "Rōmaji masqué");
 
@@ -592,10 +709,10 @@ function viewHome() {
   const cur = currentChapter();
   const doneToday = (S.daily[todayKey()] || {}).cards || 0;
   return h("div", {},
-    h("header", { class: "top" },
-      h("div", { class: "brand" }, h("div", { class: "seal jp", "aria-hidden": "true" }, "旅"), h("div", {}, h("h1", {}, "Mission Japon"), h("small", {}, "Bonjour " + prof().name + ", 15 minutes par jour jusqu’au départ"))),
-      h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, h("button", { class: "toggle", "aria-expanded": showProfiles ? "true" : "false", onclick: () => { showProfiles = !showProfiles; render(); } }, "👤 " + prof().name + " ▾"), romajiToggle())),
-    showProfiles ? profilesPanel() : null,
+    h("header", { class: "top", style: "flex-wrap:nowrap;align-items:center" },
+      h("div", { class: "brand", style: "min-width:0" }, h("div", { class: "seal jp", "aria-hidden": "true" }, "旅"), h("div", { style: "min-width:0" }, h("h1", {}, "Mission Japon"), h("small", {}, "Bonjour " + prof().name + " · ", h("span", { class: "ttl" }, titleOf(look()))))),
+      h("button", { class: "me-btn", onclick: () => go("reglages"), "aria-label": "Mon profil et réglages" }, avatar(look(), prof().name, 50))),
+    h("div", { style: "margin:-4px 0 14px" }, romajiToggle()),
     h("section", { class: "led", "aria-label": "Compte à rebours" },
       h("div", { class: "lbl" }, "発車まで"), h("div", { class: "dest" }, "関西空港 · Kansai"), h("div", { class: "lbl" }, "M01"),
       h("div", { class: "big", style: "grid-column:1/-1", "aria-label": days > 0 ? "あと " + days + " 日" : "出発！" }, [...(days > 0 ? "あと " + days + " 日" : "出発！")].map((ch, i) => h("span", { style: "animation-delay:" + (i * 70) + "ms", "aria-hidden": "true" }, ch === " " ? "\u00a0" : ch))),
@@ -607,9 +724,11 @@ function viewHome() {
         h("div", { class: "stats" },
           h("div", { class: "stat" }, h("b", {}, due), h("span", {}, "à revoir")),
           h("div", { class: "stat" }, h("b", {}, nw), h("span", {}, "nouveautés")),
-          h("div", { class: "stat" }, h("b", {}, S.streak.n || 0), h("span", {}, "jours d’affilée")),
+          h("div", { class: "stat" }, h("b", {}, rwStreak()), h("span", {}, "jours d’affilée" + (rw().freeze ? " · 🧊" + rw().freeze : ""))),
           h("div", { class: "stat" }, h("b", {}, mastered + "/" + all.length), h("span", {}, "maîtrisés")))),
-      h("button", { class: "btn", onclick: startSession }, doneToday ? "Continuer" : "Commencer")),
+      session && !session.finished ? h("button", { class: "btn", onclick: () => go("session") }, "Reprendre ma session") : h("button", { class: "btn", onclick: startSession }, doneToday ? "Continuer" : "Commencer")),
+    (() => { const dd = rwDay(), nDone = dd.ids.filter(id => (dd.p[id] || 0) >= mDef(id).goal).length, cl = claimable();
+      return h("button", { class: "today", style: "width:100%;text-align:left;cursor:pointer;grid-template-columns:auto 1fr auto;gap:12px", onclick: () => go("missions") }, h("span", { style: "font-size:26px" }, cl ? "🎁" : "🎯"), h("span", {}, h("b", {}, cl ? cl + " récompense(s) à récupérer" : "Missions du jour : " + nDone + " / " + dd.ids.length), h("span", { class: "muted", style: "display:block;font-size:13px" }, "¥" + (rw().yen || 0).toLocaleString("fr-FR") + " en poche · cadres, titres et thèmes à gagner")), h("span", { style: "font-size:20px;color:var(--accent)" }, "→")); })(),
     CLOUD && !linked() ? h("button", { class: "today", style: "width:100%;text-align:left;cursor:pointer;grid-template-columns:auto 1fr auto;gap:12px", onclick: () => go("groupe") }, h("span", { style: "font-size:26px" }, "☁️"), h("span", {}, h("b", {}, "Sauvegarde ta progression et rejoins le classement"), h("span", { class: "muted", style: "display:block;font-size:13px" }, "Compte gratuit, connexion avec Google ou par e-mail")), h("span", { style: "font-size:20px;color:var(--accent)" }, "→")) : null,
     h("div", { class: "sec-h" }, h("h2", {}, "Ta ligne Osaka → Tokyo"), h("span", { class: "muted", style: "font-size:13px" }, "Kana : " + kanaPct + " %")),
     railView(cur),
@@ -638,7 +757,7 @@ function viewWelcome() {
     const id = "p" + Date.now().toString(36);
     P.list.push({ id, name: n, level: "zero", start: todayKey() }); P.cur = id; saveP(); adding = false; showProfiles = false;
     if (P.list.length === 1) { loadProfile(); } else { S = blank(); }
-    persist(); view = "trajet";
+    persist(); view = "trajet"; applyTheme();
     if (withTest) startTest(); else { render(); window.scrollTo(0, 0); }
   };
   name.addEventListener("keydown", e => { if (e.key === "Enter") go2(true); });
@@ -727,7 +846,7 @@ function profilesPanel() {
   return h("section", { style: "margin-bottom:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px" },
     h("div", { class: "eyebrow" }, "Profils sur cet appareil"),
     h("div", { style: "display:flex;gap:8px;flex-wrap:wrap;margin-top:8px" },
-      P.list.map(x => h("button", { class: "toggle", "aria-pressed": x.id === P.cur ? "true" : "false", onclick: () => { P.cur = x.id; saveP(); loadProfile(); session = null; showProfiles = false; if (CLOUD && fb) cloudOnSwitch(); render(); } }, x.name + " · " + (LEVELS[x.level] || LEVELS.kana).label)),
+      P.list.map(x => h("button", { class: "toggle", "aria-pressed": x.id === P.cur ? "true" : "false", onclick: () => { P.cur = x.id; saveP(); loadProfile(); session = null; showProfiles = false; if (CLOUD && fb) cloudOnSwitch(); applyTheme(); render(); } }, x.name + " · " + (LEVELS[x.level] || LEVELS.kana).label)),
       h("button", { class: "toggle", onclick: () => { adding = true; render(); } }, "+ Ajouter"),
       h("button", { class: "toggle", onclick: () => { showProfiles = false; startTest(); } }, "Refaire le test de niveau")));
 }
@@ -821,9 +940,18 @@ function nextCard() {
 function finishSession() {
   const k = todayKey();
   if (session.done >= 10 && S.streak.last !== k) {
-    const y = todayKey(new Date(Date.now() - DAY));
-    S.streak.n = S.streak.last === y ? S.streak.n + 1 : 1; S.streak.last = k;
+    const gap = S.streak.last ? Math.round((new Date(k) - new Date(S.streak.last)) / DAY) : 99, fr = rw().freeze || 0;
+    if (gap === 1) S.streak.n = S.streak.n + 1;
+    else if (gap >= 2 && gap - 1 <= fr) { rw().freeze = fr - (gap - 1); S.streak.n = S.streak.n + 1; toast("🧊 Ton gel de série a protégé ta série !"); }
+    else S.streak.n = 1;
+    S.streak.last = k;
   }
+  if (session.done >= 10 && !session.rwDone) {
+    session.rwDone = true; const st = rw().st; st.sessions = (st.sessions || 0) + 1; track("session");
+    if (session.done >= 15 && session.ok === session.done) st.perfect = (st.perfect || 0) + 1;
+    const hr = new Date().getHours(); if (hr >= 22 || hr < 4) st.night = 1; if (hr >= 4 && hr < 8) st.morning = 1;
+  }
+  rwCheck();
   if (CLOUD && session.done >= 10 && !session.counted) { session.counted = true; addPts(50 + 5 * Math.min(S.streak.n || 0, 7)); if (S.grp && S.grp.code) S.grp.sessions = (S.grp.sessions || 0) + 1; }
   persist(); session.finished = true; render();
   if (CLOUD) cloudSync();
@@ -832,6 +960,9 @@ function answer(ok, btn) {
   const s = session; if (!s || s.answered) return; s.answered = true;
   const c = s.card; grade(c.id, ok, c.first);
   s.done++; if (ok) s.ok++;
+  s.combo = ok ? (s.combo || 0) + 1 : 0; const st0 = rw().st; if (s.combo > (st0.comboMax || 0)) st0.comboMax = s.combo;
+  if (ok) { track("ok"); track("combo", s.combo); }
+  if (c.first) track("new"); else track("review");
   if (ok && CLOUD && (s.pts || 0) < 150) { addPts(2); s.pts = (s.pts || 0) + 2; }
   const d = today(); d.cards++; if (ok) d.ok++;
   if (!ok) s.queue.splice(Math.min(3, s.queue.length), 0, { id: c.id, first: false });
@@ -939,7 +1070,7 @@ function viewLex() {
     body = h("div", { class: "kgrid" }, cells.map(x => {
       if (!x) return h("div", { class: "kcell empty", "aria-hidden": "true" });
       const id = lexMode + ":" + x[0], bx = box(id);
-      return h("button", { class: "kcell lv" + bx, onclick: () => say(x[0]), "aria-label": x[0] + " " + x[1] }, h("div", { class: "c jp" }, x[0]), h("div", { class: "r" }, x[1]), h("div", { class: "m" }));
+      return h("button", { class: "kcell lv" + bx, onclick: () => { say(x[0]); track("lex"); persist(); }, "aria-label": x[0] + " " + x[1] }, h("div", { class: "c jp" }, x[0]), h("div", { class: "r" }, x[1]), h("div", { class: "m" }));
     }));
   }
   const ids = lexMode === "j" ? ORDER.kanji : ORDER.kana.filter(id => id.startsWith(lexMode + ":"));
@@ -947,7 +1078,7 @@ function viewLex() {
     const yo = lexMode === "h" ? HY : KY;
     body = h("div", {}, body, h("h3", { style: "margin-top:18px;font-size:15px" }, "Combinaisons"), h("div", { class: "kgrid", style: "grid-template-columns:repeat(3,minmax(0,1fr))" }, yo.map((c, i) => {
       const id = lexMode + ":" + c, bx = box(id);
-      return h("button", { class: "kcell lv" + bx, onclick: () => say(c), "aria-label": c + " " + RY[i] }, h("div", { class: "c jp" }, c), h("div", { class: "r" }, RY[i]), h("div", { class: "m" }));
+      return h("button", { class: "kcell lv" + bx, onclick: () => { say(c); track("lex"); persist(); }, "aria-label": c + " " + RY[i] }, h("div", { class: "c jp" }, c), h("div", { class: "r" }, RY[i]), h("div", { class: "m" }));
     })));
   }
   return h("div", {}, h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Lexique"), h("span", { class: "muted" }, masteredPct(ids) + " % de progression")),
@@ -999,7 +1130,7 @@ function viewRoles() {
         render(); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 30);
       } }, h("span", {}, o[0], S.romaji ? h("span", { class: "muted", style: "display:block;font-size:12px;font-weight:500" }, o[1]) : null)))));
     } else {
-      wrap.append(h("div", { class: "done", style: "padding:18px 0" }, h("div", { class: "stamp jp stamp-drop", style: "width:90px;height:90px;font-size:24px" }, "合格"), (role.celebrated ? null : (role.celebrated = true, setTimeout(confetti, 300), (CLOUD && !(S.scenes || {})[role.sc.id] ? (S.scenes = Object.assign({}, S.scenes, { [role.sc.id]: todayKey() }), addPts(30), persist(), cloudSync()) : 0), null)),
+      wrap.append(h("div", { class: "done", style: "padding:18px 0" }, h("div", { class: "stamp jp stamp-drop", style: "width:90px;height:90px;font-size:24px" }, "合格"), (role.celebrated ? null : (role.celebrated = true, setTimeout(confetti, 300), (rw().st.sc = Object.assign({}, rw().st.sc, { [role.sc.id]: 1 }), track("scene"), persist(), rwCheck()), (CLOUD && !(S.scenes || {})[role.sc.id] ? (S.scenes = Object.assign({}, S.scenes, { [role.sc.id]: todayKey() }), addPts(30), persist(), cloudSync()) : 0), null)),
         h("p", {}, "Scène réussie. Prêt pour la vraie ?"),
         h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
           h("button", { class: "btn ghost", onclick: () => startScripted(role.sc) }, "Rejouer"),
@@ -1051,6 +1182,380 @@ async function claudeTurn(userText) {
 }
 
 /* ---------- compte, synchro et groupe (version GitHub, Firebase) ---------- */
+/* ---------- récompenses, missions, réglages ---------- */
+// Économie : ~¥450 par jour régulier (3 missions + omikuji), ¥900 par semaine. Environ ¥40 000 d'ici le départ :
+// assez pour une bonne partie de la boutique, pas tout. Les pièces les plus belles s'obtiennent par les exploits.
+const FRAMES = [
+  { id: "none", nm: "Sans cadre", src: "free" },
+  { id: "bois", nm: "Cyprès", src: "shop", price: 300 },
+  { id: "torii", nm: "Torii vermillon", src: "shop", price: 900, orn: "⛩️" },
+  { id: "momiji", nm: "Momiji", src: "shop", price: 1200, orn: "🍁" },
+  { id: "vague", nm: "La Grande Vague", src: "shop", price: 1800, orn: "🌊" },
+  { id: "omikuji", nm: "Ruban d’omikuji", src: "shop", price: 2400 },
+  { id: "neon", nm: "Néon", src: "shop", price: 3500, spin: true },
+  { id: "bambou", nm: "Bambou", src: "ach", ach: "streak7", orn: "🎋" },
+  { id: "sakura", nm: "Sakura", src: "ach", ach: "hira100", orn: "🌸" },
+  { id: "cerf", nm: "Cerf de Nara", src: "ach", ach: "st1", orn: "🦌" },
+  { id: "kinpaku", nm: "Feuille d’or", src: "ach", ach: "st3", spin: true, orn: "✨" },
+  { id: "fuji", nm: "Mont Fuji", src: "ach", ach: "st4", orn: "🗻" },
+  { id: "shinkansen", nm: "Shinkansen", src: "ach", ach: "s50", orn: "🚄" },
+  { id: "flamme", nm: "Flamme éternelle", src: "ach", ach: "streak30", spin: true, orn: "🔥" },
+  { id: "couronne", nm: "Couronne", src: "ach", ach: "lead", spin: true, orn: "👑" }];
+const TITLES = [
+  { id: "touriste", nm: "Touriste perdu", src: "free" },
+  { id: "curieux", nm: "Voyageur curieux", src: "shop", price: 300 },
+  { id: "ramen", nm: "Gourmand de ramen", src: "shop", price: 500 },
+  { id: "matcha", nm: "Amateur de matcha", src: "shop", price: 500 },
+  { id: "konbini", nm: "Fan de konbini", src: "shop", price: 500 },
+  { id: "tokyoite", nm: "Futur Tokyoïte", src: "shop", price: 900 },
+  { id: "bienparti", nm: "Bien parti", src: "ach", ach: "streak3" },
+  { id: "habitue", nm: "Habitué", src: "ach", ach: "s10" },
+  { id: "sensei", nm: "Sensei", src: "ach", ach: "s100" },
+  { id: "hira", nm: "Maître des hiragana", src: "ach", ach: "hira100" },
+  { id: "kata", nm: "Ninja du katakana", src: "ach", ach: "kata100" },
+  { id: "kanji", nm: "Chasseur de kanji", src: "ach", ach: "kanji10" },
+  { id: "samurai", nm: "Samouraï de la régularité", src: "ach", ach: "streak30" },
+  { id: "shogun", nm: "Shōgun", src: "ach", ach: "streak60" },
+  { id: "sansfaute", nm: "Sans faute", src: "ach", ach: "perfect" },
+  { id: "inarretable", nm: "Inarrêtable", src: "ach", ach: "combo20" },
+  { id: "impro", nm: "Roi de l’impro", src: "ach", ach: "scenes4" },
+  { id: "hibou", nm: "Oiseau de nuit", src: "ach", ach: "night" },
+  { id: "leve", nm: "Lève-tôt", src: "ach", ach: "morning" },
+  { id: "beni", nm: "Béni des dieux", src: "ach", ach: "daikichi" },
+  { id: "champion", nm: "Tête de classement", src: "ach", ach: "lead" },
+  { id: "legende", nm: "Légende de Tokyo", src: "ach", ach: "st5" }];
+const ANIMS = [
+  { id: "none", nm: "Aucune", src: "free" },
+  { id: "neon", nm: "Néon pulsé", src: "shop", price: 2000 },
+  { id: "onsen", nm: "Vapeur d’onsen", src: "shop", price: 2500 },
+  { id: "sakura", nm: "Pétales de sakura", src: "shop", price: 3000, sym: "🌸" },
+  { id: "hanabi", nm: "Hanabi", src: "shop", price: 4500 },
+  { id: "hotaru", nm: "Lucioles", src: "ach", ach: "streak14" },
+  { id: "lanterne", nm: "Lanternes", src: "ach", ach: "omi10", sym: "🏮" },
+  { id: "eclair", nm: "Éclair du shinkansen", src: "ach", ach: "kanjiAll" }];
+const PALS = [
+  { id: "jr", nm: "JR classique", src: "free", c: ["#EEF1F5", "#2B3A8C"] },
+  { id: "sakura", nm: "Sakura", src: "shop", price: 2000, c: ["#FBF0F3", "#B8235A"] },
+  { id: "matcha", nm: "Matcha", src: "shop", price: 2000, c: ["#EEF3E6", "#4A7424"] },
+  { id: "indigo", nm: "Indigo Hokusai", src: "shop", price: 2500, c: ["#ECEFF6", "#1F3A68"] },
+  { id: "fuji", nm: "Ciel de Fuji", src: "shop", price: 2500, c: ["#E9F2FA", "#1F5FB0"] },
+  { id: "or", nm: "Or impérial", src: "shop", price: 6000, c: ["#F6F1E2", "#8A650C"] },
+  { id: "kyoto", nm: "Laque de Kyoto", src: "ach", ach: "st2", c: ["#F4ECDF", "#9A2A1C"] },
+  { id: "shibuya", nm: "Néon de Shibuya", src: "ach", ach: "st5", c: ["#0A0614", "#FF3FD8"] }];
+const KINDS = { frame: FRAMES, title: TITLES, anim: ANIMS, theme: PALS };
+const KIND_NM = { frame: "Cadre", title: "Titre", anim: "Animation", theme: "Thème" };
+const FREEZE_PRICE = 500;
+
+// Exploits : t(st) renvoie [valeur, objectif] pour la barre de progression.
+const kanaDone = p => ORDER.kana.filter(id => id.startsWith(p + ":")).filter(id => box(id) >= 4).length;
+const kanaAll = p => ORDER.kana.filter(id => id.startsWith(p + ":")).length;
+const kanjiDone = () => ORDER.kanji.filter(id => box(id) >= 4).length;
+const ACH = [
+  { id: "first", g: "Régularité", nm: "Premier pas", d: "Termine ta première session", t: st => [st.sessions, 1], yen: 200, k: "初" },
+  { id: "streak3", g: "Régularité", nm: "Trois jours", d: "3 jours d’affilée", t: () => [rwStreak(), 3], k: "三" },
+  { id: "streak7", g: "Régularité", nm: "Une semaine", d: "7 jours d’affilée", t: () => [rwStreak(), 7], k: "週" },
+  { id: "streak14", g: "Régularité", nm: "Quinze jours", d: "14 jours d’affilée", t: () => [rwStreak(), 14], k: "灯" },
+  { id: "streak30", g: "Régularité", nm: "Un mois", d: "30 jours d’affilée", t: () => [rwStreak(), 30], k: "炎" },
+  { id: "streak60", g: "Régularité", nm: "Deux mois", d: "60 jours d’affilée", t: () => [rwStreak(), 60], k: "将" },
+  { id: "s10", g: "Régularité", nm: "Habitué", d: "10 sessions", t: st => [st.sessions, 10], k: "十" },
+  { id: "s50", g: "Régularité", nm: "Abonné JR", d: "50 sessions", t: st => [st.sessions, 50], k: "鉄" },
+  { id: "s100", g: "Régularité", nm: "Sensei", d: "100 sessions", t: st => [st.sessions, 100], k: "師" },
+  { id: "hira100", g: "Écriture", nm: "Hiragana", d: "Maîtriser tous les hiragana", t: () => [kanaDone("h"), kanaAll("h")], k: "あ" },
+  { id: "kata100", g: "Écriture", nm: "Katakana", d: "Maîtriser tous les katakana", t: () => [kanaDone("k"), kanaAll("k")], k: "ア" },
+  { id: "kanji10", g: "Écriture", nm: "Premiers kanji", d: "Maîtriser 10 kanji", t: () => [kanjiDone(), 10], k: "漢" },
+  { id: "kanjiAll", g: "Écriture", nm: "Tous les kanji", d: "Maîtriser tous les kanji du voyage", t: () => [kanjiDone(), ORDER.kanji.length], k: "字" },
+  { id: "st1", g: "Trajet", nm: "Arrivée à Nara", d: "Atteindre la gare de Nara", t: () => [S.station || 0, 1], k: "奈" },
+  { id: "st2", g: "Trajet", nm: "Arrivée à Kyoto", d: "Atteindre la gare de Kyoto", t: () => [S.station || 0, 2], k: "京" },
+  { id: "st3", g: "Trajet", nm: "Arrivée à Kanazawa", d: "Atteindre Kanazawa, la ville de la feuille d’or", t: () => [S.station || 0, 3], k: "金" },
+  { id: "st4", g: "Trajet", nm: "Arrivée au Fuji", d: "Atteindre la gare du Fuji", t: () => [S.station || 0, 4], k: "富" },
+  { id: "st5", g: "Trajet", nm: "Arrivée à Tokyo", d: "Atteindre Tokyo, le terminus", t: () => [S.station || 0, 5], k: "東" },
+  { id: "scenes4", g: "Exploits", nm: "Prêt pour le Japon", d: "Réussir les 4 scènes", t: st => [Object.keys(st.sc || {}).length, 4], k: "話" },
+  { id: "perfect", g: "Exploits", nm: "Sans faute", d: "Une session d’au moins 15 cartes sans erreur", t: st => [st.perfect || 0, 1], k: "完" },
+  { id: "combo20", g: "Exploits", nm: "Combo ×20", d: "20 bonnes réponses d’affilée", t: st => [st.comboMax || 0, 20], k: "連" },
+  { id: "daikichi", g: "Exploits", nm: "Grande chance", d: "Tirer 大吉 à l’omikuji", t: st => [st.daikichi || 0, 1], k: "吉" },
+  { id: "omi10", g: "Exploits", nm: "Habitué du temple", d: "Tirer 10 omikuji", t: st => [st.omi || 0, 10], k: "籤" },
+  { id: "m30", g: "Exploits", nm: "Missionnaire", d: "Valider 30 missions", t: st => [st.missions || 0, 30], yen: 1000, k: "務" },
+  { id: "photo", g: "Exploits", nm: "Une tête connue", d: "Ajouter ta photo de profil", t: () => [S.look && S.look.photo ? 1 : 0, 1], yen: 200, k: "顔" },
+  { id: "group", g: "Groupe", nm: "Esprit d’équipe", d: "Rejoindre un groupe", t: () => [S.grp && S.grp.code ? 1 : 0, 1], yen: 300, k: "組", cloud: true },
+  { id: "lead", g: "Groupe", nm: "En tête", d: "Être 1er du classement de la semaine (2 joueurs min.)", t: st => [st.lead || 0, 1], k: "冠", cloud: true },
+  { id: "night", g: "Secrets", nm: "Oiseau de nuit", d: "Une session après 22 h", t: st => [st.night || 0, 1], k: "夜", secret: true },
+  { id: "morning", g: "Secrets", nm: "Lève-tôt", d: "Une session avant 8 h", t: st => [st.morning || 0, 1], k: "朝", secret: true }];
+const rewardsOf = achId => Object.entries(KINDS).flatMap(([kind, L]) => L.filter(x => x.ach === achId).map(x => ({ kind, x })));
+
+// Missions : chacune tient dans une session normale de 15 minutes, pour rester un bonus et pas une corvée.
+const DAILY = [
+  { id: "session", nm: "Termine ta session du jour", goal: 1, ev: "session" },
+  { id: "ok15", nm: "Donne 15 bonnes réponses", goal: 15, ev: "ok" },
+  { id: "new3", nm: "Découvre 3 nouveautés", goal: 3, ev: "new" },
+  { id: "combo5", nm: "Enchaîne 5 bonnes réponses", goal: 5, ev: "combo", max: true },
+  { id: "review8", nm: "Révise 8 cartes déjà vues", goal: 8, ev: "review" },
+  { id: "scene", nm: "Réussis une scène (même déjà jouée)", goal: 1, ev: "scene" },
+  { id: "lex", nm: "Écoute 5 caractères dans le Lexique", goal: 5, ev: "lex" }];
+const WEEKLY = [
+  { id: "w5", nm: "Fais 5 sessions cette semaine", goal: 5, ev: "session" },
+  { id: "wok", nm: "Donne 100 bonnes réponses", goal: 100, ev: "ok" },
+  { id: "wnew", nm: "Découvre 20 nouveautés", goal: 20, ev: "new" },
+  { id: "wset", nm: "Termine 4 fois toutes tes missions du jour", goal: 4, ev: "dayset" },
+  { id: "wsc", nm: "Réussis 2 scènes", goal: 2, ev: "scene" }];
+const D_YEN = 100, W_YEN = 300;
+const OMI = [["大吉", "daikichi", "Grande chance", 300, 8], ["中吉", "chūkichi", "Chance moyenne", 200, 17], ["小吉", "shōkichi", "Petite chance", 150, 25], ["吉", "kichi", "Chance", 120, 30], ["末吉", "suekichi", "Chance à venir", 100, 20]];
+
+const blankRw = () => ({ yen: 0, own: {}, ach: {}, freeze: 0, rev: 0, st: { sessions: 0, sc: {}, comboMax: 0, perfect: 0, omi: 0, daikichi: 0, missions: 0 }, day: null, wk: null });
+const blankLook = () => ({ frame: "none", title: "touriste", anim: "none", theme: "jr", mode: "auto", photo: "" });
+function rw() { if (!S.rw) S.rw = blankRw(); if (!S.rw.st) S.rw.st = blankRw().st; if (!S.rw.own) S.rw.own = {}; if (!S.rw.ach) S.rw.ach = {}; return S.rw; }
+function look() { if (!S.look) S.look = blankLook(); return Object.assign(blankLook(), S.look); }
+const owns = (kind, id) => { const x = (KINDS[kind] || []).find(i => i.id === id); return !!x && (x.src === "free" || !!rw().own[kind + ":" + id]); };
+const hashStr = s => { let x = 2166136261; for (const c of s) { x ^= c.charCodeAt(0); x = Math.imul(x, 16777619); } return x >>> 0; };
+const seeded = seed => () => { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+function rwStreak() {
+  const s = S.streak || {}; if (!s.last) return 0;
+  const gap = Math.round((new Date(todayKey()) - new Date(s.last)) / DAY);
+  return gap <= 1 + (rw().freeze || 0) ? (s.n || 0) : 0;
+}
+function rwDay() {
+  const r = rw(), k = todayKey();
+  if (!r.day || r.day.k !== k) {
+    const rnd = seeded(hashStr(k + (P.cur || "")));
+    const pool = DAILY.filter(m => m.id !== "session" && (m.id !== "review8" || Object.keys(S.srs).length >= 12) && (m.id !== "scene" || true));
+    const pickd = []; while (pickd.length < 2 && pool.length) pickd.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0].id);
+    r.day = { k, ids: ["session"].concat(pickd), p: {}, c: {}, omi: null };
+  }
+  return r.day;
+}
+function rwWeek() {
+  const r = rw(), k = weekKeyOf();
+  if (!r.wk || r.wk.k !== k) {
+    const rnd = seeded(hashStr("w" + k + (P.cur || ""))), pool = WEEKLY.filter(m => m.id !== "w5"), pickd = [];
+    while (pickd.length < 2) pickd.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0].id);
+    r.wk = { k, ids: ["w5"].concat(pickd), p: {}, c: {} };
+  }
+  return r.wk;
+}
+const mDef = id => DAILY.find(m => m.id === id) || WEEKLY.find(m => m.id === id);
+function track(ev, n = 1) {
+  const sets = [rwDay(), rwWeek()]; let fresh = [];
+  sets.forEach(set => set.ids.forEach(id => {
+    const m = mDef(id); if (m.ev !== ev) return;
+    const before = set.p[id] || 0; set.p[id] = m.max ? Math.max(before, n) : before + n;
+    if (before < m.goal && set.p[id] >= m.goal) fresh.push(m);
+  }));
+  rw().rev++;
+  fresh.forEach(m => toast("✔ Mission accomplie : " + m.nm + " · ¥" + (WEEKLY.includes(m) ? W_YEN : D_YEN) + " à récupérer"));
+}
+const claimable = () => { if (!P.cur) return 0; const d = rwDay(), w = rwWeek(); let n = 0;
+  d.ids.forEach(id => { if ((d.p[id] || 0) >= mDef(id).goal && !d.c[id]) n++; });
+  w.ids.forEach(id => { if ((w.p[id] || 0) >= mDef(id).goal && !w.c[id]) n++; });
+  if (d.ids.every(id => d.c[id]) && !d.omi) n++;
+  return n; };
+function addYen(n, ev) {
+  const r = rw(); r.yen = (r.yen || 0) + n; r.rev++;
+  if (ev && ev.clientX != null) { const c = h("div", { class: "coin", style: "left:" + (ev.clientX - 20) + "px;top:" + (ev.clientY - 30) + "px" }, "+¥" + n); document.body.append(c); setTimeout(() => c.remove(), 1000); }
+}
+function claim(set, id, ev, weekly) {
+  if (set.c[id] || (set.p[id] || 0) < mDef(id).goal) return;
+  set.c[id] = true; addYen(weekly ? W_YEN : D_YEN, ev); rw().st.missions = (rw().st.missions || 0) + 1;
+  if (!weekly && set.ids.every(x => set.c[x])) track("dayset");
+  persist(); rwCheck(); render();
+}
+function drawOmikuji(btn) {
+  const d = rwDay(); if (d.omi || !d.ids.every(id => d.c[id])) return;
+  const st = rw().st, rnd = Math.random() * 100; let acc = 0, res = OMI[OMI.length - 1];
+  for (const o of OMI) { acc += o[4]; if (rnd < acc) { res = o; break; } }
+  if ((st.omi || 0) >= 9 && !st.daikichi && Math.random() < .5) res = OMI[0]; // coup de pouce : le 大吉 finit par tomber
+  const box2 = btn && btn.closest(".omi"); if (box2) box2.querySelector(".bx").classList.add("shake");
+  setTimeout(() => {
+    d.omi = { k: res[0], yen: res[3] }; st.omi = (st.omi || 0) + 1; if (res[0] === "大吉") st.daikichi = (st.daikichi || 0) + 1;
+    addYen(res[3]); persist();
+    showOverlay(h("div", {}, h("div", { class: "eyebrow" }, "おみくじ · Omikuji"),
+      h("div", { class: "paper" }, h("div", { class: "k jp" }, res[0])),
+      h("h2", {}, res[1] + " : " + res[2]), h("p", { class: "muted" }, "+¥" + res[3] + ". Au Japon, on tire ces papiers au temple. Les mauvais sorts se nouent sur place, les bons se gardent."),
+      ), res[0] === "大吉");
+    rwCheck(); render();
+  }, btn ? 900 : 0);
+}
+let ovQueue = [], ovOpen = false;
+function showOverlay(content, party) {
+  ovQueue.push([content, party]); flushOverlays();
+}
+function flushOverlays() {
+  if (ovOpen || !ovQueue.length || (session && !session.finished) || test) return;
+  const [content, party] = ovQueue.shift(); ovOpen = true;
+  const close = () => { ov.remove(); ovOpen = false; setTimeout(flushOverlays, 200); };
+  const ov = h("div", { class: "overlay", role: "dialog", onclick: e => { if (e.target === ov) close(); } },
+    h("div", { class: "box" }, content, h("button", { class: "btn", style: "margin-top:12px;width:100%", onclick: close }, "Super !")));
+  document.body.append(ov); if (party) confetti();
+}
+function rwCheck() {
+  if (!P.cur) return;
+  const r = rw();
+  for (const a of ACH) {
+    if (r.ach[a.id] || (a.cloud && !CLOUD)) continue;
+    const [v, g] = a.t(r.st); if (v < g) continue;
+    r.ach[a.id] = todayKey(); r.rev++;
+    const gifts = rewardsOf(a.id); gifts.forEach(({ kind, x }) => { r.own[kind + ":" + x.id] = 1; });
+    if (a.yen) addYen(a.yen);
+    showOverlay(h("div", {}, h("div", { class: "stamp jp stamp-drop", style: "--lc:var(--ko);border-color:var(--ko);color:var(--ko);width:110px;height:110px;font-size:40px" }, a.k),
+      h("div", { class: "eyebrow" }, "実績 · Exploit débloqué"), h("h2", { style: "margin:4px 0" }, a.nm), h("p", { class: "muted", style: "margin:0 0 10px" }, a.d),
+      gifts.length ? h("div", { class: "pick", style: "justify-content:center" }, gifts.map(({ kind, x }) => h("button", { onclick: e => { equip(kind, x.id); e.currentTarget.textContent = "Équipé ✓"; } }, preview(kind, x), h("span", {}, KIND_NM[kind] + " · " + x.nm), h("b", { style: "font-size:12px;color:var(--accent)" }, "Équiper")))) : null,
+      a.yen ? h("p", { style: "font-weight:700;margin:8px 0 0" }, "+¥" + a.yen) : null), true);
+    persist();
+  }
+}
+function equip(kind, id) {
+  if (!owns(kind, id)) return;
+  const L = look(); L[kind] = id; S.look = L; rw().rev++; persist(); applyTheme(); if (CLOUD && typeof cloudSync === "function") cloudSync(); render();
+}
+function buy(kind, id, ev) {
+  const x = KINDS[kind].find(i => i.id === id); if (!x || x.src !== "shop" || owns(kind, id)) return;
+  const r = rw(); if ((r.yen || 0) < x.price) return;
+  r.yen -= x.price; r.own[kind + ":" + id] = 1; r.rev++;
+  persist(); toast("Acheté : " + x.nm + ". Équipé !"); equip(kind, id);
+}
+function buyFreeze() { const r = rw(); if ((r.yen || 0) < FREEZE_PRICE || (r.freeze || 0) >= 2) return; r.yen -= FREEZE_PRICE; r.freeze = (r.freeze || 0) + 1; r.rev++; persist(); toast("Gel de série prêt 🧊"); render(); }
+
+/* ---- thème ---- */
+let mq = null; try { mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener("change", () => applyTheme()); } catch (e) {}
+function applyTheme() {
+  const L = P.cur ? look() : blankLook(), root = document.documentElement;
+  const dark = L.mode === "dark" || (L.mode === "auto" && mq && mq.matches);
+  root.setAttribute("data-theme", dark ? "dark" : "light");
+  if (L.theme && L.theme !== "jr" && owns("theme", L.theme)) root.setAttribute("data-pal", L.theme); else root.removeAttribute("data-pal");
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", getComputedStyle(root).getPropertyValue("--bg").trim() || "#2B3A8C");
+}
+
+/* ---- avatar ---- */
+function avatar(lk, name, size, extra) {
+  lk = Object.assign(blankLook(), lk || {});
+  const f = FRAMES.find(x => x.id === lk.frame) || FRAMES[0], a = ANIMS.find(x => x.id === lk.anim) || ANIMS[0];
+  const pic = h("div", { class: "pic" }, lk.photo ? h("img", { src: lk.photo, alt: "" }) : (name || "?").trim().charAt(0).toUpperCase());
+  const fx = a.id !== "none" && a.id !== "neon" ? h("div", { class: "fx", "aria-hidden": "true" }, [0, 1, 2, 3, 4].map(() => h("i", {}, a.sym || ""))) : null;
+  return h("div", { class: "av f-" + f.id + " a-" + a.id + (extra ? " " + extra : ""), style: "--s:" + size + "px", "aria-hidden": "true" },
+    h("div", { class: "fr" + (f.spin ? " spin" : "") }), pic, f.orn ? h("span", { class: "orn" }, f.orn) : null, fx);
+}
+function preview(kind, x) {
+  const L = look(), nm = prof() ? prof().name : "?";
+  if (kind === "frame") return avatar(Object.assign({}, L, { frame: x.id, anim: "none" }), nm, 54);
+  if (kind === "anim") return avatar(Object.assign({}, L, { anim: x.id }), nm, 54);
+  if (kind === "title") return h("span", { class: "ttl", style: "margin:10px 0" }, x.nm);
+  return h("span", { class: "swatch" }, h("i", { style: "background:" + x.c[0] }), h("i", { style: "background:" + x.c[1] }));
+}
+const titleOf = lk => { const t = TITLES.find(x => x.id === (lk || {}).title); return t ? t.nm : TITLES[0].nm; };
+const howTo = x => x.src === "ach" ? "Exploit : " + ((ACH.find(a => a.id === x.ach) || {}).nm || "") : x.src === "shop" ? "Boutique · ¥" + x.price : "";
+
+/* ---- onglet Missions ---- */
+let mTab = "missions";
+function viewMissions() {
+  const r = rw(), d = rwDay(), w = rwWeek(), L = look(), p = prof();
+  rwCheck();
+  const row = (set, id, weekly) => {
+    const m = mDef(id), v = Math.min(set.p[id] || 0, m.goal), done = v >= m.goal, got = !!set.c[id];
+    return h("div", { class: "mis" + (got ? " claimed" : done ? " ready" : "") },
+      h("div", { class: "lab" }, m.nm),
+      h("div", { class: "rw" }, got ? "¥" + (weekly ? W_YEN : D_YEN) : done ? h("button", { class: "btn small claim", onclick: e => claim(set, id, e, weekly) }, "Récupérer ¥" + (weekly ? W_YEN : D_YEN)) : v + " / " + m.goal),
+      h("div", { class: "bar" }, h("i", { style: "width:" + Math.round(100 * v / m.goal) + "%" })));
+  };
+  const allClaimed = d.ids.every(id => d.c[id]);
+  const omi = d.omi ? h("div", { class: "omi" }, h("div", { class: "bx jp" }, d.omi.k), h("div", {}, h("b", {}, "Omikuji du jour : " + d.omi.k), h("div", { style: "font-size:13px;opacity:.85" }, "+¥" + d.omi.yen + " · reviens demain pour un nouveau tirage")))
+    : allClaimed ? h("div", { class: "omi" }, h("div", { class: "bx" }, "🎋"), h("div", { style: "flex:1" }, h("b", {}, "Toutes tes missions du jour sont faites"), h("div", { style: "font-size:13px;opacity:.85" }, "Tire ton omikuji, le papier de chance du temple.")), h("button", { class: "btn small claim", onclick: e => drawOmikuji(e.currentTarget) }, "Tirer"))
+    : h("div", { class: "omi locked" }, h("div", { class: "bx" }, "🎋"), h("div", {}, h("b", {}, "Omikuji"), h("div", { class: "muted", style: "font-size:13px" }, "Récupère tes 3 missions du jour pour tirer un papier de chance (¥100 à ¥300).")));
+  const seg = h("div", { class: "seg", style: "margin-top:16px" }, [["missions", "Missions"], ["boutique", "Boutique"], ["exploits", "Exploits"]].map(([k, l]) => h("button", { "aria-pressed": mTab === k ? "true" : "false", onclick: () => { mTab = k; render(); } }, l)));
+  let body;
+  if (mTab === "missions") {
+    const left = Math.max(0, 7 - ((new Date().getDay() + 6) % 7) - 1);
+    body = h("div", {},
+      h("div", { class: "sec-h" }, h("h2", {}, "Missions du jour"), h("span", { class: "muted", style: "font-size:13px" }, "nouvelles demain")),
+      h("div", { class: "mlist" }, d.ids.map(id => row(d, id, false))), omi,
+      h("div", { class: "sec-h" }, h("h2", {}, "Missions de la semaine"), h("span", { class: "muted", style: "font-size:13px" }, left ? "encore " + left + " j" : "dernier jour")),
+      h("div", { class: "mlist" }, w.ids.map(id => row(w, id, true))),
+      h("p", { class: "hint" }, "Les missions se valident toutes seules pendant tes sessions normales. Les yens servent dans la boutique, ils ne comptent pas dans le classement."));
+  } else if (mTab === "boutique") {
+    const card = (kind, x) => {
+      const has = owns(kind, x.id), on = L[kind] === x.id;
+      return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), h("div", { class: "nm" }, x.nm),
+        has ? h("button", { class: "btn small" + (on ? " ghost" : ""), disabled: on, onclick: () => equip(kind, x.id) }, on ? "Équipé" : "Équiper")
+          : h("button", { class: "btn small", disabled: (r.yen || 0) < x.price, onclick: e => buy(kind, x.id, e) }, "Acheter ¥" + x.price), has || (r.yen || 0) >= x.price ? null : h("div", { class: "how" }, "Il te manque ¥" + (x.price - (r.yen || 0))));
+    };
+    const sec = (kind, label) => [h("div", { class: "sec-h" }, h("h2", {}, label)), h("div", { class: "shop" }, KINDS[kind].filter(x => x.src === "shop").map(x => card(kind, x)))];
+    body = h("div", {},
+      h("div", { class: "sec-h" }, h("h2", {}, "Objets")),
+      h("div", { class: "shop" }, h("div", { class: "item" }, h("div", { style: "font-size:40px" }, "🧊"), h("div", { class: "nm" }, "Gel de série"), h("div", { class: "how" }, "Protège ta série si tu rates un jour. " + (r.freeze || 0) + "/2 en réserve."),
+        h("button", { class: "btn small", disabled: (r.yen || 0) < FREEZE_PRICE || (r.freeze || 0) >= 2, onclick: buyFreeze }, (r.freeze || 0) >= 2 ? "Réserve pleine" : "Acheter ¥" + FREEZE_PRICE))),
+      sec("frame", "Cadres"), sec("anim", "Animations de profil"), sec("theme", "Thèmes de l’appli"), sec("title", "Titres"),
+      h("p", { class: "hint" }, "Les plus belles pièces ne s’achètent pas : elles se gagnent avec les exploits."));
+  } else {
+    const groups = [...new Set(ACH.map(a => a.g))];
+    body = h("div", {}, groups.flatMap(g => [h("div", { class: "sec-h" }, h("h2", {}, g), h("span", { class: "muted", style: "font-size:13px" }, ACH.filter(a => a.g === g && r.ach[a.id]).length + " / " + ACH.filter(a => a.g === g && (!a.cloud || CLOUD)).length)),
+      h("div", { class: "ach" }, ACH.filter(a => a.g === g && (!a.cloud || CLOUD)).map(a => {
+        const got = !!r.ach[a.id], [v, gl] = a.t(r.st), hide = a.secret && !got, gifts = rewardsOf(a.id);
+        return h("div", { class: "stampc" + (got ? " got" : "") }, h("div", { class: "st2 jp" }, hide ? "?" : a.k), h("b", {}, hide ? "Exploit secret" : a.nm), h("span", {}, hide ? "Un indice : l’heure compte." : a.d),
+          gifts.length || a.yen ? h("span", { style: "color:var(--accent);font-weight:700" }, (hide ? "Récompense mystère" : gifts.map(({ kind, x }) => KIND_NM[kind] + " " + x.nm).concat(a.yen ? ["¥" + a.yen] : []).join(" + "))) : null,
+          got ? h("span", {}, "Obtenu le " + r.ach[a.id].split("-").reverse().join("/")) : h("div", { class: "pg" }, h("i", { style: "width:" + Math.round(100 * Math.min(v, gl) / gl) + "%" })));
+      }))]));
+  }
+  return h("div", {},
+    h("div", { class: "wallet" }, h("button", { class: "me-btn", onclick: () => go("reglages"), "aria-label": "Modifier mon profil" }, avatar(L, p.name, 64)),
+      h("div", { class: "who" }, h("b", {}, p.name), h("span", { class: "ttl" }, titleOf(L))),
+      h("div", { class: "yen" }, "¥" + (r.yen || 0).toLocaleString("fr-FR"), h("small", {}, Object.keys(r.ach).length + " exploits"))),
+    seg, body);
+}
+
+/* ---- onglet Réglages ---- */
+function readPhoto(file) {
+  return new Promise((ok, ko) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => { const c = document.createElement("canvas"), N = 160; c.width = c.height = N; const s = Math.min(img.width, img.height);
+      c.getContext("2d").drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, N, N); URL.revokeObjectURL(url);
+      let q = .82, out = c.toDataURL("image/jpeg", q); while (out.length > 24000 && q > .4) { q -= .1; out = c.toDataURL("image/jpeg", q); } ok(out); };
+    img.onerror = () => { URL.revokeObjectURL(url); ko(new Error("image")); };
+    img.src = url;
+  });
+}
+function viewSettings() {
+  const L = look(), p = prof();
+  const file = h("input", { type: "file", accept: "image/*", style: "display:none" });
+  file.addEventListener("change", async () => { const f = file.files && file.files[0]; if (!f) return;
+    try { const d = await readPhoto(f); S.look = Object.assign(look(), { photo: d }); rw().rev++; persist(); rwCheck(); if (CLOUD) cloudSync(); toast("Photo mise à jour"); render(); }
+    catch (e) { toast("Cette image n’a pas pu être lue"); } });
+  const nick = h("input", { value: p.name, maxlength: "24", style: inputStyle0, "aria-label": "Pseudo" });
+  const saveNick = () => { const v = nick.value.trim(); if (!v || v === p.name) return; p.name = v; S.nick = v; saveP(); persist(); if (CLOUD) cloudSync(); toast("Pseudo enregistré"); render(); };
+  nick.addEventListener("keydown", e => { if (e.key === "Enter") saveNick(); });
+  const picker = (kind, list) => h("div", { class: "pick" }, list.filter(x => !(kind === "theme" && false)).map(x => {
+    const has = owns(kind, x.id);
+    return h("button", { "aria-pressed": L[kind] === x.id ? "true" : "false", disabled: !has, title: has ? x.nm : howTo(x), onclick: () => equip(kind, x.id) },
+      kind === "frame" ? avatar(Object.assign({}, L, { frame: x.id, anim: "none" }), p.name, 46) : kind === "anim" ? avatar(Object.assign({}, L, { anim: x.id }), p.name, 46) : kind === "theme" ? preview("theme", x) : null,
+      h("span", {}, x.nm), has ? null : h("span", { class: "lk" }, "🔒"));
+  }));
+  const titles = h("div", { class: "pick" }, TITLES.map(x => { const has = owns("title", x.id);
+    const sec2 = !has && x.ach && (ACH.find(a => a.id === x.ach) || {}).secret;
+    return h("button", { "aria-pressed": L.title === x.id ? "true" : "false", disabled: !has, title: has ? x.nm : sec2 ? "Exploit secret" : howTo(x), onclick: () => equip("title", x.id), style: "min-width:0;flex-direction:row" }, has ? null : "🔒 ", sec2 ? "Titre secret" : x.nm); }));
+  const modeSeg = h("div", { class: "seg" }, [["auto", "Auto"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => h("button", { "aria-pressed": L.mode === k ? "true" : "false", onclick: () => { S.look = Object.assign(look(), { mode: k }); persist(); applyTheme(); render(); } }, l)));
+  return h("div", {},
+    h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Réglages")),
+    h("section", { class: "set" }, h("h2", {}, "Mon profil"),
+      h("div", { style: "display:flex;gap:16px;align-items:center;flex-wrap:wrap" },
+        h("button", { class: "me-btn", onclick: () => file.click(), "aria-label": "Changer ma photo" }, avatar(L, p.name, 84)),
+        h("div", { style: "display:grid;gap:8px;flex:1;min-width:200px" },
+          h("span", { class: "ttl", style: "justify-self:start" }, titleOf(L)),
+          h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, h("button", { class: "btn small", onclick: () => file.click() }, L.photo ? "Changer la photo" : "Ajouter une photo"),
+            L.photo ? h("button", { class: "btn small ghost", onclick: () => { S.look = Object.assign(look(), { photo: "" }); persist(); if (CLOUD) cloudSync(); render(); } }, "Retirer") : null))),
+      file,
+      h("label", { style: "display:block;margin-top:14px;font-weight:700;font-size:14px" }, "Pseudo"),
+      h("div", { style: "display:flex;gap:8px;margin-top:6px" }, nick, h("button", { class: "btn small", onclick: saveNick }, "Enregistrer")),
+      h("p", { class: "hint" }, CLOUD ? "C’est le nom que voit ton groupe dans le classement." : "C’est le nom affiché sur ton accueil.")),
+    h("section", { class: "set" }, h("h2", {}, "Affichage"), modeSeg, h("h2", { style: "margin-top:16px" }, "Thème"), picker("theme", PALS)),
+    h("section", { class: "set" }, h("h2", {}, "Cadre"), picker("frame", FRAMES), h("h2", { style: "margin-top:16px" }, "Animation"), picker("anim", ANIMS), h("h2", { style: "margin-top:16px" }, "Titre"), titles,
+      h("p", { class: "hint" }, "Les éléments 🔒 se gagnent dans l’onglet Missions : boutique ou exploits.")),
+    h("section", { class: "set" }, h("h2", {}, "Apprentissage"), h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, romajiToggle(), h("button", { class: "toggle", onclick: () => startTest() }, "Refaire le test de niveau"))),
+    h("section", { class: "set" }, h("h2", {}, "Profils sur cet appareil"),
+      h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" },
+        P.list.map(x => h("button", { class: "toggle", "aria-pressed": x.id === P.cur ? "true" : "false", onclick: () => { P.cur = x.id; saveP(); loadProfile(); session = null; if (CLOUD && fb) cloudOnSwitch(); applyTheme(); go("trajet"); } }, x.name + " · " + (LEVELS[x.level] || LEVELS.kana).label)),
+        h("button", { class: "toggle", onclick: () => { adding = true; render(); } }, "+ Ajouter"))),
+    CLOUD ? h("section", { class: "set" }, h("h2", {}, "Compte"), h("p", { class: "muted", style: "margin:0 0 8px" }, linked() ? "Connecté : " + (cloudUser.email || "compte Google") + ". Ta progression et tes récompenses sont sauvegardées en ligne." : "Pas encore connecté : tes récompenses restent sur cet appareil."), h("button", { class: "btn small", onclick: () => go("groupe") }, linked() ? "Voir mon groupe" : "Me connecter")) : null,
+    h("p", { class: "sync", style: "margin-top:14px" }, "Mission Japon · version " + APP_VERSION, window.claude ? null : [" · ", h("a", { href: "guide.html", style: "color:var(--accent)" }, "Guide d’utilisation")]));
+}
+const inputStyle0 = "flex:1;min-width:0;font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface-2);color:var(--ink)";
+
+/* ---------- cloud ---------- */
 const FB_CONFIG = { apiKey: "AIzaSyB6oF1oppPS_znM2m1KZZ2jAVOIF61jyS4", authDomain: "mission-japon-83ec3.firebaseapp.com", projectId: "mission-japon-83ec3", storageBucket: "mission-japon-83ec3.firebasestorage.app", messagingSenderId: "340160331902", appId: "1:340160331902:web:c1a778543ab287a927d82f" };
 const FB_BASE = "https://www.gstatic.com/firebasejs/10.12.2/";
 let fb = null, cloudUser = null, cloudState = "off", cloudDirty = false, members = [], membersUnsub = null, emailPending = false, cloudMsg = "", lbMode = "week", cloudBusy = false;
@@ -1093,6 +1598,14 @@ function mergeState(a, b) {
   out.station = Math.max(a.station || 0, b.station || 0);
   if (a.grp || b.grp) { const ga = a.grp || {}, gb = b.grp || {}; out.grp = Object.assign({}, (gb.points || 0) > (ga.points || 0) ? gb : ga); out.grp.code = out.grp.code || ga.code || gb.code; }
   out.scenes = Object.assign({}, b.scenes || {}, a.scenes || {});
+  { const ra = a.rw || null, rb = b.rw || null;
+    if (ra || rb) { const base = Object.assign({}, ((rb && rb.rev) || 0) > ((ra && ra.rev) || 0) ? rb : ra);
+      base.own = Object.assign({}, (ra || {}).own, (rb || {}).own); base.ach = Object.assign({}, (rb || {}).ach, (ra || {}).ach);
+      const sa2 = (ra || {}).st || {}, sb2 = (rb || {}).st || {}; base.st = Object.assign({}, sa2, sb2);
+      for (const kk of ["sessions", "comboMax", "perfect", "omi", "daikichi", "missions", "night", "morning", "lead"]) base.st[kk] = Math.max(sa2[kk] || 0, sb2[kk] || 0);
+      base.st.sc = Object.assign({}, sa2.sc, sb2.sc); out.rw = base; } }
+  if (a.look || b.look) out.look = Object.assign({}, b.look, a.look, ((b.rw || {}).rev || 0) > ((a.rw || {}).rev || 0) ? b.look : {});
+  out.nick = a.nick || b.nick;
   out.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0);
   return out;
 }
@@ -1103,6 +1616,8 @@ async function cloudPull() {
     if (pSnap.exists() && typeof pSnap.data().json === "string") S = mergeState(S, JSON.parse(pSnap.data().json));
     const u = uSnap.exists() ? uSnap.data() : {};
     if (u.group && (!S.grp || S.grp.code !== u.group)) S.grp = { code: u.group, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
+    if (S.nick && prof() && prof().name !== S.nick) { prof().name = S.nick; saveP(); }
+    applyTheme();
     try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
     cloudDirty = true; await cloudPush();
     if (S.grp && S.grp.code) { await pushMember(); watchMembers(); }
@@ -1126,13 +1641,18 @@ async function pushMember() {
   let pts = S.grp.points || 0;
   if (old === null) pts = Math.min(pts, 390); else { if (pts < old) pts = old; if (pts - old > 390) pts = old + 390; }
   S.grp.points = pts;
-  await F.setDoc(ref, { name: prof().name, points: pts, week: S.grp.week || 0, weekKey: S.grp.weekKey, sessions: S.grp.sessions || 0, streak: S.streak.n || 0, station: CH.indexOf(currentChapter()), updatedAt: Date.now() });
+  await F.setDoc(ref, { name: prof().name, points: pts, week: S.grp.week || 0, weekKey: S.grp.weekKey, sessions: S.grp.sessions || 0, streak: S.streak.n || 0, station: CH.indexOf(currentChapter()), look: (() => { const L = look(); return { frame: L.frame, title: L.title, anim: L.anim, photo: L.photo || "" }; })(), updatedAt: Date.now() });
   return true;
 }
 function watchMembers() {
   if (membersUnsub || !S.grp || !S.grp.code) return;
   const { F, db } = fb;
-  membersUnsub = F.onSnapshot(F.collection(db, "groups", S.grp.code, "members"), snap => { members = snap.docs.map(d => Object.assign({ uid: d.id }, d.data())); if (view === "groupe" && !session && !test) render(); }, () => { membersUnsub = null; });
+  membersUnsub = F.onSnapshot(F.collection(db, "groups", S.grp.code, "members"), snap => { members = snap.docs.map(d => Object.assign({ uid: d.id }, d.data())); leadCheck(); if (view === "groupe" && !session && !test) render(); }, () => { membersUnsub = null; });
+}
+function leadCheck() {
+  if (!cloudUser || members.length < 2 || rw().st.lead) return;
+  const wk = weekKeyOf(), sc = m => m.weekKey === wk ? (m.week || 0) : 0, top = members.slice().sort((x, y) => sc(y) - sc(x));
+  if (top[0].uid === cloudUser.uid && sc(top[0]) > sc(top[1])) { rw().st.lead = 1; persist(); rwCheck(); }
 }
 function stopMembers() { if (membersUnsub) { membersUnsub(); membersUnsub = null; } members = []; }
 async function cloudSync() { if (!linked()) return; try { await cloudPush(); await pushMember(); } catch (e) {} }
@@ -1151,7 +1671,7 @@ async function joinGroup(raw) {
   if (!/^[A-Z0-9-]{6,20}$/.test(code)) { cloudMsg = "Ce code n’a pas le bon format (exemple : MJ-K7P2QX)."; render(); return; }
   cloudBusy = true; render();
   const prev = S.grp; S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
-  try { await pushMember(); persist(); cloudDirty = true; await cloudPush(); watchMembers(); cloudMsg = ""; toast("Bienvenue dans le groupe !"); }
+  try { await pushMember(); persist(); cloudDirty = true; await cloudPush(); watchMembers(); cloudMsg = ""; toast("Bienvenue dans le groupe !"); rwCheck(); }
   catch (e) { S.grp = prev; cloudMsg = e && e.code === "permission-denied" ? "Code inconnu. Vérifie-le auprès de la personne qui a créé le groupe." : "Impossible de rejoindre (" + cloudErr(e) + ")."; }
   cloudBusy = false; render();
 }
@@ -1233,8 +1753,8 @@ function viewGroupe() {
       list.map((m, i) => h("div", { title: m.name, style: "position:absolute;top:" + (2 + (i % 3) * 3) + "px;left:" + pctSt(Math.max(0, Math.min(5, m.station || 0))) + ";margin-left:" + (-13 + (i % 3) * 8) + "px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(" + CH[i % 6].lc + ");border:2px solid var(--surface)" }, (m.name || "?").charAt(0).toUpperCase()))),
     h("div", { class: "sec-h" }, h("h2", {}, "Classement"), h("div", { class: "seg" }, h("button", { "aria-pressed": lbMode === "week" ? "true" : "false", onclick: () => { lbMode = "week"; render(); } }, "Semaine"), h("button", { "aria-pressed": lbMode === "total" ? "true" : "false", onclick: () => { lbMode = "total"; render(); } }, "Total"))),
     h("div", { class: "plist" }, list.length ? list.map((m, i) => h("div", { class: "ph", style: m.uid === cloudUser.uid ? "border-color:var(--accent);border-width:2px" : "" },
-      h("div", { style: "display:flex;gap:10px;align-items:center;min-width:0" }, h("span", { style: "font-size:20px;width:28px;text-align:center" }, medal(i)),
-        h("div", { style: "min-width:0;flex:1" }, h("div", { class: "j", style: "font-size:16px" }, (m.name || "?") + (m.uid === cloudUser.uid ? " (toi)" : "")),
+      h("div", { style: "display:flex;gap:10px;align-items:center;min-width:0" }, h("span", { style: "font-size:18px;width:24px;text-align:center;flex:none" }, medal(i)), avatar(m.look || {}, m.name, 44),
+        h("div", { style: "min-width:0;flex:1" }, h("div", { class: "j", style: "font-size:16px" }, (m.name || "?") + (m.uid === cloudUser.uid ? " (toi)" : "")), h("span", { class: "ttl" }, titleOf(m.look)),
           h("div", { class: "ro" }, "🔥 " + (m.streak || 0) + " j · " + (CH[Math.max(0, Math.min(5, m.station || 0))].ro) + " · " + m.wses + " session(s) cette semaine"),
           h("div", { style: "height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden" }, h("i", { style: "display:block;height:100%;border-radius:3px;background:var(--accent);width:" + Math.round(100 * (m[key] || 0) / maxV) + "%;transition:width .8s" })))),
       h("div", { class: "j", style: "grid-row:1/span 2;grid-column:2;font-variant-numeric:tabular-nums" }, (m[key] || 0) + " pts"))) : h("p", { class: "muted" }, "Chargement du classement…")),
@@ -1252,6 +1772,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { cloudPush(); }, 60000);
 cloudInit();
 
+applyTheme();
 render();
 })();
 </script>
