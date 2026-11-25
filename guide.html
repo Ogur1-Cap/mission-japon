@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2B3A8C">
+<title>Mission Japon · Guide express</title>
+<meta name="description" content="Comment utiliser l'appli Mission Japon en 2 minutes.">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Une page, lue de haut en bas : six étapes numérotées, chacune marquée de la couleur d'une gare. */
+:root{
+  --bg:#EEF1F5; --surface:#FFFFFF; --ink:#141C2B; --muted:#5A6577; --line:#D6DCE5; --accent:#2B3A8C; --accent-ink:#fff;
+  --led-bg:#121212; --led-fg:#FFB21E;
+  --c-osaka:#EE7B00; --c-nara:#A8662A; --c-kyoto:#7E3FA0; --c-kanazawa:#0E93A0; --c-fuji:#2F66D0; --c-tokyo:#5AA62A;
+  --f-display:"Dela Gothic One","Zen Kaku Gothic New",system-ui,sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,-apple-system,sans-serif;
+  --f-led:"DotGothic16",monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0D121A; --surface:#161D28; --ink:#E8EDF5; --muted:#9AA5B7; --line:#2A3445; --accent:#8EA0FF; --accent-ink:#0D121A;
+  --c-osaka:#FF9A2E; --c-nara:#C98A4E; --c-kyoto:#B77AD9; --c-kanazawa:#2EC0CC; --c-fuji:#6E9CFF; --c-tokyo:#86CF55;
+  color-scheme:dark}}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2{margin:0;text-wrap:balance}
+.led{background:var(--led-bg);color:var(--led-fg);border-radius:14px;padding:16px 18px;font-family:var(--f-led)}
+.led small{display:block;color:#c9c9c9;font-size:12px;letter-spacing:.08em}
+.led h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6vw,36px);color:#fff;margin:4px 0 2px;line-height:1.1}
+.led p{margin:0;font-size:15px}
+.open{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0 6px}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:700;border-radius:12px;padding:12px 18px}
+.url{font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+@media (max-width:620px){.steps{grid-template-columns:1fr}}
+.step{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--lc);border-radius:12px;padding:14px 16px;min-width:0}
+.step .n{display:inline-grid;place-items:center;width:28px;height:28px;border:3px solid var(--lc);border-radius:6px;font-weight:700;font-size:13px;margin-right:8px;vertical-align:middle}
+.step h2{display:inline;font-size:17px;vertical-align:middle}
+.step ul{margin:10px 0 0;padding-left:18px}
+.step li{margin:3px 0}
+.step p{margin:10px 0 0}
+.jp{font-weight:700}
+kbd{font-family:inherit;font-size:13px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px}
+.note{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:14.5px}
+.note b{color:var(--ink)}
+footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+@media print{body{background:#fff}.btn{display:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="led">
+    <small>ご案内 · GUIDE EXPRESS</small>
+    <h1>Mission Japon</h1>
+    <p>Le japonais du voyage, 15 minutes par jour jusqu'au 18 février.</p>
+  </header>
+
+  <div class="open">
+    <a class="btn" href="./">Ouvrir l'appli</a>
+    <span class="url">ogur1-cap.github.io/mission-japon</span>
+  </div>
+
+  <section class="steps">
+    <article class="step" style="--lc:var(--c-osaka)">
+      <span class="n">1</span><h2>Installe-la sur ton téléphone</h2>
+      <ul>
+        <li><b>iPhone</b> : ouvre le lien dans Safari, touche Partager, puis « Sur l'écran d'accueil ».</li>
+        <li><b>Android</b> : ouvre le lien dans Chrome, touche ⋮, puis « Installer l'application ».</li>
+      </ul>
+      <p>Elle s'ouvre ensuite comme une vraie appli, et marche même sans réseau.</p>
+    </article>
+
+    <article class="step" style="--lc:var(--c-nara)">
+      <span class="n">2</span><h2>Crée ton profil et fais le test</h2>
+      <p>Entre ton prénom, puis fais le <b>test de niveau</b> (4 minutes). Réponds « Je ne sais pas » sans hésiter : le test s'arrête tout seul quand ça devient dur. Tu es classé Débutant, Relance, Voyageur ou Confirmé, et ce que tu sais déjà ne te sera pas redemandé chaque jour.</p>
+    </article>
+
+    <article class="step" style="--lc:var(--c-kyoto)">
+      <span class="n">3</span><h2>Fais ta session chaque jour</h2>
+      <ul>
+        <li>Touche <b>Commencer</b> sur l'accueil : 15 minutes maximum.</li>
+        <li>Chaque nouveauté arrive d'abord en fiche <b>Découverte</b> (tu regardes, tu écoutes), puis elle est vérifiée deux cartes plus loin.</li>
+        <li>Ce que tu rates revient vite, ce que tu sais revient de plus en plus tard.</li>
+        <li>Sur ordinateur : touches <kbd>1</kbd> à <kbd>4</kbd> pour répondre, <kbd>Entrée</kbd> pour continuer.</li>
+      </ul>
+    </article>
+
+    <article class="step" style="--lc:var(--c-kanazawa)">
+      <span class="n">4</span><h2>Les quatre onglets</h2>
+      <ul>
+        <li><b class="jp">道</b> <b>Trajet</b> : ton train avance d'Osaka à Tokyo. Une gare est validée à 70 % maîtrisés.</li>
+        <li><b class="jp">練</b> <b>Session</b> : l'entraînement du jour.</li>
+        <li><b class="jp">字</b> <b>Lexique</b> : tous les kana et kanji, colorés selon ton niveau. Touche-les pour les entendre.</li>
+        <li><b class="jp">話</b> <b>Jeux de rôle</b> : konbini, restaurant, guichet JR, hôtel capsule.</li>
+      </ul>
+    </article>
+
+    <article class="step" style="--lc:var(--c-fuji)">
+      <span class="n">5</span><h2>Ta progression</h2>
+      <p>Pour l'instant, elle est enregistrée <b>sur ton téléphone</b>, dans le navigateur. Ne vide pas les données du site.</p>
+      <p>Pour changer d'appareil : en bas de l'accueil, « Sauvegarder ou transférer ma progression », <b>Copier mon code</b>, puis <b>Importer ce code</b> sur le nouvel appareil.</p>
+    </article>
+
+    <article class="step" style="--lc:var(--c-tokyo)">
+      <span class="n">6</span><h2>Défie le groupe</h2>
+      <p>Touche <b>Partager mon score au groupe</b> sur l'accueil : l'appli prépare un message avec ta série de jours, ta gare et ce que tu maîtrises. Colle-le dans le groupe. La régularité compte plus que le niveau de départ.</p>
+    </article>
+  </section>
+
+  <div class="note">
+    <b>Astuces</b> · Pas de son sur iPhone ? Désactive le mode silencieux. · Le bouton « Rōmaji masqué » affiche les lettres latines si tu bloques, mais essaie de lire les kana. · Un bug ou une erreur de japonais ? Envoie une capture à Raph.
+  </div>
+
+  <footer>Bientôt : comptes pour retrouver ta progression partout, et classement du groupe en direct.</footer>
+</main>
+</body>
+</html>

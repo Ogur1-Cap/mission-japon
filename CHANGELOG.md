@@ -1,6 +1,7 @@
 # Journal des versions
 
 ## 0.2 · 25 novembre 2026
+- Guide d'utilisation en une page (guide.html), lié depuis l'accueil
 - Un petit train avance sur la ligne selon ta progression
 - Tampon d'arrivée et confettis quand tu atteins une nouvelle gare
 - Cartes animées : entrée, « 正解！ » quand c'est juste, secousse et vibration quand c'est faux

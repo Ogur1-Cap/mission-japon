@@ -622,7 +622,7 @@ function viewHome() {
     h("div", { style: "display:flex;gap:10px;flex-wrap:wrap;margin-top:14px" }, h("button", { class: "btn", onclick: shareScore }, "Partager mon score au groupe")),
     h("p", { class: "sync", id: "sync" }),
     backupBox(),
-    h("p", { class: "sync", style: "margin-top:14px" }, "Mission Japon · version " + APP_VERSION));
+    h("p", { class: "sync", style: "margin-top:14px" }, "Mission Japon · version " + APP_VERSION, window.claude ? null : [" · ", h("a", { href: "guide.html", style: "color:var(--accent)" }, "Guide d’utilisation")]));
 }
 let adding = false, showProfiles = false;
 function viewWelcome() {
