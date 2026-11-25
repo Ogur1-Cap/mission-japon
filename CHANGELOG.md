@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 1.0.1 · 25 novembre 2026
+- Toucher l'onglet où l'on est déjà ramène à sa page d'accueil (ex. sortir d'une scène)
+- Lexique : « % de progression » au lieu de « % maîtrisé », pour ne plus contredire le compteur de l'accueil
+
 ## 1.0 · 25 novembre 2026
 - Comptes : connexion avec Google ou par lien e-mail, sans mot de passe
 - Progression sauvegardée en ligne et fusionnée entre tes appareils

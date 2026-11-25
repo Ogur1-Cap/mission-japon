@@ -519,7 +519,7 @@ const TABS = [["trajet", "道", "Trajet"], ["session", "練", "Session"], ["lexi
 function renderNav() {
   const n = $("nav"); n.replaceChildren(...TABS.map(([id, g, l]) => h("button", { "aria-current": view === id ? "page" : false, onclick: () => go(id) }, h("span", { class: "g jp" }, g), l)));
 }
-function go(v) { view = v; if (v !== "trajet") chapter = null; if (v !== "roles") stopRole(); render(); window.scrollTo(0, 0); }
+function go(v) { const again = v === view; view = v; if (v !== "trajet" || again) chapter = null; if (v !== "roles" || again) stopRole(); render(); window.scrollTo(0, 0); }
 let lastViewKey = "";
 function railView(cur) {
   const idx = CH.indexOf(cur);
@@ -942,7 +942,7 @@ function viewLex() {
       return h("button", { class: "kcell lv" + bx, onclick: () => say(c), "aria-label": c + " " + RY[i] }, h("div", { class: "c jp" }, c), h("div", { class: "r" }, RY[i]), h("div", { class: "m" }));
     })));
   }
-  return h("div", {}, h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Lexique"), h("span", { class: "muted" }, masteredPct(ids) + " % maîtrisé")),
+  return h("div", {}, h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Lexique"), h("span", { class: "muted" }, masteredPct(ids) + " % de progression")),
     seg, legend, body, h("p", { class: "hint" }, lexMode === "j" ? "Les kanji que tu croiseras vraiment : gares, portes, menus, onsen." : "Touche un caractère pour l’entendre."));
 }
 
