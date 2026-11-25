@@ -7,7 +7,7 @@ self.addEventListener("fetch", e => {
   const req = e.request; if (req.method !== "GET") return;
   const url = new URL(req.url);
   const sameOrigin = url.origin === location.origin;
-  const fonts = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
+  const fonts = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname) || (url.hostname === "www.gstatic.com" && url.pathname.startsWith("/firebasejs/"));
   if (!sameOrigin && !fonts) return;
   if (sameOrigin && (req.mode === "navigate" || url.pathname.endsWith("/") || url.pathname.endsWith("index.html"))) {
     // network first for the page, so a new version is picked up; cache as fallback offline

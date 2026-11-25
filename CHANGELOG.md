@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 1.0 · 25 novembre 2026
+- Comptes : connexion avec Google ou par lien e-mail, sans mot de passe
+- Progression sauvegardée en ligne et fusionnée entre tes appareils
+- Nouvel onglet Groupe : créer ou rejoindre un groupe avec un code
+- Classement de la semaine (remis à zéro le lundi) et classement total
+- Défi collectif de la semaine et position de chacun sur la ligne Osaka → Tokyo
+- Guide mis à jour
+
 ## 0.2 · 25 novembre 2026
 - Guide d'utilisation en une page (guide.html), lié depuis l'accueil
 - Un petit train avance sur la ligne selon ta progression

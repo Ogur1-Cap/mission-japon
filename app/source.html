@@ -88,7 +88,7 @@ h1,h2,h3{text-wrap:balance;margin:0}
 
 /* nav */
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
-.nav .in{max-width:860px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav .in{max-width:860px;margin:0 auto;display:grid;grid-auto-flow:column;grid-auto-columns:1fr}
 .nav button{background:none;border:0;padding:9px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--muted)}
 .nav button .g{font-size:20px;font-weight:700;line-height:1.1}
 .nav button[aria-current="page"]{color:var(--accent)}
@@ -239,7 +239,8 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "0.2";
+const APP_VERSION = "1.0";
+const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 const RB = "a i u e o ka ki ku ke ko sa shi su se so ta chi tsu te to na ni nu ne no ha hi fu he ho ma mi mu me mo ya yu yo ra ri ru re ro wa wo n".split(" ");
@@ -396,6 +397,7 @@ function persist() {
   S.updatedAt = Date.now();
   if (!P.cur) return;
   try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
+  if (CLOUD) cloudDirty = true;
   clearTimeout(saveTimer); saveTimer = setTimeout(pushDb, 1500);
 }
 async function pushDb() {
@@ -406,7 +408,7 @@ async function pushDb() {
   saving = false; if (pendingSave) { pendingSave = false; pushDb(); }
   updateSync();
 }
-function updateSync() { const el = $("sync"); if (el) el.textContent = syncState === "cloud" && isMain() ? "Progression synchronisée sur tous tes appareils" : "Progression enregistrée sur cet appareil"; }
+function updateSync() { const el = $("sync"); if (el && CLOUD) { el.textContent = (typeof linked === "function" && linked()) ? "Progression sauvegardée dans ton compte" : "Progression enregistrée sur cet appareil · connecte-toi dans l’onglet Groupe pour la sauvegarder"; return; } if (el) el.textContent = syncState === "cloud" && isMain() ? "Progression synchronisée sur tous tes appareils" : "Progression enregistrée sur cet appareil"; }
 (async () => {
   try {
     if (!window.claude) return;
@@ -465,6 +467,7 @@ function grade(id, ok, first) {
   else b = 1;
   if (!S.srs[id]) { const d = today(); d[ITEMS[id].cat]++; }
   S.srs[id] = [b, now() + INTERVAL[b], cur[2] + 1];
+  if (b >= 4 && cur[0] < 4 && CLOUD) addPts(10);
 }
 const masteredPct = ids => ids.length ? Math.round(100 * ids.reduce((s, id) => s + Math.min(box(id), 4), 0) / (ids.length * 4)) : 0;
 const chapterIds = ch => ORDER.phrase.filter(id => ITEMS[id].ch === ch);
@@ -512,7 +515,7 @@ function buildCard(id) {
 
 /* ---------- views ---------- */
 let view = "trajet", session = null, chapter = null, lexMode = "h", role = null;
-const TABS = [["trajet", "道", "Trajet"], ["session", "練", "Session"], ["lexique", "字", "Lexique"], ["roles", "話", "Jeux de rôle"]];
+const TABS = [["trajet", "道", "Trajet"], ["session", "練", "Session"], ["lexique", "字", "Lexique"], ["roles", "話", "Scènes"]].concat(CLOUD ? [["groupe", "組", "Groupe"]] : []);
 function renderNav() {
   const n = $("nav"); n.replaceChildren(...TABS.map(([id, g, l]) => h("button", { "aria-current": view === id ? "page" : false, onclick: () => go(id) }, h("span", { class: "g jp" }, g), l)));
 }
@@ -572,6 +575,7 @@ function render() {
   if (view === "trajet") app.append(chapter ? viewChapter() : viewHome());
   else if (view === "session") app.append(viewSession());
   else if (view === "lexique") app.append(viewLex());
+  else if (view === "groupe") app.append(viewGroupe());
   else app.append(viewRoles());
   updateSync();
 }
@@ -606,6 +610,7 @@ function viewHome() {
           h("div", { class: "stat" }, h("b", {}, S.streak.n || 0), h("span", {}, "jours d’affilée")),
           h("div", { class: "stat" }, h("b", {}, mastered + "/" + all.length), h("span", {}, "maîtrisés")))),
       h("button", { class: "btn", onclick: startSession }, doneToday ? "Continuer" : "Commencer")),
+    CLOUD && !linked() ? h("button", { class: "today", style: "width:100%;text-align:left;cursor:pointer;grid-template-columns:auto 1fr auto;gap:12px", onclick: () => go("groupe") }, h("span", { style: "font-size:26px" }, "☁️"), h("span", {}, h("b", {}, "Sauvegarde ta progression et rejoins le classement"), h("span", { class: "muted", style: "display:block;font-size:13px" }, "Compte gratuit, connexion avec Google ou par e-mail")), h("span", { style: "font-size:20px;color:var(--accent)" }, "→")) : null,
     h("div", { class: "sec-h" }, h("h2", {}, "Ta ligne Osaka → Tokyo"), h("span", { class: "muted", style: "font-size:13px" }, "Kana : " + kanaPct + " %")),
     railView(cur),
     h("div", { class: "route" }, CH.map((c, i) => {
@@ -722,7 +727,7 @@ function profilesPanel() {
   return h("section", { style: "margin-bottom:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px" },
     h("div", { class: "eyebrow" }, "Profils sur cet appareil"),
     h("div", { style: "display:flex;gap:8px;flex-wrap:wrap;margin-top:8px" },
-      P.list.map(x => h("button", { class: "toggle", "aria-pressed": x.id === P.cur ? "true" : "false", onclick: () => { P.cur = x.id; saveP(); loadProfile(); session = null; showProfiles = false; render(); } }, x.name + " · " + (LEVELS[x.level] || LEVELS.kana).label)),
+      P.list.map(x => h("button", { class: "toggle", "aria-pressed": x.id === P.cur ? "true" : "false", onclick: () => { P.cur = x.id; saveP(); loadProfile(); session = null; showProfiles = false; if (CLOUD && fb) cloudOnSwitch(); render(); } }, x.name + " · " + (LEVELS[x.level] || LEVELS.kana).label)),
       h("button", { class: "toggle", onclick: () => { adding = true; render(); } }, "+ Ajouter"),
       h("button", { class: "toggle", onclick: () => { showProfiles = false; startTest(); } }, "Refaire le test de niveau")));
 }
@@ -811,12 +816,15 @@ function finishSession() {
     const y = todayKey(new Date(Date.now() - DAY));
     S.streak.n = S.streak.last === y ? S.streak.n + 1 : 1; S.streak.last = k;
   }
+  if (CLOUD && session.done >= 10 && !session.counted) { session.counted = true; addPts(50 + 5 * Math.min(S.streak.n || 0, 7)); if (S.grp && S.grp.code) S.grp.sessions = (S.grp.sessions || 0) + 1; }
   persist(); session.finished = true; render();
+  if (CLOUD) cloudSync();
 }
 function answer(ok, btn) {
   const s = session; if (!s || s.answered) return; s.answered = true;
   const c = s.card; grade(c.id, ok, c.first);
   s.done++; if (ok) s.ok++;
+  if (ok && CLOUD && (s.pts || 0) < 150) { addPts(2); s.pts = (s.pts || 0) + 2; }
   const d = today(); d.cards++; if (ok) d.ok++;
   if (!ok) s.queue.splice(Math.min(3, s.queue.length), 0, { id: c.id, first: false });
   persist();
@@ -983,7 +991,7 @@ function viewRoles() {
         render(); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 30);
       } }, h("span", {}, o[0], S.romaji ? h("span", { class: "muted", style: "display:block;font-size:12px;font-weight:500" }, o[1]) : null)))));
     } else {
-      wrap.append(h("div", { class: "done", style: "padding:18px 0" }, h("div", { class: "stamp jp stamp-drop", style: "width:90px;height:90px;font-size:24px" }, "合格"), (role.celebrated ? null : (role.celebrated = true, setTimeout(confetti, 300), null)),
+      wrap.append(h("div", { class: "done", style: "padding:18px 0" }, h("div", { class: "stamp jp stamp-drop", style: "width:90px;height:90px;font-size:24px" }, "合格"), (role.celebrated ? null : (role.celebrated = true, setTimeout(confetti, 300), (CLOUD && !(S.scenes || {})[role.sc.id] ? (S.scenes = Object.assign({}, S.scenes, { [role.sc.id]: todayKey() }), addPts(30), persist(), cloudSync()) : 0), null)),
         h("p", {}, "Scène réussie. Prêt pour la vraie ?"),
         h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
           h("button", { class: "btn ghost", onclick: () => startScripted(role.sc) }, "Rejouer"),
@@ -1033,6 +1041,208 @@ async function claudeTurn(userText) {
   }
   r.busy = false; if (role === r) { render(); window.scrollTo(0, document.body.scrollHeight); }
 }
+
+/* ---------- compte, synchro et groupe (version GitHub, Firebase) ---------- */
+const FB_CONFIG = { apiKey: "AIzaSyB6oF1oppPS_znM2m1KZZ2jAVOIF61jyS4", authDomain: "mission-japon-83ec3.firebaseapp.com", projectId: "mission-japon-83ec3", storageBucket: "mission-japon-83ec3.firebasestorage.app", messagingSenderId: "340160331902", appId: "1:340160331902:web:c1a778543ab287a927d82f" };
+const FB_BASE = "https://www.gstatic.com/firebasejs/10.12.2/";
+let fb = null, cloudUser = null, cloudState = "off", cloudDirty = false, members = [], membersUnsub = null, emailPending = false, cloudMsg = "", lbMode = "week", cloudBusy = false;
+const weekKeyOf = (d = new Date()) => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return todayKey(x); };
+function grpEnsureWeek() { if (!S.grp) return; const wk = weekKeyOf(); if (S.grp.weekKey !== wk) { S.grp.weekKey = wk; S.grp.week = 0; S.grp.sessions = 0; } }
+function addPts(n) { if (!S.grp || !S.grp.code) return; grpEnsureWeek(); S.grp.points = (S.grp.points || 0) + n; S.grp.week = (S.grp.week || 0) + n; }
+function linked() { return !!(cloudUser && prof() && prof().uid === cloudUser.uid); }
+const cloudErr = e => (e && e.code) || "inconnue";
+
+async function cloudInit() {
+  if (!CLOUD) return;
+  try {
+    const [A, Au, F] = await Promise.all([import(FB_BASE + "firebase-app.js"), import(FB_BASE + "firebase-auth.js"), import(FB_BASE + "firebase-firestore.js")]);
+    const app = A.initializeApp(FB_CONFIG);
+    fb = { A, Au, F, auth: Au.getAuth(app), db: F.getFirestore(app) };
+    cloudState = "ready";
+    if (Au.isSignInWithEmailLink(fb.auth, location.href)) {
+      let email = ""; try { email = localStorage.getItem("mj.email") || ""; } catch (e) {}
+      if (email) await finishEmailLink(email); else { emailPending = true; if (P.cur) view = "groupe"; }
+    }
+    Au.onAuthStateChanged(fb.auth, async user => {
+      cloudUser = user;
+      if (user && prof() && !prof().uid) { prof().uid = user.uid; saveP(); }
+      if (linked()) await cloudPull(); else stopMembers();
+      if (!session && !test) render();
+    });
+  } catch (e) { cloudState = "error"; if (view === "groupe" && !session) render(); }
+}
+async function finishEmailLink(email) {
+  try { await fb.Au.signInWithEmailLink(fb.auth, email, location.href); try { localStorage.removeItem("mj.email"); } catch (e) {} toast("Connecté !"); }
+  catch (e) { cloudMsg = "Ce lien a expiré ou a déjà servi. Demande un nouveau lien."; }
+  emailPending = false; history.replaceState(null, "", location.pathname);
+}
+function mergeState(a, b) {
+  const out = Object.assign(blank(), a, { srs: Object.assign({}, a.srs) });
+  for (const [id, v] of Object.entries(b.srs || {})) { const w = out.srs[id]; if (!w || v[2] > w[2] || (v[2] === w[2] && v[1] > w[1])) out.srs[id] = v; }
+  out.daily = Object.assign({}, b.daily || {}, a.daily || {});
+  for (const [k, v] of Object.entries(b.daily || {})) { const w = (a.daily || {})[k]; if (w) out.daily[k] = { kana: Math.max(w.kana || 0, v.kana || 0), phrase: Math.max(w.phrase || 0, v.phrase || 0), kanji: Math.max(w.kanji || 0, v.kanji || 0), cards: Math.max(w.cards || 0, v.cards || 0), ok: Math.max(w.ok || 0, v.ok || 0) }; }
+  const sa = a.streak || {}, sb = b.streak || {}; out.streak = (sb.last || "") > (sa.last || "") ? Object.assign({}, sb) : Object.assign({}, sa);
+  out.station = Math.max(a.station || 0, b.station || 0);
+  if (a.grp || b.grp) { const ga = a.grp || {}, gb = b.grp || {}; out.grp = Object.assign({}, (gb.points || 0) > (ga.points || 0) ? gb : ga); out.grp.code = out.grp.code || ga.code || gb.code; }
+  out.scenes = Object.assign({}, b.scenes || {}, a.scenes || {});
+  out.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0);
+  return out;
+}
+async function cloudPull() {
+  const { F, db } = fb, uid = cloudUser.uid;
+  try {
+    const [pSnap, uSnap] = await Promise.all([F.getDoc(F.doc(db, "users", uid, "progress", "main")), F.getDoc(F.doc(db, "users", uid))]);
+    if (pSnap.exists() && typeof pSnap.data().json === "string") S = mergeState(S, JSON.parse(pSnap.data().json));
+    const u = uSnap.exists() ? uSnap.data() : {};
+    if (u.group && (!S.grp || S.grp.code !== u.group)) S.grp = { code: u.group, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
+    try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
+    cloudDirty = true; await cloudPush();
+    if (S.grp && S.grp.code) { await pushMember(); watchMembers(); }
+  } catch (e) { cloudState = "error"; cloudMsg = "Synchro impossible pour l’instant (" + cloudErr(e) + "). Ta progression reste enregistrée sur ce téléphone."; }
+}
+async function cloudPush() {
+  if (!linked() || !cloudDirty) return; cloudDirty = false;
+  const { F, db } = fb, uid = cloudUser.uid, p = prof();
+  try {
+    await F.setDoc(F.doc(db, "users", uid, "progress", "main"), { json: JSON.stringify(S), updatedAt: Date.now(), v: 1 });
+    await F.setDoc(F.doc(db, "users", uid), { name: p.name, level: p.level || "zero", group: (S.grp && S.grp.code) || null, updatedAt: Date.now() }, { merge: true });
+    cloudState = "synced";
+  } catch (e) { cloudDirty = true; cloudState = "error"; }
+  updateSync();
+}
+async function pushMember() {
+  if (!linked() || !S.grp || !S.grp.code) return false;
+  grpEnsureWeek();
+  const { F, db } = fb, ref = F.doc(db, "groups", S.grp.code, "members", cloudUser.uid);
+  let old = null; try { const sn = await F.getDoc(ref); if (sn.exists()) old = sn.data().points || 0; } catch (e) {}
+  let pts = S.grp.points || 0;
+  if (old === null) pts = Math.min(pts, 390); else { if (pts < old) pts = old; if (pts - old > 390) pts = old + 390; }
+  S.grp.points = pts;
+  await F.setDoc(ref, { name: prof().name, points: pts, week: S.grp.week || 0, weekKey: S.grp.weekKey, sessions: S.grp.sessions || 0, streak: S.streak.n || 0, station: CH.indexOf(currentChapter()), updatedAt: Date.now() });
+  return true;
+}
+function watchMembers() {
+  if (membersUnsub || !S.grp || !S.grp.code) return;
+  const { F, db } = fb;
+  membersUnsub = F.onSnapshot(F.collection(db, "groups", S.grp.code, "members"), snap => { members = snap.docs.map(d => Object.assign({ uid: d.id }, d.data())); if (view === "groupe" && !session && !test) render(); }, () => { membersUnsub = null; });
+}
+function stopMembers() { if (membersUnsub) { membersUnsub(); membersUnsub = null; } members = []; }
+async function cloudSync() { if (!linked()) return; try { await cloudPush(); await pushMember(); } catch (e) {} }
+async function createGroup() {
+  const A = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let code = "MJ-"; for (let i = 0; i < 6; i++) code += A[Math.floor(Math.random() * A.length)];
+  const { F, db } = fb; cloudBusy = true; render();
+  try {
+    await F.setDoc(F.doc(db, "groups", code), { name: "Mission Japon", owner: cloudUser.uid, createdAt: Date.now() });
+    S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }; persist();
+    await pushMember(); cloudDirty = true; await cloudPush(); watchMembers(); toast("Groupe créé : " + code);
+  } catch (e) { cloudMsg = "Création impossible (" + cloudErr(e) + ")."; }
+  cloudBusy = false; render();
+}
+async function joinGroup(raw) {
+  const code = raw.trim().toUpperCase().replace(/\s+/g, "");
+  if (!/^[A-Z0-9-]{6,20}$/.test(code)) { cloudMsg = "Ce code n’a pas le bon format (exemple : MJ-K7P2QX)."; render(); return; }
+  cloudBusy = true; render();
+  const prev = S.grp; S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
+  try { await pushMember(); persist(); cloudDirty = true; await cloudPush(); watchMembers(); cloudMsg = ""; toast("Bienvenue dans le groupe !"); }
+  catch (e) { S.grp = prev; cloudMsg = e && e.code === "permission-denied" ? "Code inconnu. Vérifie-le auprès de la personne qui a créé le groupe." : "Impossible de rejoindre (" + cloudErr(e) + ")."; }
+  cloudBusy = false; render();
+}
+async function leaveGroup(e) {
+  if (!leaveArmed) { leaveArmed = true; e.currentTarget.textContent = "Confirmer : quitter le groupe"; return; }
+  leaveArmed = false;
+  try { await fb.F.deleteDoc(fb.F.doc(fb.db, "groups", S.grp.code, "members", cloudUser.uid)); } catch (err) {}
+  stopMembers(); S.grp = null; persist(); cloudDirty = true; await cloudPush(); render();
+}
+let leaveArmed = false;
+async function signInGoogle() {
+  cloudMsg = "";
+  try { await fb.Au.signInWithPopup(fb.auth, new fb.Au.GoogleAuthProvider()); }
+  catch (e) { if (e && e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") { cloudMsg = e.code === "auth/popup-blocked" ? "La fenêtre Google a été bloquée. Autorise les fenêtres pour ce site, ou utilise le lien par e-mail." : "Connexion Google impossible (" + cloudErr(e) + ")."; render(); } }
+}
+async function sendEmailLink(email) {
+  email = email.trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { cloudMsg = "Cette adresse e-mail ne semble pas valide."; render(); return; }
+  cloudBusy = true; render();
+  try { await fb.Au.sendSignInLinkToEmail(fb.auth, email, { url: location.origin + location.pathname, handleCodeInApp: true }); try { localStorage.setItem("mj.email", email); } catch (e) {} cloudMsg = "Lien envoyé à " + email + ". Ouvre-le sur ce même appareil (pense aux spams)."; }
+  catch (e) { cloudMsg = "Envoi impossible (" + cloudErr(e) + ")."; }
+  cloudBusy = false; render();
+}
+async function cloudSignOut() { stopMembers(); const p = prof(); if (p) { delete p.uid; saveP(); } try { await fb.Au.signOut(fb.auth); } catch (e) {} render(); }
+function cloudOnSwitch() { if (cloudUser && prof() && prof().uid !== cloudUser.uid) { stopMembers(); try { fb.Au.signOut(fb.auth); } catch (e) {} } else if (linked()) cloudPull().then(() => { if (!session) render(); }); }
+const inputStyle = "flex:1;min-width:0;font:inherit;font-size:17px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink)";
+function viewGroupe() {
+  const wrap = h("div", {}, h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Le groupe"), linked() ? h("span", { class: "muted", style: "font-size:13px" }, "connecté") : null));
+  const msg = cloudMsg ? h("p", { class: "note", style: "background:var(--surface);border:1px solid var(--line)" }, cloudMsg) : "";
+  if (!fb) { wrap.append(h("p", { class: "muted" }, cloudState === "error" ? "Impossible de joindre le serveur. Vérifie ta connexion internet, puis rouvre l’appli. Tes sessions marchent quand même hors-ligne." : "Connexion au serveur…")); return wrap; }
+  if (emailPending) {
+    const inp = h("input", { id: "confirmEmail", type: "email", placeholder: "Ton adresse e-mail", style: inputStyle, autocomplete: "email" });
+    wrap.append(h("p", {}, "Pour finir la connexion, confirme l’adresse e-mail qui a reçu le lien."), h("div", { class: "composer", style: "position:static" }, inp, h("button", { class: "btn", onclick: () => finishEmailLink(inp.value.trim()).then(render) }, "Valider")));
+    return wrap;
+  }
+  if (cloudUser && !linked()) {
+    wrap.append(h("p", {}, "Un autre profil est connecté sur cet appareil."), h("button", { class: "btn", onclick: cloudSignOut }, "Le déconnecter pour utiliser ce profil"));
+    return wrap;
+  }
+  if (!cloudUser) {
+    const inp = h("input", { id: "loginEmail", type: "email", placeholder: "ton@email.fr", style: inputStyle, autocomplete: "email" });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") sendEmailLink(inp.value); });
+    wrap.append(
+      h("div", { class: "today", style: "grid-template-columns:1fr;margin-top:0" },
+        h("div", {}, h("div", { class: "eyebrow" }, "Crée ton compte en 10 secondes"), h("h2", {}, "Sauvegarde ta progression et défie tes potes"),
+          h("ul", { style: "margin:10px 0 0;padding-left:18px" }, h("li", {}, "Ta progression te suit sur tous tes appareils."), h("li", {}, "Tu rejoins le classement de la semaine avec un code de groupe."), h("li", {}, "Ce que tu as déjà appris est gardé."))),
+        h("button", { class: "btn", onclick: signInGoogle, disabled: cloudBusy }, "Continuer avec Google"),
+        h("div", { class: "muted", style: "text-align:center;font-size:13px" }, "ou reçois un lien de connexion par e-mail"),
+        h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, inp, h("button", { class: "btn ghost", onclick: () => sendEmailLink(inp.value), disabled: cloudBusy }, "Recevoir le lien"))),
+      msg);
+    return wrap;
+  }
+  if (!S.grp || !S.grp.code) {
+    const inp = h("input", { id: "joinCode", placeholder: "Code du groupe, ex. MJ-K7P2QX", style: inputStyle + ";text-transform:uppercase", autocomplete: "off", autocapitalize: "characters" });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") joinGroup(inp.value); });
+    wrap.append(
+      h("div", { class: "today", style: "grid-template-columns:1fr;margin-top:0" },
+        h("div", {}, h("div", { class: "eyebrow" }, "Rejoindre le groupe"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Entre le code envoyé par la personne qui a créé le groupe.")),
+        h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, inp, h("button", { class: "btn", onclick: () => joinGroup(inp.value), disabled: cloudBusy }, "Rejoindre"))),
+      h("div", { class: "today" }, h("div", {}, h("div", { class: "eyebrow" }, "Personne n’a encore de groupe ?"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Crée-le et partage le code à tes potes.")), h("button", { class: "btn ghost", onclick: createGroup, disabled: cloudBusy }, "Créer un groupe")),
+      msg, accountFooter());
+    return wrap;
+  }
+  grpEnsureWeek();
+  const wk = weekKeyOf();
+  const list = members.map(m => Object.assign({}, m, { wpts: m.weekKey === wk ? (m.week || 0) : 0, wses: m.weekKey === wk ? (m.sessions || 0) : 0 }));
+  const key = lbMode === "week" ? "wpts" : "points";
+  list.sort((a, b) => (b[key] || 0) - (a[key] || 0));
+  const maxV = Math.max(1, ...list.map(m => m[key] || 0));
+  const target = Math.max(10, 5 * list.length), done = list.reduce((s2, m) => s2 + m.wses, 0);
+  const shareTxt = "Rejoins-moi sur Mission Japon 🇯🇵 " + location.origin + location.pathname + " · code du groupe : " + S.grp.code;
+  const copyCode = async () => { try { if (navigator.share) { await navigator.share({ text: shareTxt }); return; } } catch (e) { if (e && e.name === "AbortError") return; } try { await navigator.clipboard.writeText(shareTxt); toast("Invitation copiée"); } catch (e) { toast("Code : " + S.grp.code); } };
+  const medal = i => ["🥇", "🥈", "🥉"][i] || String(i + 1);
+  const pctSt = i => "calc(12px + (100% - 24px) * " + (i / (CH.length - 1)) + ")";
+  wrap.append(
+    h("section", { class: "led", "aria-label": "Code du groupe" }, h("div", { class: "lbl" }, "グループ"), h("div", { class: "dest" }, S.grp.code), h("div", { class: "lbl" }, list.length + " 人"),
+      h("div", { class: "row" }, h("span", {}, "Défi de la semaine : " + done + "/" + target + " sessions"), h("button", { class: "btn small", style: "padding:4px 10px;font-size:13px", onclick: copyCode }, "Inviter"))),
+    h("div", { style: "margin-top:10px;height:10px;border-radius:99px;background:var(--line);overflow:hidden" }, h("i", { style: "display:block;height:100%;width:" + Math.min(100, Math.round(100 * done / target)) + "%;background:var(--ok);transition:width .8s" })),
+    h("div", { class: "rail", style: "margin-top:18px" }, h("div", { class: "line" }), CH.map((c, i) => h("div", { class: "st", style: "left:" + pctSt(i) + ";--lc:var(" + c.lc + ")" })),
+      list.map((m, i) => h("div", { title: m.name, style: "position:absolute;top:" + (2 + (i % 3) * 3) + "px;left:" + pctSt(Math.max(0, Math.min(5, m.station || 0))) + ";margin-left:" + (-13 + (i % 3) * 8) + "px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(" + CH[i % 6].lc + ");border:2px solid var(--surface)" }, (m.name || "?").charAt(0).toUpperCase()))),
+    h("div", { class: "sec-h" }, h("h2", {}, "Classement"), h("div", { class: "seg" }, h("button", { "aria-pressed": lbMode === "week" ? "true" : "false", onclick: () => { lbMode = "week"; render(); } }, "Semaine"), h("button", { "aria-pressed": lbMode === "total" ? "true" : "false", onclick: () => { lbMode = "total"; render(); } }, "Total"))),
+    h("div", { class: "plist" }, list.length ? list.map((m, i) => h("div", { class: "ph", style: m.uid === cloudUser.uid ? "border-color:var(--accent);border-width:2px" : "" },
+      h("div", { style: "display:flex;gap:10px;align-items:center;min-width:0" }, h("span", { style: "font-size:20px;width:28px;text-align:center" }, medal(i)),
+        h("div", { style: "min-width:0;flex:1" }, h("div", { class: "j", style: "font-size:16px" }, (m.name || "?") + (m.uid === cloudUser.uid ? " (toi)" : "")),
+          h("div", { class: "ro" }, "🔥 " + (m.streak || 0) + " j · " + (CH[Math.max(0, Math.min(5, m.station || 0))].ro) + " · " + m.wses + " session(s) cette semaine"),
+          h("div", { style: "height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden" }, h("i", { style: "display:block;height:100%;border-radius:3px;background:var(--accent);width:" + Math.round(100 * (m[key] || 0) / maxV) + "%;transition:width .8s" })))),
+      h("div", { class: "j", style: "grid-row:1/span 2;grid-column:2;font-variant-numeric:tabular-nums" }, (m[key] || 0) + " pts"))) : h("p", { class: "muted" }, "Chargement du classement…")),
+    h("p", { class: "hint" }, "Points : 50 par session du jour, 2 par bonne réponse, 10 par carte maîtrisée, 30 par scène réussie, plus un bonus de série. Le classement de la semaine repart à zéro chaque lundi."),
+    msg, accountFooter(true));
+  return wrap;
+}
+function accountFooter(inGroup) {
+  return h("div", { style: "display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;align-items:center" },
+    h("span", { class: "sync" }, "Connecté : " + (cloudUser.email || "compte Google")),
+    h("button", { class: "toggle", onclick: cloudSignOut }, "Se déconnecter"),
+    inGroup ? h("button", { class: "toggle", onclick: leaveGroup }, "Quitter le groupe") : null);
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") cloudPush(); });
+setInterval(() => { cloudPush(); }, 60000);
+cloudInit();
 
 render();
 })();
