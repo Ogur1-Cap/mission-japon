@@ -353,7 +353,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.2";
+const APP_VERSION = "1.2.1";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -724,11 +724,11 @@ function viewHome() {
         h("div", { class: "stats" },
           h("div", { class: "stat" }, h("b", {}, due), h("span", {}, "à revoir")),
           h("div", { class: "stat" }, h("b", {}, nw), h("span", {}, "nouveautés")),
-          h("div", { class: "stat" }, h("b", {}, rwStreak()), h("span", {}, "jours d’affilée" + (rw().freeze ? " · 🧊" + rw().freeze : ""))),
+          h("div", { class: "stat" }, h("b", {}, rwStreak()), h("span", {}, "jours d’affilée" + (freezes() ? " · 🧊" + freezes() : ""))),
           h("div", { class: "stat" }, h("b", {}, mastered + "/" + all.length), h("span", {}, "maîtrisés")))),
       session && !session.finished ? h("button", { class: "btn", onclick: () => go("session") }, "Reprendre ma session") : h("button", { class: "btn", onclick: startSession }, doneToday ? "Continuer" : "Commencer")),
     (() => { const dd = rwDay(), nDone = dd.ids.filter(id => (dd.p[id] || 0) >= mDef(id).goal).length, cl = claimable();
-      return h("button", { class: "today", style: "width:100%;text-align:left;cursor:pointer;grid-template-columns:auto 1fr auto;gap:12px", onclick: () => go("missions") }, h("span", { style: "font-size:26px" }, cl ? "🎁" : "🎯"), h("span", {}, h("b", {}, cl ? cl + " récompense(s) à récupérer" : "Missions du jour : " + nDone + " / " + dd.ids.length), h("span", { class: "muted", style: "display:block;font-size:13px" }, "¥" + (rw().yen || 0).toLocaleString("fr-FR") + " en poche · cadres, titres et thèmes à gagner")), h("span", { style: "font-size:20px;color:var(--accent)" }, "→")); })(),
+      return h("button", { class: "today", style: "width:100%;text-align:left;cursor:pointer;grid-template-columns:auto 1fr auto;gap:12px", onclick: () => go("missions") }, h("span", { style: "font-size:26px" }, cl ? "🎁" : "🎯"), h("span", {}, h("b", {}, cl ? cl + " récompense(s) à récupérer" : "Missions du jour : " + nDone + " / " + dd.ids.length), h("span", { class: "muted", style: "display:block;font-size:13px" }, "¥" + yen().toLocaleString("fr-FR") + " en poche · cadres, titres et thèmes à gagner")), h("span", { style: "font-size:20px;color:var(--accent)" }, "→")); })(),
     CLOUD && !linked() ? h("button", { class: "today", style: "width:100%;text-align:left;cursor:pointer;grid-template-columns:auto 1fr auto;gap:12px", onclick: () => go("groupe") }, h("span", { style: "font-size:26px" }, "☁️"), h("span", {}, h("b", {}, "Sauvegarde ta progression et rejoins le classement"), h("span", { class: "muted", style: "display:block;font-size:13px" }, "Compte gratuit, connexion avec Google ou par e-mail")), h("span", { style: "font-size:20px;color:var(--accent)" }, "→")) : null,
     h("div", { class: "sec-h" }, h("h2", {}, "Ta ligne Osaka → Tokyo"), h("span", { class: "muted", style: "font-size:13px" }, "Kana : " + kanaPct + " %")),
     railView(cur),
@@ -940,9 +940,9 @@ function nextCard() {
 function finishSession() {
   const k = todayKey();
   if (session.done >= 10 && S.streak.last !== k) {
-    const gap = S.streak.last ? Math.round((new Date(k) - new Date(S.streak.last)) / DAY) : 99, fr = rw().freeze || 0;
+    const gap = S.streak.last ? Math.round((new Date(k) - new Date(S.streak.last)) / DAY) : 99, fr = freezes();
     if (gap === 1) S.streak.n = S.streak.n + 1;
-    else if (gap >= 2 && gap - 1 <= fr) { rw().freeze = fr - (gap - 1); S.streak.n = S.streak.n + 1; toast("🧊 Ton gel de série a protégé ta série !"); }
+    else if (gap >= 2 && gap - 1 <= fr) { bump(rw(), "fu", gap - 1); S.streak.n = S.streak.n + 1; toast("🧊 Ton gel de série a protégé ta série !"); }
     else S.streak.n = 1;
     S.streak.last = k;
   }
@@ -1300,22 +1300,33 @@ const WEEKLY = [
 const D_YEN = 100, W_YEN = 300;
 const OMI = [["大吉", "daikichi", "Grande chance", 300, 8], ["中吉", "chūkichi", "Chance moyenne", 200, 17], ["小吉", "shōkichi", "Petite chance", 150, 25], ["吉", "kichi", "Chance", 120, 30], ["末吉", "suekichi", "Chance à venir", 100, 20]];
 
-const blankRw = () => ({ yen: 0, own: {}, ach: {}, freeze: 0, rev: 0, st: { sessions: 0, sc: {}, comboMax: 0, perfect: 0, omi: 0, daikichi: 0, missions: 0 }, day: null, wk: null });
+const blankRw = () => ({ earn: {}, spent: {}, fb: {}, fu: {}, own: {}, ach: {}, st: { sessions: 0, sc: {}, comboMax: 0, perfect: 0, omi: 0, daikichi: 0, missions: 0 }, day: null, wk: null });
 const blankLook = () => ({ frame: "none", title: "touriste", anim: "none", theme: "jr", mode: "auto", photo: "" });
-function rw() { if (!S.rw) S.rw = blankRw(); if (!S.rw.st) S.rw.st = blankRw().st; if (!S.rw.own) S.rw.own = {}; if (!S.rw.ach) S.rw.ach = {}; return S.rw; }
+function rw() { if (!S.rw) S.rw = blankRw(); const r = S.rw; if (!r.st) r.st = blankRw().st; if (!r.own) r.own = {}; if (!r.ach) r.ach = {};
+  if (typeof r.yen === "number") { if (r.yen) r.earn = Object.assign({}, r.earn, { legacy: Math.max((r.earn || {}).legacy || 0, r.yen) }); delete r.yen; }
+  if (typeof r.freeze === "number") { if (r.freeze) r.fb = Object.assign({}, r.fb, { legacy: Math.max((r.fb || {}).legacy || 0, r.freeze) }); delete r.freeze; }
+  return r; }
 function look() { if (!S.look) S.look = blankLook(); return Object.assign(blankLook(), S.look); }
+// Synchro entre appareils : chaque réglage garde l'heure de sa dernière modif (le plus récent gagne, réglage par réglage),
+// et les yens sont des compteurs par appareil (gagnés / dépensés) qu'on additionne : rien ne s'écrase.
+let DEV = ""; try { DEV = localStorage.getItem("mj.dev") || ""; if (!DEV) { DEV = "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); localStorage.setItem("mj.dev", DEV); } } catch (e) { DEV = "d0"; }
+const sumMap = m => Object.values(m || {}).reduce((a, b) => a + (+b || 0), 0);
+const bump = (r, key, n) => { r[key] = Object.assign({}, r[key]); r[key][DEV] = (r[key][DEV] || 0) + n; };
+function yen() { return sumMap(rw().earn) - sumMap(rw().spent); }
+function freezes() { return Math.max(0, sumMap(rw().fb) - sumMap(rw().fu)); }
+function setLook(patch) { const L = look(), ts = Object.assign({}, S.lookTs), t = Date.now(); for (const k in patch) { L[k] = patch[k]; ts[k] = t; } S.look = L; S.lookTs = ts; }
 const owns = (kind, id) => { const x = (KINDS[kind] || []).find(i => i.id === id); return !!x && (x.src === "free" || !!rw().own[kind + ":" + id]); };
 const hashStr = s => { let x = 2166136261; for (const c of s) { x ^= c.charCodeAt(0); x = Math.imul(x, 16777619); } return x >>> 0; };
 const seeded = seed => () => { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 function rwStreak() {
   const s = S.streak || {}; if (!s.last) return 0;
   const gap = Math.round((new Date(todayKey()) - new Date(s.last)) / DAY);
-  return gap <= 1 + (rw().freeze || 0) ? (s.n || 0) : 0;
+  return gap <= 1 + freezes() ? (s.n || 0) : 0;
 }
 function rwDay() {
   const r = rw(), k = todayKey();
   if (!r.day || r.day.k !== k) {
-    const rnd = seeded(hashStr(k + (P.cur || "")));
+    const rnd = seeded(hashStr(k + ((prof() && prof().uid) || P.cur || "")));
     const pool = DAILY.filter(m => m.id !== "session" && (m.id !== "review8" || Object.keys(S.srs).length >= 12) && (m.id !== "scene" || true));
     const pickd = []; while (pickd.length < 2 && pool.length) pickd.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0].id);
     r.day = { k, ids: ["session"].concat(pickd), p: {}, c: {}, omi: null };
@@ -1325,7 +1336,7 @@ function rwDay() {
 function rwWeek() {
   const r = rw(), k = weekKeyOf();
   if (!r.wk || r.wk.k !== k) {
-    const rnd = seeded(hashStr("w" + k + (P.cur || ""))), pool = WEEKLY.filter(m => m.id !== "w5"), pickd = [];
+    const rnd = seeded(hashStr("w" + k + ((prof() && prof().uid) || P.cur || ""))), pool = WEEKLY.filter(m => m.id !== "w5"), pickd = [];
     while (pickd.length < 2) pickd.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0].id);
     r.wk = { k, ids: ["w5"].concat(pickd), p: {}, c: {} };
   }
@@ -1339,7 +1350,6 @@ function track(ev, n = 1) {
     const before = set.p[id] || 0; set.p[id] = m.max ? Math.max(before, n) : before + n;
     if (before < m.goal && set.p[id] >= m.goal) fresh.push(m);
   }));
-  rw().rev++;
   fresh.forEach(m => toast("✔ Mission accomplie : " + m.nm + " · ¥" + (WEEKLY.includes(m) ? W_YEN : D_YEN) + " à récupérer"));
 }
 const claimable = () => { if (!P.cur) return 0; const d = rwDay(), w = rwWeek(); let n = 0;
@@ -1348,7 +1358,7 @@ const claimable = () => { if (!P.cur) return 0; const d = rwDay(), w = rwWeek();
   if (d.ids.every(id => d.c[id]) && !d.omi) n++;
   return n; };
 function addYen(n, ev) {
-  const r = rw(); r.yen = (r.yen || 0) + n; r.rev++;
+  bump(rw(), "earn", n);
   if (ev && ev.clientX != null) { const c = h("div", { class: "coin", style: "left:" + (ev.clientX - 20) + "px;top:" + (ev.clientY - 30) + "px" }, "+¥" + n); document.body.append(c); setTimeout(() => c.remove(), 1000); }
 }
 function claim(set, id, ev, weekly) {
@@ -1391,7 +1401,7 @@ function rwCheck() {
   for (const a of ACH) {
     if (r.ach[a.id] || (a.cloud && !CLOUD)) continue;
     const [v, g] = a.t(r.st); if (v < g) continue;
-    r.ach[a.id] = todayKey(); r.rev++;
+    r.ach[a.id] = todayKey();
     const gifts = rewardsOf(a.id); gifts.forEach(({ kind, x }) => { r.own[kind + ":" + x.id] = 1; });
     if (a.yen) addYen(a.yen);
     showOverlay(h("div", {}, h("div", { class: "stamp jp stamp-drop", style: "--lc:var(--ko);border-color:var(--ko);color:var(--ko);width:110px;height:110px;font-size:40px" }, a.k),
@@ -1403,15 +1413,15 @@ function rwCheck() {
 }
 function equip(kind, id) {
   if (!owns(kind, id)) return;
-  const L = look(); L[kind] = id; S.look = L; rw().rev++; persist(); applyTheme(); if (CLOUD && typeof cloudSync === "function") cloudSync(); render();
+  setLook({ [kind]: id }); persist(); applyTheme(); if (CLOUD && typeof cloudSync === "function") cloudSync(); render();
 }
 function buy(kind, id, ev) {
   const x = KINDS[kind].find(i => i.id === id); if (!x || x.src !== "shop" || owns(kind, id)) return;
-  const r = rw(); if ((r.yen || 0) < x.price) return;
-  r.yen -= x.price; r.own[kind + ":" + id] = 1; r.rev++;
+  const r = rw(); if (yen() < x.price) return;
+  bump(r, "spent", x.price); r.own[kind + ":" + id] = 1;
   persist(); toast("Acheté : " + x.nm + ". Équipé !"); equip(kind, id);
 }
-function buyFreeze() { const r = rw(); if ((r.yen || 0) < FREEZE_PRICE || (r.freeze || 0) >= 2) return; r.yen -= FREEZE_PRICE; r.freeze = (r.freeze || 0) + 1; r.rev++; persist(); toast("Gel de série prêt 🧊"); render(); }
+function buyFreeze() { const r = rw(); if (yen() < FREEZE_PRICE || freezes() >= 2) return; bump(r, "spent", FREEZE_PRICE); bump(r, "fb", 1); persist(); toast("Gel de série prêt 🧊"); render(); }
 
 /* ---- thème ---- */
 let mq = null; try { mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener("change", () => applyTheme()); } catch (e) {}
@@ -1473,13 +1483,13 @@ function viewMissions() {
       const has = owns(kind, x.id), on = L[kind] === x.id;
       return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), h("div", { class: "nm" }, x.nm),
         has ? h("button", { class: "btn small" + (on ? " ghost" : ""), disabled: on, onclick: () => equip(kind, x.id) }, on ? "Équipé" : "Équiper")
-          : h("button", { class: "btn small", disabled: (r.yen || 0) < x.price, onclick: e => buy(kind, x.id, e) }, "Acheter ¥" + x.price), has || (r.yen || 0) >= x.price ? null : h("div", { class: "how" }, "Il te manque ¥" + (x.price - (r.yen || 0))));
+          : h("button", { class: "btn small", disabled: yen() < x.price, onclick: e => buy(kind, x.id, e) }, "Acheter ¥" + x.price), has || yen() >= x.price ? null : h("div", { class: "how" }, "Il te manque ¥" + (x.price - yen())));
     };
     const sec = (kind, label) => [h("div", { class: "sec-h" }, h("h2", {}, label)), h("div", { class: "shop" }, KINDS[kind].filter(x => x.src === "shop").map(x => card(kind, x)))];
     body = h("div", {},
       h("div", { class: "sec-h" }, h("h2", {}, "Objets")),
-      h("div", { class: "shop" }, h("div", { class: "item" }, h("div", { style: "font-size:40px" }, "🧊"), h("div", { class: "nm" }, "Gel de série"), h("div", { class: "how" }, "Protège ta série si tu rates un jour. " + (r.freeze || 0) + "/2 en réserve."),
-        h("button", { class: "btn small", disabled: (r.yen || 0) < FREEZE_PRICE || (r.freeze || 0) >= 2, onclick: buyFreeze }, (r.freeze || 0) >= 2 ? "Réserve pleine" : "Acheter ¥" + FREEZE_PRICE))),
+      h("div", { class: "shop" }, h("div", { class: "item" }, h("div", { style: "font-size:40px" }, "🧊"), h("div", { class: "nm" }, "Gel de série"), h("div", { class: "how" }, "Protège ta série si tu rates un jour. " + freezes() + "/2 en réserve."),
+        h("button", { class: "btn small", disabled: yen() < FREEZE_PRICE || freezes() >= 2, onclick: buyFreeze }, freezes() >= 2 ? "Réserve pleine" : "Acheter ¥" + FREEZE_PRICE))),
       sec("frame", "Cadres"), sec("anim", "Animations de profil"), sec("theme", "Thèmes de l’appli"), sec("title", "Titres"),
       h("p", { class: "hint" }, "Les plus belles pièces ne s’achètent pas : elles se gagnent avec les exploits."));
   } else {
@@ -1495,7 +1505,7 @@ function viewMissions() {
   return h("div", {},
     h("div", { class: "wallet" }, h("button", { class: "me-btn", onclick: () => go("reglages"), "aria-label": "Modifier mon profil" }, avatar(L, p.name, 64)),
       h("div", { class: "who" }, h("b", {}, p.name), h("span", { class: "ttl" }, titleOf(L))),
-      h("div", { class: "yen" }, "¥" + (r.yen || 0).toLocaleString("fr-FR"), h("small", {}, Object.keys(r.ach).length + " exploits"))),
+      h("div", { class: "yen" }, "¥" + yen().toLocaleString("fr-FR"), h("small", {}, Object.keys(r.ach).length + " exploits"))),
     seg, body);
 }
 
@@ -1514,10 +1524,10 @@ function viewSettings() {
   const L = look(), p = prof();
   const file = h("input", { type: "file", accept: "image/*", style: "display:none" });
   file.addEventListener("change", async () => { const f = file.files && file.files[0]; if (!f) return;
-    try { const d = await readPhoto(f); S.look = Object.assign(look(), { photo: d }); rw().rev++; persist(); rwCheck(); if (CLOUD) cloudSync(); toast("Photo mise à jour"); render(); }
+    try { const d = await readPhoto(f); setLook({ photo: d }); persist(); rwCheck(); if (CLOUD) cloudSync(); toast("Photo mise à jour"); render(); }
     catch (e) { toast("Cette image n’a pas pu être lue"); } });
   const nick = h("input", { value: p.name, maxlength: "24", style: inputStyle0, "aria-label": "Pseudo" });
-  const saveNick = () => { const v = nick.value.trim(); if (!v || v === p.name) return; p.name = v; S.nick = v; saveP(); persist(); if (CLOUD) cloudSync(); toast("Pseudo enregistré"); render(); };
+  const saveNick = () => { const v = nick.value.trim(); if (!v || v === p.name) return; p.name = v; S.nick = v; S.lookTs = Object.assign({}, S.lookTs, { nick: Date.now() }); saveP(); persist(); if (CLOUD) cloudSync(); toast("Pseudo enregistré"); render(); };
   nick.addEventListener("keydown", e => { if (e.key === "Enter") saveNick(); });
   const picker = (kind, list) => h("div", { class: "pick" }, list.filter(x => !(kind === "theme" && false)).map(x => {
     const has = owns(kind, x.id);
@@ -1528,7 +1538,7 @@ function viewSettings() {
   const titles = h("div", { class: "pick" }, TITLES.map(x => { const has = owns("title", x.id);
     const sec2 = !has && x.ach && (ACH.find(a => a.id === x.ach) || {}).secret;
     return h("button", { "aria-pressed": L.title === x.id ? "true" : "false", disabled: !has, title: has ? x.nm : sec2 ? "Exploit secret" : howTo(x), onclick: () => equip("title", x.id), style: "min-width:0;flex-direction:row" }, has ? null : "🔒 ", sec2 ? "Titre secret" : x.nm); }));
-  const modeSeg = h("div", { class: "seg" }, [["auto", "Auto"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => h("button", { "aria-pressed": L.mode === k ? "true" : "false", onclick: () => { S.look = Object.assign(look(), { mode: k }); persist(); applyTheme(); render(); } }, l)));
+  const modeSeg = h("div", { class: "seg" }, [["auto", "Auto"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => h("button", { "aria-pressed": L.mode === k ? "true" : "false", onclick: () => { setLook({ mode: k }); persist(); applyTheme(); render(); } }, l)));
   return h("div", {},
     h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Réglages")),
     h("section", { class: "set" }, h("h2", {}, "Mon profil"),
@@ -1537,7 +1547,7 @@ function viewSettings() {
         h("div", { style: "display:grid;gap:8px;flex:1;min-width:200px" },
           h("span", { class: "ttl", style: "justify-self:start" }, titleOf(L)),
           h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, h("button", { class: "btn small", onclick: () => file.click() }, L.photo ? "Changer la photo" : "Ajouter une photo"),
-            L.photo ? h("button", { class: "btn small ghost", onclick: () => { S.look = Object.assign(look(), { photo: "" }); persist(); if (CLOUD) cloudSync(); render(); } }, "Retirer") : null))),
+            L.photo ? h("button", { class: "btn small ghost", onclick: () => { setLook({ photo: "" }); persist(); if (CLOUD) cloudSync(); render(); } }, "Retirer") : null))),
       file,
       h("label", { style: "display:block;margin-top:14px;font-weight:700;font-size:14px" }, "Pseudo"),
       h("div", { style: "display:flex;gap:8px;margin-top:6px" }, nick, h("button", { class: "btn small", onclick: saveNick }, "Enregistrer")),
@@ -1589,6 +1599,10 @@ async function finishEmailLink(email) {
   catch (e) { cloudMsg = "Ce lien a expiré ou a déjà servi. Demande un nouveau lien."; }
   emailPending = false; history.replaceState(null, "", location.pathname);
 }
+function rwNorm(r) { if (!r) return null; r = Object.assign({}, r);
+  if (typeof r.yen === "number") { r.earn = Object.assign({}, r.earn, { legacy: Math.max((r.earn || {}).legacy || 0, r.yen) }); delete r.yen; }
+  if (typeof r.freeze === "number") { r.fb = Object.assign({}, r.fb, { legacy: Math.max((r.fb || {}).legacy || 0, r.freeze) }); delete r.freeze; }
+  return r; }
 function mergeState(a, b) {
   const out = Object.assign(blank(), a, { srs: Object.assign({}, a.srs) });
   for (const [id, v] of Object.entries(b.srs || {})) { const w = out.srs[id]; if (!w || v[2] > w[2] || (v[2] === w[2] && v[1] > w[1])) out.srs[id] = v; }
@@ -1598,14 +1612,20 @@ function mergeState(a, b) {
   out.station = Math.max(a.station || 0, b.station || 0);
   if (a.grp || b.grp) { const ga = a.grp || {}, gb = b.grp || {}; out.grp = Object.assign({}, (gb.points || 0) > (ga.points || 0) ? gb : ga); out.grp.code = out.grp.code || ga.code || gb.code; }
   out.scenes = Object.assign({}, b.scenes || {}, a.scenes || {});
-  { const ra = a.rw || null, rb = b.rw || null;
-    if (ra || rb) { const base = Object.assign({}, ((rb && rb.rev) || 0) > ((ra && ra.rev) || 0) ? rb : ra);
-      base.own = Object.assign({}, (ra || {}).own, (rb || {}).own); base.ach = Object.assign({}, (rb || {}).ach, (ra || {}).ach);
-      const sa2 = (ra || {}).st || {}, sb2 = (rb || {}).st || {}; base.st = Object.assign({}, sa2, sb2);
-      for (const kk of ["sessions", "comboMax", "perfect", "omi", "daikichi", "missions", "night", "morning", "lead"]) base.st[kk] = Math.max(sa2[kk] || 0, sb2[kk] || 0);
-      base.st.sc = Object.assign({}, sa2.sc, sb2.sc); out.rw = base; } }
-  if (a.look || b.look) out.look = Object.assign({}, b.look, a.look, ((b.rw || {}).rev || 0) > ((a.rw || {}).rev || 0) ? b.look : {});
-  out.nick = a.nick || b.nick;
+  { const ra = rwNorm(a.rw), rb = rwNorm(b.rw);
+    if (ra || rb) { const A2 = ra || {}, B2 = rb || {}, maxMap = (x, y) => { const o = Object.assign({}, x); for (const k in (y || {})) o[k] = Math.max(o[k] || 0, y[k] || 0); return o; };
+      const o = { earn: maxMap(A2.earn, B2.earn), spent: maxMap(A2.spent, B2.spent), fb: maxMap(A2.fb, B2.fb), fu: maxMap(A2.fu, B2.fu),
+        own: Object.assign({}, B2.own, A2.own), ach: Object.assign({}, B2.ach, A2.ach) };
+      const sa2 = A2.st || {}, sb2 = B2.st || {}; o.st = Object.assign({}, sb2, sa2);
+      for (const kk of ["sessions", "comboMax", "perfect", "omi", "daikichi", "missions", "night", "morning", "lead"]) o.st[kk] = Math.max(sa2[kk] || 0, sb2[kk] || 0);
+      o.st.sc = Object.assign({}, sb2.sc, sa2.sc);
+      const mergeSet = (x, y) => { if (!x) return y || null; if (!y) return x; if (x.k !== y.k) return x.k > y.k ? x : y;
+        return Object.assign({}, x, { p: maxMap(x.p, y.p), c: Object.assign({}, y.c, x.c), omi: x.omi || y.omi || null }); };
+      o.day = mergeSet(A2.day, B2.day); o.wk = mergeSet(A2.wk, B2.wk); out.rw = o; } }
+  { const la = a.look || {}, lb = b.look || {}, ta = a.lookTs || {}, tb = b.lookTs || {}, L = {}, T = {};
+    for (const k of new Set([...Object.keys(la), ...Object.keys(lb)])) { const useB = (tb[k] || 0) > (ta[k] || 0) || !(k in la); L[k] = useB ? lb[k] : la[k]; T[k] = Math.max(ta[k] || 0, tb[k] || 0); }
+    if (a.look || b.look) { out.look = L; out.lookTs = T; }
+    const useBn = (tb.nick || 0) > (ta.nick || 0) || !a.nick; out.nick = useBn ? (b.nick || a.nick) : a.nick; if (out.nick) { out.lookTs = Object.assign({}, out.lookTs, { nick: Math.max(ta.nick || 0, tb.nick || 0) }); } }
   out.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0);
   return out;
 }
@@ -1627,7 +1647,10 @@ async function cloudPush() {
   if (!linked() || !cloudDirty) return; cloudDirty = false;
   const { F, db } = fb, uid = cloudUser.uid, p = prof();
   try {
-    await F.setDoc(F.doc(db, "users", uid, "progress", "main"), { json: JSON.stringify(S), updatedAt: Date.now(), v: 1 });
+    const ref = F.doc(db, "users", uid, "progress", "main");
+    try { const sn = await F.getDoc(ref); if (sn.exists() && typeof sn.data().json === "string") { const before = JSON.stringify([S.look, S.nick]); S = mergeState(S, JSON.parse(sn.data().json)); try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
+      if (JSON.stringify([S.look, S.nick]) !== before) { if (S.nick && p.name !== S.nick) { p.name = S.nick; saveP(); } applyTheme(); if (!session && !test) render(); } } } catch (e) {}
+    await F.setDoc(ref, { json: JSON.stringify(S), updatedAt: Date.now(), v: 2 });
     await F.setDoc(F.doc(db, "users", uid), { name: p.name, level: p.level || "zero", group: (S.grp && S.grp.code) || null, updatedAt: Date.now() }, { merge: true });
     cloudState = "synced";
   } catch (e) { cloudDirty = true; cloudState = "error"; }
@@ -1768,7 +1791,7 @@ function accountFooter(inGroup) {
     h("button", { class: "toggle", onclick: cloudSignOut }, "Se déconnecter"),
     inGroup ? h("button", { class: "toggle", onclick: leaveGroup }, "Quitter le groupe") : null);
 }
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") cloudPush(); });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") cloudPush(); else if (linked() && !session && !test) { cloudDirty = true; cloudPush(); } });
 setInterval(() => { cloudPush(); }, 60000);
 cloudInit();
 

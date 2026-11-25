@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 1.2.1 · 25 novembre 2026
+- Correction : avec deux appareils sur le même compte, l'un pouvait écraser la photo, le thème ou le pseudo choisis sur l'autre
+- Chaque réglage se synchronise séparément (le plus récent gagne) ; les yens gagnés et dépensés s'additionnent entre appareils
+- La synchro relit le cloud avant d'écrire, et se refait quand on revient dans l'appli
+- Les missions du jour sont les mêmes sur tous tes appareils
+
 ## 1.2 · 25 novembre 2026
 - Onglet Missions : 3 missions du jour, 3 de la semaine, omikuji quotidien, boutique en yens et 29 exploits
 - Récompenses : 15 cadres, 8 animations de profil, 8 thèmes d'appli, 22 titres, gel de série
