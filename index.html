@@ -343,6 +343,53 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .pick button[aria-pressed="true"]{border-color:var(--accent)}
 .pick button:disabled{opacity:.45;cursor:not-allowed}
 .pick .lk{position:absolute;top:4px;right:6px;font-size:12px}
+/* ---- fonds animés des thèmes : très légers, seulement visibles entre les cartes ---- */
+#bgfx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#app{position:relative;z-index:1}
+#bgfx i{position:absolute;display:block;font-style:normal;will-change:transform}
+#bgfx .layer{position:absolute;inset:-20%;will-change:transform}
+@keyframes bgFall{0%{transform:translate3d(0,-10vh,0) rotate(0)}100%{transform:translate3d(var(--dx,40px),110vh,0) rotate(var(--rot,360deg))}}
+@keyframes bgRise{0%{transform:translate3d(0,110vh,0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translate3d(var(--dx,20px),-10vh,0);opacity:0}}
+@keyframes bgTwinkle{0%,100%{transform:scale(.2);opacity:0}50%{transform:scale(1);opacity:1}}
+@keyframes bgSlideX{from{transform:translateX(0)}to{transform:translateX(var(--w,200px))}}
+@keyframes bgStreak{0%{transform:translateX(-30vw);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(130vw);opacity:0}}
+@keyframes bgGrid{from{transform:translateY(0)}to{transform:translateY(40px)}}
+/* JR : lignes de vitesse d'un train qui passe */
+.bg-jr i{height:2px;width:22vw;border-radius:2px;background:linear-gradient(90deg,transparent,var(--accent));opacity:.12;animation:bgStreak linear infinite}
+/* Sakura : pétales qui tombent en tournoyant */
+.bg-sakura i{width:11px;height:9px;border-radius:80% 0 80% 0;background:#FF9DB7;opacity:.45;animation:bgFall linear infinite}
+[data-theme="dark"] .bg-sakura i{opacity:.3}
+/* Matcha : bulles de thé qui remontent */
+.bg-matcha i{border-radius:50%;border:1.5px solid var(--accent);opacity:.2;animation:bgRise linear infinite}
+/* Indigo Hokusai : vagues qui glissent */
+.bg-indigo .layer{--w:120px;background:var(--accent);opacity:.07;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cpath d='M0 30 Q15 8 30 22 T60 22 T90 22 T120 30' fill='none' stroke='black' stroke-width='3'/%3E%3Ccircle cx='30' cy='16' r='3' fill='black'/%3E%3Ccircle cx='90' cy='16' r='3' fill='black'/%3E%3C/svg%3E") 0 0/120px 40px;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cpath d='M0 30 Q15 8 30 22 T60 22 T90 22 T120 30' fill='none' stroke='black' stroke-width='3'/%3E%3Ccircle cx='30' cy='16' r='3' fill='black'/%3E%3Ccircle cx='90' cy='16' r='3' fill='black'/%3E%3C/svg%3E") 0 0/120px 40px;
+  animation:bgSlideX 9s linear infinite}
+[data-theme="dark"] .bg-indigo .layer{opacity:.1}
+/* Ciel de Fuji : neige lente + silhouette du mont */
+.bg-fuji i{border-radius:50%;background:#FFFFFF;box-shadow:0 0 3px rgba(120,160,220,.8);opacity:.75;animation:bgFall linear infinite}
+[data-theme="light"] .bg-fuji i{background:#9CC3F0;opacity:.55}
+.bg-fuji .mt{position:absolute;left:0;right:0;bottom:0;height:34vh;background:var(--accent);opacity:.06;clip-path:polygon(0 100%,30% 38%,42% 18%,47% 14%,53% 14%,58% 18%,70% 38%,100% 100%)}
+/* Or impérial : paillettes d'or qui scintillent */
+.bg-or i{width:14px;height:14px;background:#E9C46A;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:0;animation:bgTwinkle ease-in-out infinite}
+/* Laque de Kyoto : feuilles d'érable qui tombent */
+.bg-kyoto i{font-size:18px;opacity:.38;animation:bgFall linear infinite}
+[data-theme="dark"] .bg-kyoto i{opacity:.3}
+/* Néon de Shibuya : grille qui défile + traits néon */
+.bg-shibuya .layer{background:repeating-linear-gradient(0deg,var(--accent) 0 1px,transparent 1px 40px),repeating-linear-gradient(90deg,var(--accent) 0 1px,transparent 1px 40px);opacity:.06;animation:bgGrid 3s linear infinite}
+.bg-shibuya i{height:2px;width:18vw;border-radius:2px;opacity:.5;animation:bgStreak linear infinite}
+.bg-shibuya i:nth-child(odd){background:#FF3FD8;box-shadow:0 0 8px #FF3FD8}
+.bg-shibuya i:nth-child(even){background:#2FF3FF;box-shadow:0 0 8px #2FF3FF}
+[data-theme="light"] .bg-shibuya i{opacity:.3}
+/* bandeau d'aperçu */
+.pvbar{position:fixed;left:0;right:0;top:0;z-index:35;background:var(--ink);color:var(--bg);padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));display:flex;gap:10px;align-items:center;box-shadow:0 4px 14px rgba(0,0,0,.25);animation:viewIn .25s}
+.pvbar .t{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.pvbar .t b{font-size:14px}
+.pvbar .t small{font-size:12px;opacity:.8}
+.pvbar .btn{padding:8px 12px;font-size:14px;flex:none;width:auto}
+.pvbar .x{flex:none;background:none;border:1px solid currentColor;color:inherit;border-radius:10px;width:36px;height:36px;font-size:15px;display:grid;place-items:center}
+body.pv #app{padding-top:calc(var(--pvh,58px) + 4px)}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -369,7 +416,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.2.1";
+const APP_VERSION = "1.3";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -1445,8 +1492,48 @@ function applyTheme() {
   const L = P.cur ? look() : blankLook(), root = document.documentElement;
   const dark = L.mode === "dark" || (L.mode === "auto" && mq && mq.matches);
   root.setAttribute("data-theme", dark ? "dark" : "light");
-  if (L.theme && L.theme !== "jr" && owns("theme", L.theme)) root.setAttribute("data-pal", L.theme); else root.removeAttribute("data-pal");
+  const pal = pvPal || (L.theme && L.theme !== "jr" && owns("theme", L.theme) ? L.theme : "");
+  if (pal && pal !== "jr") root.setAttribute("data-pal", pal); else root.removeAttribute("data-pal");
+  bgFx(pal || "jr");
   const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", getComputedStyle(root).getPropertyValue("--bg").trim() || "#2B3A8C");
+}
+
+
+/* ---- fonds animés + aperçu des thèmes ---- */
+const BGFX = { jr: { n: 6, kind: "streak" }, sakura: { n: 18, kind: "fall" }, matcha: { n: 12, kind: "rise" }, indigo: { layer: true }, fuji: { n: 24, kind: "snow", mt: true }, or: { n: 16, kind: "twinkle" }, kyoto: { n: 10, kind: "fall", sym: "🍁" }, shibuya: { layer: true, n: 5, kind: "streak" } };
+var pvPal = null, bgKey = "";
+function bgFx(pal) {
+  let reduce = false; try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  const key = (P.cur && look().bgfx !== false && !reduce) ? (pal || "jr") : "";
+  let el = $("bgfx"); if (key === bgKey && (el || !key)) return; bgKey = key;
+  if (el) el.remove(); const cfg = BGFX[key]; if (!cfg) return;
+  el = h("div", { id: "bgfx", class: "bg-" + key, "aria-hidden": "true" });
+  if (cfg.layer) el.append(h("div", { class: "layer" }));
+  if (cfg.mt) el.append(h("div", { class: "mt" }));
+  const R = (a, b) => (a + Math.random() * (b - a)).toFixed(2);
+  for (let i = 0; i < (cfg.n || 0); i++) {
+    let st = "";
+    if (cfg.kind === "fall") st = "left:" + R(0, 100) + "vw;top:0;animation-duration:" + R(14, 24) + "s;animation-delay:-" + R(0, 24) + "s;--dx:" + R(-60, 60) + "px;--rot:" + R(180, 540) + "deg";
+    else if (cfg.kind === "snow") { const z = R(2, 5); st = "left:" + R(0, 100) + "vw;top:0;width:" + z + "px;height:" + z + "px;animation-duration:" + R(18, 32) + "s;animation-delay:-" + R(0, 32) + "s;--dx:" + R(-30, 30) + "px;--rot:0deg"; }
+    else if (cfg.kind === "rise") { const z = R(6, 16); st = "left:" + R(0, 100) + "vw;top:0;width:" + z + "px;height:" + z + "px;animation-duration:" + R(16, 28) + "s;animation-delay:-" + R(0, 28) + "s;--dx:" + R(-20, 20) + "px"; }
+    else if (cfg.kind === "twinkle") st = "left:" + R(2, 96) + "vw;top:" + R(2, 96) + "vh;animation-duration:" + R(3, 6) + "s;animation-delay:-" + R(0, 6) + "s";
+    else if (cfg.kind === "streak") st = "left:0;top:" + R(5, 95) + "vh;animation-duration:" + R(5, 10) + "s;animation-delay:-" + R(0, 10) + "s";
+    el.append(h("i", { style: st }, cfg.sym || ""));
+  }
+  document.body.prepend(el);
+}
+function startPreview(id) { pvPal = id; document.body.classList.add("pv"); applyTheme(); renderPv(); go("trajet"); }
+function endPreview() { pvPal = null; document.body.classList.remove("pv"); const b = $("pvbar"); if (b) b.remove(); applyTheme(); render(); }
+function renderPv() {
+  let b = $("pvbar"); if (b) b.remove(); if (!pvPal) { document.body.style.removeProperty("--pvh"); return; }
+  const x = PALS.find(q => q.id === pvPal); if (!x) return; const has = owns("theme", x.id), lack = x.price - yen();
+  const sub = has ? "Tu l'as déjà" : x.src === "shop" ? (lack > 0 ? "Il te manque ¥" + lack : "Tu as ¥" + yen()) : howTo(x);
+  const act = has ? h("button", { class: "btn", onclick: () => { const id = pvPal; endPreview(); equip("theme", id); } }, "Équiper")
+    : x.src === "shop" && lack <= 0 ? h("button", { class: "btn", onclick: () => { const id = pvPal; endPreview(); buy("theme", id); } }, "Acheter ¥" + x.price) : null;
+  b = h("div", { id: "pvbar", class: "pvbar", role: "status" },
+    h("div", { class: "t" }, h("b", {}, "Aperçu : " + x.nm), h("small", {}, sub)), act,
+    h("button", { class: "x", "aria-label": "Fermer l'aperçu", onclick: endPreview }, "✕"));
+  document.body.append(b); document.body.style.setProperty("--pvh", b.offsetHeight + "px");
 }
 
 /* ---- avatar ---- */
@@ -1497,7 +1584,7 @@ function viewMissions() {
   } else if (mTab === "boutique") {
     const card = (kind, x) => {
       const has = owns(kind, x.id), on = L[kind] === x.id;
-      return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), h("div", { class: "nm" }, x.nm),
+      return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), h("div", { class: "nm" }, x.nm), kind === "theme" ? h("button", { class: "btn small ghost", onclick: () => startPreview(x.id) }, "👁 Aperçu") : null,
         has ? h("button", { class: "btn small" + (on ? " ghost" : ""), disabled: on, onclick: () => equip(kind, x.id) }, on ? "Équipé" : "Équiper")
           : h("button", { class: "btn small", disabled: yen() < x.price, onclick: e => buy(kind, x.id, e) }, "Acheter ¥" + x.price), has || yen() >= x.price ? null : h("div", { class: "how" }, "Il te manque ¥" + (x.price - yen())));
     };
@@ -1547,7 +1634,7 @@ function viewSettings() {
   nick.addEventListener("keydown", e => { if (e.key === "Enter") saveNick(); });
   const picker = (kind, list) => h("div", { class: "pick" }, list.filter(x => !(kind === "theme" && false)).map(x => {
     const has = owns(kind, x.id);
-    return h("button", { "aria-pressed": L[kind] === x.id ? "true" : "false", disabled: !has, title: has ? x.nm : howTo(x), onclick: () => equip(kind, x.id) },
+    return h("button", { "aria-pressed": L[kind] === x.id ? "true" : "false", disabled: !has && kind !== "theme", title: has ? x.nm : howTo(x), onclick: () => has ? equip(kind, x.id) : startPreview(x.id) },
       kind === "frame" ? avatar(Object.assign({}, L, { frame: x.id, anim: "none" }), p.name, 46) : kind === "anim" ? avatar(Object.assign({}, L, { anim: x.id }), p.name, 46) : kind === "theme" ? preview("theme", x) : null,
       h("span", {}, x.nm), has ? null : h("span", { class: "lk" }, "🔒"));
   }));
@@ -1568,7 +1655,9 @@ function viewSettings() {
       h("label", { style: "display:block;margin-top:14px;font-weight:700;font-size:14px" }, "Pseudo"),
       h("div", { style: "display:flex;gap:8px;margin-top:6px" }, nick, h("button", { class: "btn small", onclick: saveNick }, "Enregistrer")),
       h("p", { class: "hint" }, CLOUD ? "C’est le nom que voit ton groupe dans le classement." : "C’est le nom affiché sur ton accueil.")),
-    h("section", { class: "set" }, h("h2", {}, "Affichage"), modeSeg, h("h2", { style: "margin-top:16px" }, "Thème"), picker("theme", PALS)),
+    h("section", { class: "set" }, h("h2", {}, "Affichage"), modeSeg, h("h2", { style: "margin-top:16px" }, "Thème"), picker("theme", PALS),
+      h("p", { class: "hint" }, "Touche un thème 🔒 pour voir son aperçu."),
+      h("div", { style: "margin-top:10px" }, h("button", { class: "toggle", "aria-pressed": L.bgfx !== false ? "true" : "false", onclick: () => { setLook({ bgfx: L.bgfx === false }); persist(); applyTheme(); render(); } }, L.bgfx !== false ? "Fond animé : activé" : "Fond animé : coupé"))),
     h("section", { class: "set" }, h("h2", {}, "Cadre"), picker("frame", FRAMES), h("h2", { style: "margin-top:16px" }, "Animation"), picker("anim", ANIMS), h("h2", { style: "margin-top:16px" }, "Titre"), titles,
       h("p", { class: "hint" }, "Les éléments 🔒 se gagnent dans l’onglet Missions : boutique ou exploits.")),
     h("section", { class: "set" }, h("h2", {}, "Apprentissage"), h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, romajiToggle(), h("button", { class: "toggle", onclick: () => startTest() }, "Refaire le test de niveau"))),

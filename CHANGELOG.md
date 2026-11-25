@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 1.3 · 25 novembre 2026
+- Chaque thème a son fond animé, très léger : train qui passe, pétales de sakura, bulles de matcha, vagues de Hokusai, neige sur le Fuji, paillettes d'or, feuilles d'érable de Kyoto, néons de Shibuya
+- Aperçu des thèmes avant de les acheter : bouton « 👁 Aperçu » dans la boutique, ou toucher un thème 🔒 dans Réglages. On peut acheter ou équiper directement depuis le bandeau d'aperçu
+- Réglages : interrupteur « Fond animé » pour le couper (il est aussi coupé si ton téléphone demande de réduire les animations)
+
 ## 1.2.1 · 25 novembre 2026
 - Correction : avec deux appareils sur le même compte, l'un pouvait écraser la photo, le thème ou le pseudo choisis sur l'autre
 - Chaque réglage se synchronise séparément (le plus récent gagne) ; les yens gagnés et dépensés s'additionnent entre appareils
