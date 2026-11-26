@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 2.3 · 26 novembre 2026
+- **Plusieurs groupes à la fois** : dans l'onglet Groupe, tes groupes apparaissent en haut, touche un code pour passer de l'un à l'autre, et « ＋ Autre groupe » pour en rejoindre ou en créer un nouveau
+- Chaque groupe garde son classement, son défi du jour et ses clashs. Tes sessions et tes points comptent dans tous tes groupes
+- Isolation stricte : les membres d'un groupe ne voient jamais tes autres groupes ni leurs membres, et tes clashs d'un groupe ne sont envoyés qu'à ce groupe
+- « Quitter le groupe » quitte seulement le groupe affiché, tu restes dans les autres
+
 ## 2.2.1 · 26 novembre 2026
 - **Kana Express plus accessible** : paliers kana à 6, 12, 18 et 25, kanji à 4, 8, 12 et 16. Le dernier palier s'appelle maintenant **Diamant** 💎 (avant Arc-en-ciel)
 - Exploits recalés : Express à 12, Shinkansen humain à 25, Œil de kanji à 12 ; mission du jour : 10 bonnes réponses en une partie

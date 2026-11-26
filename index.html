@@ -757,6 +757,7 @@ body.focus #ambfx{opacity:.25}
 .eqfx-msg{position:fixed;left:50%;top:42%;z-index:71;pointer-events:none;transform:translate(-50%,-50%);font-weight:800;font-size:22px;padding:14px 22px;border-radius:18px;background:var(--surface);color:var(--ink);box-shadow:0 0 0 3px var(--c),0 0 40px var(--c);animation:eqMsg 1.8s cubic-bezier(.2,1.4,.4,1) forwards;white-space:nowrap}
 @keyframes eqMsg{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}15%{transform:translate(-50%,-50%) scale(1.08);opacity:1}25%,75%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-60%) scale(.9);opacity:0}}
 @media (prefers-reduced-motion: reduce){#ambfx,.bfx-rain,.bfx-fly,.eqfx,.av.rf-l::after{display:none}}
+.grpsel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 12px}.grpsel .toggle{font-family:var(--f-led,monospace);letter-spacing:.04em}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -783,7 +784,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.2.1";
+const APP_VERSION = "2.3";
 const CLOUD = !window.claude;
 /* ---------- journal léger (supervision : activité + erreurs, lu par l'alerte bug et le bilan du lundi) ---------- */
 let jrQ = (() => { try { return JSON.parse(localStorage.getItem("mj.jr") || "[]"); } catch (e) { return []; } })(), jrBusy = false; const jrSeen = {};
@@ -1498,7 +1499,7 @@ function finishSession() {
     const hr = new Date().getHours(); if (hr >= 22 || hr < 4) st.night = 1; if (hr >= 4 && hr < 8) st.morning = 1;
   }
   rwCheck();
-  if (CLOUD && session.done >= 10 && !session.counted) { session.counted = true; addPts(50 + 5 * Math.min(S.streak.n || 0, 7)); if (S.grp && S.grp.code) S.grp.sessions = (S.grp.sessions || 0) + 1; }
+  if (CLOUD && session.done >= 10 && !session.counted) { session.counted = true; addPts(50 + 5 * Math.min(S.streak.n || 0, 7)); if (S.grp && S.grp.code) S.grp.sessions = (S.grp.sessions || 0) + 1; for (const b of Object.values(S.grpOff || {})) if (b && b.grp) b.grp.sessions = (b.grp.sessions || 0) + 1; }
   persist(); if (!session.finished && session.done) sfx("done"); session.finished = true; render();
   if (CLOUD) cloudSync();
 }
@@ -2782,8 +2783,25 @@ const FB_CONFIG = { apiKey: "AIzaSyB6oF1oppPS_znM2m1KZZ2jAVOIF61jyS4", authDomai
 const FB_BASE = "https://www.gstatic.com/firebasejs/10.12.2/";
 let fb = null, cloudUser = null, cloudState = "off", cloudDirty = false, members = [], membersUnsub = null, emailPending = false, cloudMsg = "", lbMode = "week", cloudBusy = false;
 const weekKeyOf = (d = new Date()) => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return todayKey(x); };
-function grpEnsureWeek() { if (!S.grp) return; const wk = weekKeyOf(); if (S.grp.weekKey !== wk) { S.grp.weekKey = wk; S.grp.week = 0; S.grp.sessions = 0; } }
-function addPts(n) { if (!S.grp || !S.grp.code) return; grpEnsureWeek(); S.grp.points = (S.grp.points || 0) + n; S.grp.week = (S.grp.week || 0) + n; }
+function wkFix(g) { const wk = weekKeyOf(); if (g && g.weekKey !== wk) { g.weekKey = wk; g.week = 0; g.sessions = 0; } }
+function grpEnsureWeek() { if (!S.grp) return; wkFix(S.grp); }
+function addPts(n) { if (!S.grp || !S.grp.code) return; grpEnsureWeek(); S.grp.points = (S.grp.points || 0) + n; S.grp.week = (S.grp.week || 0) + n;
+  for (const b of Object.values(S.grpOff || {})) { if (!b || !b.grp) continue; wkFix(b.grp); b.grp.points = (b.grp.points || 0) + n; b.grp.week = (b.grp.week || 0) + n; } }
+/* ---- plusieurs groupes : un groupe actif (classement, défi, clashs affichés), les autres rangés dans S.grpOff avec leurs propres défis et clashs.
+   Rien ne passe d'un groupe à l'autre : chaque fiche membre ne reçoit que les défis et clashs de son groupe. ---- */
+function grpOffs() { if (!S.grpOff) S.grpOff = {}; return S.grpOff; }
+function allGroups() { return [S.grp && S.grp.code, ...Object.keys(S.grpOff || {})].filter(Boolean); }
+function stashActive() { if (S.grp && S.grp.code) grpOffs()[S.grp.code] = { grp: S.grp, duel: S.duel || {}, clashOut: S.clashOut || [], clashIn: S.clashIn || {} }; }
+function loadGroup(code) { const b = (S.grpOff || {})[code]; if (S.grpOff) delete S.grpOff[code];
+  S.grp = b && b.grp ? b.grp : { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }; S.duel = (b && b.duel) || {}; S.clashOut = (b && b.clashOut) || []; S.clashIn = (b && b.clashIn) || {}; }
+function clearSlots() { S.grp = null; S.duel = {}; S.clashOut = []; S.clashIn = {}; }
+async function switchGroup(code) {
+  if (!S.grp || S.grp.code === code || !(S.grpOff || {})[code] || game) return;
+  stashActive(); loadGroup(code); stopMembers(); persist(); render(); toast("Groupe " + code);
+  try { await pushMember(); watchMembers(); cloudDirty = true; await cloudPush(); } catch (e) {}
+  render();
+}
+let grpAddOpen = false;
 function linked() { return !!(cloudUser && prof() && prof().uid === cloudUser.uid); }
 const cloudErr = e => (e && e.code) || "inconnue";
 
@@ -2816,7 +2834,18 @@ function rwNorm(r) { if (!r) return null; r = Object.assign({}, r);
   if (typeof r.yen === "number") { r.earn = Object.assign({}, r.earn, { legacy: Math.max((r.earn || {}).legacy || 0, r.yen) }); delete r.yen; }
   if (typeof r.freeze === "number") { r.fb = Object.assign({}, r.fb, { legacy: Math.max((r.fb || {}).legacy || 0, r.freeze) }); delete r.freeze; }
   return r; }
-function mergeState(a, b) {
+function mergeState(a0, b0) {
+  let a = a0, b = b0;
+  if (a && b && a.grp && b.grp && a.grp.code && b.grp.code && a.grp.code !== b.grp.code) {
+    b = Object.assign({}, b0, { grp: null, duel: {}, clashOut: [], clashIn: {}, grpOff: Object.assign({}, b0.grpOff || {}) });
+    if (!b.grpOff[b0.grp.code]) b.grpOff[b0.grp.code] = { grp: b0.grp, duel: b0.duel || {}, clashOut: b0.clashOut || [], clashIn: b0.clashIn || {} };
+  }
+  const out = mergeState0(a, b), act = out.grp && out.grp.code, offs = {};
+  for (const src of [b.grpOff || {}, a.grpOff || {}]) for (const [c, v] of Object.entries(src)) { if (!v || !v.grp || c === act) continue; const w = offs[c]; if (!w || (v.grp.points || 0) >= (w.grp.points || 0)) offs[c] = v; }
+  out.grpOff = offs;
+  return out;
+}
+function mergeState0(a, b) {
   const out = Object.assign(blank(), a, { srs: Object.assign({}, a.srs) });
   for (const [id, v] of Object.entries(b.srs || {})) { const w = out.srs[id]; if (!w || v[2] > w[2] || (v[2] === w[2] && v[1] > w[1])) out.srs[id] = v; }
   out.daily = Object.assign({}, b.daily || {}, a.daily || {});
@@ -2864,7 +2893,9 @@ async function cloudPull() {
     const [pSnap, uSnap] = await Promise.all([F.getDoc(F.doc(db, "users", uid, "progress", "main")), F.getDoc(F.doc(db, "users", uid))]);
     if (pSnap.exists() && typeof pSnap.data().json === "string") S = mergeState(S, JSON.parse(pSnap.data().json));
     const u = uSnap.exists() ? uSnap.data() : {};
-    if (u.group && (!S.grp || S.grp.code !== u.group)) S.grp = { code: u.group, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
+    { const codes = Array.isArray(u.groups) ? u.groups.filter(c => typeof c === "string") : u.group ? [u.group] : [];
+      if (Array.isArray(u.groups)) for (const c of Object.keys(S.grpOff || {})) if (!codes.includes(c)) delete S.grpOff[c];
+      for (const c of codes) if (!allGroups().includes(c)) { if (!S.grp || !S.grp.code) loadGroup(c); else grpOffs()[c] = { grp: { code: c, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }, duel: {}, clashOut: [], clashIn: {} }; } }
     if (S.nick && prof() && prof().name !== S.nick) { prof().name = S.nick; saveP(); }
     applyTheme();
     try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
@@ -2880,7 +2911,7 @@ async function cloudPush() {
     try { const sn = await F.getDoc(ref); if (sn.exists() && typeof sn.data().json === "string") { const before = JSON.stringify([S.look, S.nick]); S = mergeState(S, JSON.parse(sn.data().json)); try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
       if (JSON.stringify([S.look, S.nick]) !== before) { if (S.nick && p.name !== S.nick) { p.name = S.nick; saveP(); } applyTheme(); if (!session && !test) render(); } } } catch (e) {}
     await F.setDoc(ref, { json: JSON.stringify(S), updatedAt: Date.now(), v: 2 });
-    await F.setDoc(F.doc(db, "users", uid), { name: p.name, level: p.level || "zero", group: (S.grp && S.grp.code) || null, updatedAt: Date.now() }, { merge: true });
+    await F.setDoc(F.doc(db, "users", uid), { name: p.name, level: p.level || "zero", group: (S.grp && S.grp.code) || null, groups: allGroups(), updatedAt: Date.now() }, { merge: true });
     cloudState = "synced"; lastSync = Date.now(); cloudMsg = ""; jrFlush();
   } catch (e) { cloudDirty = true; cloudState = "error"; jlog("sync", "push " + cloudErr(e)); cloudMsg = "Synchro impossible pour l’instant (" + cloudErr(e) + ")."; }
   updateSync();
@@ -2888,12 +2919,17 @@ async function cloudPush() {
 async function pushMember() {
   if (!linked() || !S.grp || !S.grp.code) return false;
   grpEnsureWeek();
-  const { F, db } = fb, ref = F.doc(db, "groups", S.grp.code, "members", cloudUser.uid);
+  await pushMemberB(S.grp, S.duel, S.clashOut, S.clashIn);
+  for (const b of Object.values(S.grpOff || {})) { if (!b || !b.grp || !b.grp.code) continue; try { wkFix(b.grp); await pushMemberB(b.grp, b.duel, b.clashOut, b.clashIn); } catch (e) {} }
+  return true;
+}
+async function pushMemberB(g, duel, cout, cin) {
+  const { F, db } = fb, ref = F.doc(db, "groups", g.code, "members", cloudUser.uid);
   let old = null; try { const sn = await F.getDoc(ref); if (sn.exists()) old = sn.data().points || 0; } catch (e) {}
-  let pts = S.grp.points || 0;
+  let pts = g.points || 0;
   if (old === null) pts = Math.min(pts, 390); else { if (pts < old) pts = old; if (pts - old > 390) pts = old + 390; }
-  S.grp.points = pts;
-  await F.setDoc(ref, { name: prof().name, points: pts, week: S.grp.week || 0, weekKey: S.grp.weekKey, sessions: S.grp.sessions || 0, streak: S.streak.n || 0, station: CH.indexOf(currentChapter()), duel: S.duel || {}, cout: (S.clashOut || []).slice(-12), cin: S.clashIn || {}, look: (() => { const L = look(); return { frame: L.frame, title: L.title, anim: L.anim, photo: L.photo || "" }; })(), updatedAt: Date.now() });
+  g.points = pts;
+  await F.setDoc(ref, { name: prof().name, points: pts, week: g.week || 0, weekKey: g.weekKey, sessions: g.sessions || 0, streak: S.streak.n || 0, station: CH.indexOf(currentChapter()), duel: duel || {}, cout: (cout || []).slice(-12), cin: cin || {}, look: (() => { const L = look(); return { frame: L.frame, title: L.title, anim: L.anim, photo: L.photo || "" }; })(), updatedAt: Date.now() });
   return true;
 }
 function watchMembers() {
@@ -2914,27 +2950,30 @@ async function cloudSync() { if (!linked()) return; try { await cloudPush(); awa
 async function createGroup() {
   const A = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let code = "MJ-"; for (let i = 0; i < 6; i++) code += A[Math.floor(Math.random() * A.length)];
   const { F, db } = fb; cloudBusy = true; render();
+  const prevCode = S.grp && S.grp.code;
   try {
     await F.setDoc(F.doc(db, "groups", code), { name: "Mission Japon", owner: cloudUser.uid, createdAt: Date.now() });
-    S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }; persist();
-    await pushMember(); cloudDirty = true; await cloudPush(); watchMembers(); toast("Groupe créé : " + code);
-  } catch (e) { cloudMsg = "Création impossible (" + cloudErr(e) + ")."; }
+    stashActive(); clearSlots(); S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }; stopMembers(); persist();
+    await pushMember(); cloudDirty = true; await cloudPush(); watchMembers(); grpAddOpen = false; toast("Groupe créé : " + code);
+  } catch (e) { if (!S.grp || S.grp.code !== prevCode) { clearSlots(); if (prevCode) loadGroup(prevCode); } cloudMsg = "Création impossible (" + cloudErr(e) + ")."; }
   cloudBusy = false; render();
 }
 async function joinGroup(raw) {
   const code = raw.trim().toUpperCase().replace(/\s+/g, "");
   if (!/^[A-Z0-9-]{6,20}$/.test(code)) { cloudMsg = "Ce code n’a pas le bon format (exemple : MJ-K7P2QX)."; render(); return; }
+  if (S.grp && S.grp.code === code) { grpAddOpen = false; render(); return; }
+  if ((S.grpOff || {})[code]) { grpAddOpen = false; switchGroup(code); return; }
   cloudBusy = true; render();
-  const prev = S.grp; S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
-  try { await pushMember(); persist(); cloudDirty = true; await cloudPush(); watchMembers(); cloudMsg = ""; toast("Bienvenue dans le groupe !"); rwCheck(); }
-  catch (e) { S.grp = prev; cloudMsg = e && e.code === "permission-denied" ? "Code inconnu. Vérifie-le auprès de la personne qui a créé le groupe." : "Impossible de rejoindre (" + cloudErr(e) + ")."; }
+  const prevCode = S.grp && S.grp.code; stashActive(); clearSlots(); S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
+  try { await pushMemberB(S.grp, {}, [], {}); stopMembers(); persist(); cloudDirty = true; await cloudPush(); pushMember(); watchMembers(); cloudMsg = ""; grpAddOpen = false; toast("Bienvenue dans le groupe !"); rwCheck(); }
+  catch (e) { clearSlots(); if (prevCode) loadGroup(prevCode); cloudMsg = e && e.code === "permission-denied" ? "Code inconnu. Vérifie-le auprès de la personne qui a créé le groupe." : "Impossible de rejoindre (" + cloudErr(e) + ")."; }
   cloudBusy = false; render();
 }
 async function leaveGroup(e) {
   if (!leaveArmed) { leaveArmed = true; e.currentTarget.textContent = "Confirmer : quitter le groupe"; return; }
   leaveArmed = false;
   try { await fb.F.deleteDoc(fb.F.doc(fb.db, "groups", S.grp.code, "members", cloudUser.uid)); } catch (err) {}
-  stopMembers(); S.grp = null; persist(); cloudDirty = true; await cloudPush(); render();
+  stopMembers(); clearSlots(); const nx = Object.keys(S.grpOff || {})[0]; if (nx) loadGroup(nx); persist(); cloudDirty = true; await cloudPush(); if (nx) watchMembers(); render();
 }
 let leaveArmed = false;
 async function signInGoogle() {
@@ -2978,17 +3017,21 @@ function viewGroupe() {
       msg);
     return wrap;
   }
-  if (!S.grp || !S.grp.code) {
+  const joinBox = () => {
     const inp = h("input", { id: "joinCode", placeholder: "Code du groupe, ex. MJ-K7P2QX", style: inputStyle + ";text-transform:uppercase", autocomplete: "off", autocapitalize: "characters" });
     inp.addEventListener("keydown", e => { if (e.key === "Enter") joinGroup(inp.value); });
     wrap.append(
       h("div", { class: "today", style: "grid-template-columns:1fr;margin-top:0" },
-        h("div", {}, h("div", { class: "eyebrow" }, "Rejoindre le groupe"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Entre le code envoyé par la personne qui a créé le groupe.")),
+        h("div", {}, h("div", { class: "eyebrow" }, S.grp && S.grp.code ? "Rejoindre un autre groupe" : "Rejoindre le groupe"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Entre le code envoyé par la personne qui a créé le groupe.")),
         h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, inp, h("button", { class: "btn", onclick: () => joinGroup(inp.value), disabled: cloudBusy }, "Rejoindre"))),
-      h("div", { class: "today" }, h("div", {}, h("div", { class: "eyebrow" }, "Personne n’a encore de groupe ?"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Crée-le et partage le code à tes potes.")), h("button", { class: "btn ghost", onclick: createGroup, disabled: cloudBusy }, "Créer un groupe")),
-      msg, accountFooter());
-    return wrap;
-  }
+      h("div", { class: "today" }, h("div", {}, h("div", { class: "eyebrow" }, S.grp && S.grp.code ? "Un nouveau groupe ?" : "Personne n’a encore de groupe ?"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Crée-le et partage le code à tes potes.")), h("button", { class: "btn ghost", onclick: createGroup, disabled: cloudBusy }, "Créer un groupe")));
+  };
+  if (!S.grp || !S.grp.code) { joinBox(); wrap.append(msg, accountFooter()); return wrap; }
+  { const codes = allGroups();
+    wrap.append(h("div", { class: "grpsel" }, h("span", { class: "muted", style: "font-size:13px" }, codes.length > 1 ? "Mes groupes" : "Mon groupe"),
+      ...codes.map(c => h("button", { class: "toggle", "aria-pressed": c === S.grp.code ? "true" : "false", disabled: !!game, onclick: () => switchGroup(c) }, c)),
+      h("button", { class: "toggle", "aria-pressed": grpAddOpen ? "true" : "false", onclick: () => { grpAddOpen = !grpAddOpen; render(); } }, grpAddOpen ? "✕ Fermer" : "＋ Autre groupe")));
+    if (grpAddOpen) { joinBox(); wrap.append(h("p", { class: "hint" }, "Chaque groupe a son classement, son défi du jour et ses clashs. Tes sessions comptent dans tous tes groupes, mais personne ne voit tes autres groupes.")); } }
   grpEnsureWeek();
   if (game) return viewGame();
   gameRewards();
@@ -3160,7 +3203,7 @@ function accountFooter(inGroup) {
   return h("div", { style: "display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;align-items:center" },
     h("span", { class: "sync" }, "Connecté : " + (cloudUser.email || "compte Google")),
     h("button", { class: "toggle", onclick: cloudSignOut }, "Se déconnecter"),
-    inGroup ? h("button", { class: "toggle", onclick: leaveGroup }, "Quitter le groupe") : null);
+    inGroup ? h("button", { class: "toggle", onclick: leaveGroup }, "Quitter le groupe " + S.grp.code) : null);
 }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") jlogOpen(); if (document.visibilityState === "hidden") { cloudPush(); jrFlush(); } else if (linked() && !session && !test) { cloudDirty = true; cloudPush(); } });
 setInterval(() => { cloudPush(); jrFlush(); }, 60000);
