@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 1.5 · 26 novembre 2026
+- Session : après chaque réponse, une barre se remplit puis passe à la question suivante (4 s si c'est juste, 7 s si c'est faux, un peu plus pour les phrases). Touche la barre pour faire pause, ou « Suivant » pour enchaîner
+- Fini les validations par erreur : un double tap ou un tap trop rapide sur la nouvelle question est ignoré
+- Sons (juste, faux, combo, fin de session) et animations : étincelles sur la bonne réponse, compteur 🔥 de bonnes réponses d'affilée, la bonne réponse clignote quand tu te trompes. Interrupteur « Sons » dans Profil et réglages
+- Missions : bouton « 🎁 Tout récupérer » quand plusieurs récompenses attendent
+- La mission « Revois 8 cartes des jours précédents » (ancien « Révise 8 cartes déjà vues ») n'est plus proposée les jours où il n'y a pas assez de cartes à revoir
+
 ## 1.4.1 · 26 novembre 2026
 - Correction : une personnalisation faite avant la 1.2.1 (photo, cadre, thème, mode sombre…) n'arrivait pas sur un autre appareil connecté au même compte. Désormais, une personnalisation l'emporte toujours sur un réglage resté par défaut
 - Profil et réglages : bouton « Synchroniser maintenant » et heure de la dernière synchro
