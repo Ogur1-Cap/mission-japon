@@ -542,7 +542,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.8";
+const APP_VERSION = "1.8.1";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -2261,6 +2261,28 @@ function gameQs(seed) {
   return take(qs, qs.length);
 }
 const yday = () => dayAdd(todayKey(), -1);
+/* défi du jour à partir du 27/11 : 10 questions sur ce que TU as vu la veille (rappel espacé), puis les jours d'avant si besoin */
+const DUEL_V2 = "2026-11-27";
+const lastSeenDay = id => { const v = S.srs[id]; return v ? todayKey(new Date(v[1] - (INTERVAL[v[0]] || 0))) : ""; };
+function duelPool() {
+  const yd = yday(), out = [], add = ids => ids.forEach(id => ITEMS[id] && !out.includes(id) && out.push(id));
+  add((S.seen || {})[yd] || []); add(Object.keys(S.srs).filter(id => lastSeenDay(id) === yd));
+  if (out.length < G_N) { const rec = Object.keys(S.srs).filter(id => ITEMS[id] && lastSeenDay(id) < todayKey()).sort((a, b) => lastSeenDay(b).localeCompare(lastSeenDay(a))); add(rec); }
+  if (out.length < G_N) add(ORDER.kana.slice(0, G_N));
+  return out;
+}
+function cardQ(it, rnd, take) {
+  if (it.cat === "kana") { const pool = Object.values(ITEMS).filter(x => x.cat === "kana" && x.script === it.script && x.ro !== it.ro);
+    return { prompt: it.c, opts: take([it, ...take(pool, 3)], 4).map(o => ({ label: o.ro, ok: o.id === it.id })), reveal: it.c + " = " + it.ro }; }
+  const pool = Object.values(ITEMS).filter(x => x.cat === it.cat && x.id !== it.id && x.fr !== it.fr);
+  return { prompt: it.cat === "phrase" ? it.jp : it.c, long: true, opts: take([it, ...take(pool, 3)], 4).map(o => ({ label: o.fr, ok: o.id === it.id })), reveal: (it.cat === "phrase" ? it.jp : it.c + " (" + it.ro + ")") + " · " + it.fr };
+}
+function duelQsV2(seed) {
+  const rnd = seeded(hashStr(seed)), take = (arr, n) => { const a = arr.slice(), o = []; while (o.length < n && a.length) o.push(a.splice(Math.floor(rnd() * a.length), 1)[0]); return o; };
+  const pool = duelPool(), yd = yday(), fromY = pool.filter(id => ((S.seen || {})[yd] || []).includes(id) || lastSeenDay(id) === yd);
+  const pickIds = take(fromY, G_N); if (pickIds.length < G_N) pickIds.push(...pool.filter(id => !pickIds.includes(id)).slice(0, G_N - pickIds.length));
+  return take(pickIds, pickIds.length).map(id => cardQ(ITEMS[id], rnd, take));
+}
 function gTrim() { const lim = dayAdd(todayKey(), -7);
   if (S.duel) for (const k of Object.keys(S.duel)) if (k < lim) delete S.duel[k];
   if (S.clashOut) S.clashOut = S.clashOut.filter(c => todayKey(new Date(c.at)) >= lim).slice(-12);
@@ -2269,7 +2291,7 @@ function startGame(kind, opt = {}) {
   const today = todayKey();
   if (kind === "duel") { if ((S.duel || {})[today]) return; S.duel = Object.assign({}, S.duel, { [today]: { s: 0, ok: 0, live: 1 } }); persist(); }
   const seed = kind === "duel" ? "duel:" + S.grp.code + ":" + today : opt.seed || ("c:" + cloudUser.uid + ":" + now());
-  game = Object.assign({ kind, seed, qs: gameQs(seed), i: 0, s: 0, ok: 0, t0: 0, picked: null, done: false }, opt);
+  game = Object.assign({ kind, seed, qs: kind === "duel" && today >= DUEL_V2 ? duelQsV2(seed + ":" + cloudUser.uid) : gameQs(seed), i: 0, s: 0, ok: 0, t0: 0, picked: null, done: false }, opt);
   view = "groupe"; render(); window.scrollTo(0, 0); gameAsk();
 }
 function gameAsk() { const g = game; if (!g) return; clearTimeout(gameT); g.picked = null; g.t0 = now(); g.readyAt = now() + 400; render();
@@ -2317,7 +2339,7 @@ function viewGame() {
       h("div", { class: "exam-pts" }, h("b", {}, g.s), h("span", {}, " pts")), h("p", { class: "muted" }, g.ok + " bonnes réponses sur " + g.qs.length + (g.paid ? " · +¥" + g.paid : "")));
     if (g.kind === "clash") res.append(h("p", {}, "Défi envoyé à " + g.toName + ". Dès qu’il ou elle aura joué les mêmes questions, le résultat s’affiche dans l’onglet Groupe. Le gagnant touche ¥" + CLASH_YEN + "."));
     if (g.kind === "reply") res.append(h("p", { style: "font-weight:700" }, g.s > g.theirs ? "🏆 Tu bats " + g.fromName + " (" + g.theirs + " pts) !" : g.s === g.theirs ? "Égalité parfaite avec " + g.fromName + " !" : g.fromName + " gagne avec " + g.theirs + " pts. Revanche ?"));
-    if (g.kind === "duel") res.append(h("p", {}, "Les autres membres jouent les mêmes questions aujourd’hui. Le meilleur score de la journée gagne ¥" + CHAMP_YEN + " demain."));
+    if (g.kind === "duel") res.append(h("p", {}, (todayKey() >= DUEL_V2 ? "Chacun joue sur ce qu’il a appris la veille." : "Les autres membres jouent les mêmes questions aujourd’hui.") + " Le meilleur score de la journée gagne ¥" + CHAMP_YEN + " demain."));
     res.append(h("button", { class: "btn", onclick: () => { game = null; render(); } }, "Retour au groupe"));
     wrap.append(res); return wrap;
   }
@@ -2343,7 +2365,7 @@ function gamesBlock() {
     return h("div", { class: "clash" + (r.s > c.s ? " win" : r.s === c.s ? "" : " lose") }, h("span", { class: "ic" }, r.s > c.s ? "🏆" : r.s === c.s ? "🤝" : "💥"), h("span", { class: "tx" }, (r.s > c.s ? "Tu bats " : r.s === c.s ? "Égalité avec " : "Battu par ") + (f.name || "?") + " · " + r.s + " à " + c.s)); });
   return [h("div", { class: "sec-h" }, h("h2", {}, "Jeux du groupe"), h("span", { class: "muted", style: "font-size:13px" }, "chaque jour")),
     h("div", { class: "gcard duel" },
-      h("div", { class: "gh" }, h("span", { class: "big" }, "⚡"), h("div", {}, h("b", {}, "Défi du jour"), h("small", {}, "10 questions, 10 s chacune, les mêmes pour tout le groupe. Un seul essai !")),
+      h("div", { class: "gh" }, h("span", { class: "big" }, "⚡"), h("div", {}, h("b", {}, "Défi du jour"), h("small", {}, todayKey() >= DUEL_V2 ? "10 questions sur ce que tu as appris hier, 10 s chacune. Un seul essai !" : "10 questions, 10 s chacune, les mêmes pour tout le groupe. Un seul essai !")),
         mine ? h("span", { class: "gsc" }, mine.s + " pts") : h("button", { class: "btn small", onclick: () => startGame("duel") }, "Jouer")),
       dl.length ? h("ol", { class: "glb" }, dl.map((x, i) => h("li", { class: x.uid === me ? "me" : "" }, h("span", {}, ["🥇", "🥈", "🥉"][i] || i + 1), avatar(x.look || {}, x.name, 26), h("span", { class: "n" }, x.name + (x.uid === me ? " (toi)" : "")), h("b", {}, x.s)))) : null,
       notYet.length ? h("small", { class: "muted" }, "Pas encore joué : " + notYet.join(", ")) : null,

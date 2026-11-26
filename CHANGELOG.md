@@ -1,5 +1,8 @@
 # Journal des versions
 
+## 1.8.1 · 26 novembre 2026
+- Défi du jour, à partir du 27 novembre : 10 questions sur ce que chacun a appris la veille (rappel espacé), complétées par les jours d'avant si besoin. Un vrai débutant n'a donc que des questions sur ce qu'il a déjà vu. Le défi du 26 reste commun à tout le groupe
+
 ## 1.8 · 26 novembre 2026
 - Groupe : nouveaux jeux. Le **défi du jour** : 10 questions chronométrées (10 s chacune), les mêmes pour tout le groupe, un seul essai. Plus tu réponds vite, plus tu marques. ¥50 pour jouer, ¥150 le lendemain pour le meilleur score
 - **Clashs** : défie un pote sur 10 questions ; il ou elle joue les mêmes et le meilleur score gagne ¥100 (¥50 chacun en cas d'égalité). Un point rouge sur l'onglet Groupe signale qu'on te défie
