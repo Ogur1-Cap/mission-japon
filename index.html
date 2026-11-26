@@ -647,7 +647,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.0";
+const APP_VERSION = "2.0.1";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -2246,14 +2246,14 @@ function applyTheme() {
 
 
 /* ---- effets au toucher propres à chaque thème ---- */
-const PFX = { sakura: ["🌸", "❀", "🌸"], matcha: ["🍃", "🍃", "🍵"], indigo: ["💧", "～", "💧"], fuji: ["❄", "❅", "❆"], or: ["✦", "✧", "★"], kyoto: ["🍁", "🍂", "🍁"], shibuya: ["◆", "▪", "◆"] };
+const PFX = { jr: ["✦", "•", "✧"], sakura: ["🌸", "❀", "🌸"], matcha: ["🍃", "🍃", "🍵"], indigo: ["💧", "～", "💧"], fuji: ["❄", "❅", "❆"], or: ["✦", "✧", "★"], kyoto: ["🍁", "🍂", "🍁"], shibuya: ["◆", "▪", "◆"] };
 document.addEventListener("pointerdown", e => {
-  const pal = document.documentElement.getAttribute("data-pal"); if (!pal || !PFX[pal] || !P.cur || look().bgfx === false) return;
+  const pal = document.documentElement.getAttribute("data-pal") || "jr"; if (!PFX[pal] || !P.cur || look().bgfx === false) return;
   try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (x) {}
-  const t = e.target.closest && e.target.closest(".btn,.choice,.seg button,.toggle,.nav button"); if (!t || t.disabled) return;
+  const t = e.target; if (t && t.closest && (t.closest("input,textarea,select,[contenteditable]") || t.closest("button:disabled"))) return;
   const set = PFX[pal];
   for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (Math.random() - .5) * 2.4, d = 30 + Math.random() * 40;
-    const sp = h("span", { class: "pfx", style: "--x0:" + (e.clientX - 7) + "px;--y0:" + (e.clientY - 7) + "px;--dx:" + Math.round(Math.cos(a) * d) + "px;--dy:" + Math.round(Math.sin(a) * d) + "px;--r:" + Math.round((Math.random() - .5) * 360) + "deg;animation-delay:" + (i * 25) + "ms" + (pal === "shibuya" ? ";color:" + (i % 2 ? "#2FF3FF" : "#FF3FD8") + ";text-shadow:0 0 6px currentColor" : pal === "or" ? ";color:#E9C46A;text-shadow:0 0 6px #E9C46A" : pal === "fuji" ? ";color:#9CC3F0" : "") }, set[i % set.length]);
+    const sp = h("span", { class: "pfx", style: "--x0:" + (e.clientX - 7) + "px;--y0:" + (e.clientY - 7) + "px;--dx:" + Math.round(Math.cos(a) * d) + "px;--dy:" + Math.round(Math.sin(a) * d) + "px;--r:" + Math.round((Math.random() - .5) * 360) + "deg;animation-delay:" + (i * 25) + "ms" + (pal === "shibuya" ? ";color:" + (i % 2 ? "#2FF3FF" : "#FF3FD8") + ";text-shadow:0 0 6px currentColor" : pal === "or" ? ";color:#E9C46A;text-shadow:0 0 6px #E9C46A" : pal === "fuji" ? ";color:#9CC3F0" : pal === "jr" ? ";color:" + (i % 2 ? "#E9C46A" : "var(--accent,#2B3A8C)") : "") }, set[i % set.length]);
     document.body.append(sp); setTimeout(() => sp.remove(), 950); }
 }, { passive: true });
 

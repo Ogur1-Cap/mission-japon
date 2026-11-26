@@ -1,5 +1,8 @@
 # Journal des versions
 
+## 2.0.1 · 26 novembre 2026
+- Les petites particules du thème jaillissent maintenant à chaque toucher, n'importe où dans l'app (plus seulement sur certains boutons), y compris avec le thème JR de base. Elles se coupent dans Réglages > Effets animés
+
 ## 2.0 · 26 novembre 2026
 - **Boîtes** : 木 bois, 竹 bambou, 漆 laque et 金 or, avec 4 raretés (commun, rare, épique, légendaire). Une boîte en bois gratuite chaque jour, une boîte en bambou pour ta leçon du jour (10 cartes), d'autres avec Kana Express et certains exploits. Jamais de doublon, chances affichées, épique garanti au moins toutes les 10 boîtes et légendaire toutes les 30. Quand une rareté est complète, les boîtes donnent des fragments pour fabriquer l'objet de ton choix à l'Atelier
 - **Kana Express** (onglet Pratique) : le plus de bonnes réponses en 1 minute, en kana (son ↔ caractère) ou en kanji (lecture ou sens). Une erreur coûte 2 s. Paliers Bronze, Argent, Or et Arc-en-ciel (10/20/30/40 en kana, 6/12/18/25 en kanji) qui donnent des boîtes, 2 par jour maximum, avec 70 % de précision minimum
