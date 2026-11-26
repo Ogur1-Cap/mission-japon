@@ -1,5 +1,8 @@
 # Journal des versions
 
+## 2.0.2 · 26 novembre 2026
+- Petit journal de supervision : l'appli note discrètement les ouvertures, les sessions, missions, défis, clashs, boîtes, ainsi que les erreurs et les échecs de synchro (prénom, heure, type d'événement, jamais le contenu des réponses). Il sert à l'alerte en cas de bug et au bilan du lundi. Rien ne change à l'écran
+
 ## 2.0.1 · 26 novembre 2026
 - Les petites particules du thème jaillissent maintenant à chaque toucher, n'importe où dans l'app (plus seulement sur certains boutons), y compris avec le thème JR de base. Elles se coupent dans Réglages > Effets animés
 
