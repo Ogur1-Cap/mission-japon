@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 2.1 · 26 novembre 2026
+- **Une rareté pour chaque récompense** : les objets de la boutique (selon leur prix) et ceux des exploits (selon la difficulté de l'exploit) ont maintenant aussi une rareté, affichée dans la collection et la boutique
+- **Ouvertures épiques** : la boîte se charge et tremble, l'écran vire au violet, puis elle explose en éclats avec un flash, une onde de choc, des rayons qui tournent et une fanfare
+- **Ouvertures légendaires** : l'écran s'assombrit, la boîte s'élève et tremble pendant 2 secondes dans des rayons dorés, puis explose (flash blanc et or, 3 ondes de choc, secousse). L'objet arrive en grand, avec une double couronne de rayons, une pluie d'étoiles dorées, un titre en or animé et 3 salves de confettis. Le téléphone vibre aussi (sur Android)
+
 ## 2.0.2 · 26 novembre 2026
 - Petit journal de supervision : l'appli note discrètement les ouvertures, les sessions, missions, défis, clashs, boîtes, ainsi que les erreurs et les échecs de synchro (prénom, heure, type d'événement, jamais le contenu des réponses). Il sert à l'alerte en cas de bug et au bilan du lundi. Rien ne change à l'écran
 

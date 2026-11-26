@@ -488,6 +488,43 @@ body.pv #app{padding-top:calc(var(--pvh,58px) + 4px)}
 .bx-item{display:grid;place-items:center;margin:12px auto;width:112px;height:112px;border-radius:50%;box-shadow:0 0 0 3px var(--rc),0 0 40px var(--rc);background:var(--surface);animation:bxpop .5s cubic-bezier(.2,1.6,.4,1)}
 .bx-item .pv-emo{background:none;font-size:48px}
 @keyframes bxpop{from{transform:scale(.2);opacity:0}}
+.shop .item{position:relative}.item .rd{position:absolute;top:8px;right:8px;width:9px;height:9px;border-radius:50%}.item .rtag{font-size:11px;font-weight:700;margin-top:-2px}
+#boxov{transition:background .7s}#boxov .box{position:relative;z-index:2}
+#boxov.dim-e{background:rgba(26,8,44,.88)}#boxov.dim-l{background:rgba(5,4,10,.95)}
+.bx-big.charge{animation:bxcharge var(--cd,1.1s) cubic-bezier(.55,0,1,1) forwards;box-shadow:0 0 0 6px var(--rc),0 0 60px var(--rc),0 0 150px var(--rc)}
+@keyframes bxcharge{0%{transform:none}10%{transform:rotate(-4deg) scale(1.03)}20%{transform:rotate(5deg) scale(1.05)}30%{transform:rotate(-6deg) scale(1.08)}40%{transform:rotate(7deg) scale(1.1) translateY(-2px)}50%{transform:rotate(-8deg) scale(1.13) translateY(-5px)}60%{transform:rotate(9deg) scale(1.16) translateY(-8px)}70%{transform:rotate(-10deg) scale(1.2) translateY(-10px);filter:brightness(1.3)}80%{transform:rotate(11deg) scale(1.24) translateY(-12px);filter:brightness(1.6)}90%{transform:rotate(-12deg) scale(1.3) translateY(-14px);filter:brightness(2.2)}100%{transform:scale(1.5) translateY(-14px);filter:brightness(4);opacity:0}}
+.ov-rays{position:absolute;left:50%;top:50%;width:960px;height:960px;margin:-480px 0 0 -480px;pointer-events:none;z-index:1;border-radius:50%;background:repeating-conic-gradient(from 0deg,var(--rc) 0 7deg,transparent 7deg 20deg);-webkit-mask:radial-gradient(circle,#000 0,rgba(0,0,0,.55) 28%,transparent 62%);mask:radial-gradient(circle,#000 0,rgba(0,0,0,.55) 28%,transparent 62%);opacity:0;animation:raysIn .9s ease-out forwards,raysSpin 16s linear infinite}
+.ov-rays.pre{animation:raysPre 2s ease-in forwards,raysSpin 6s linear infinite}
+.ov-rays.r2{background:repeating-conic-gradient(from 10deg,rgba(255,246,213,.7) 0 3deg,transparent 3deg 26deg);animation:raysIn .9s ease-out forwards,raysSpin 26s linear infinite reverse}
+@keyframes raysIn{to{opacity:.6}}@keyframes raysPre{to{opacity:.35}}@keyframes raysSpin{to{transform:rotate(360deg)}}
+.bx-flash{position:fixed;inset:0;z-index:60;pointer-events:none;background:radial-gradient(circle at 50% 45%,#fff 0,#fff 12%,var(--rc) 40%,transparent 80%);animation:bxflash var(--fd,.8s) ease-out forwards}
+@keyframes bxflash{0%{opacity:0}10%{opacity:1}100%{opacity:0}}
+.bx-shock{position:fixed;z-index:59;pointer-events:none;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:5px solid var(--rc);box-shadow:0 0 24px var(--rc),inset 0 0 18px var(--rc);opacity:0;animation:bxshock .95s cubic-bezier(.1,.7,.3,1) forwards}
+@keyframes bxshock{0%{transform:scale(.2);opacity:1}100%{transform:scale(16);opacity:0;border-width:1px}}
+.bx-shard{position:fixed;z-index:58;pointer-events:none;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:2px;background:var(--c);box-shadow:0 0 8px var(--c);animation:bxshard 1.1s cubic-bezier(.1,.8,.3,1) forwards}
+@keyframes bxshard{to{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(.4);opacity:0}}
+.bx-rain{position:absolute;top:-40px;z-index:1;pointer-events:none;font-size:var(--s);line-height:1;color:#FFD76A;text-shadow:0 0 10px #E9C46A;opacity:0;animation:bxrain var(--d) linear var(--dl) forwards}
+@keyframes bxrain{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translate(var(--dx),110vh) rotate(var(--r))}}
+.bx-spark{position:absolute;z-index:3;pointer-events:none;font-size:var(--s);color:var(--rc);text-shadow:0 0 8px var(--rc);animation:bxtw 1.6s ease-in-out var(--dl) infinite;opacity:0}
+@keyframes bxtw{0%,100%{opacity:0;transform:scale(.3) rotate(0)}50%{opacity:1;transform:scale(1) rotate(90deg)}}
+#boxov.quake .box{animation:quake .55s}
+@keyframes quake{10%{transform:translate(-8px,4px) rotate(-1deg)}25%{transform:translate(9px,-5px) rotate(1deg)}40%{transform:translate(-7px,-3px)}55%{transform:translate(6px,5px)}70%{transform:translate(-4px,2px)}85%{transform:translate(2px,-2px)}}
+.bx-ov.rv-e{box-shadow:0 0 0 3px #9B4DCA,0 0 50px rgba(155,77,202,.65)}
+.bx-ov.rv-l{box-shadow:0 0 0 3px #E9C46A,0 0 70px rgba(233,196,106,.75);animation:glowL 1.8s ease-in-out infinite alternate}
+@keyframes glowL{to{box-shadow:0 0 0 4px #FFE9A8,0 0 120px rgba(233,196,106,1)}}
+.bx-ov.rv-e .bx-item{width:124px;height:124px;animation:bxpopE .85s cubic-bezier(.2,1.5,.4,1);box-shadow:0 0 0 4px #9B4DCA,0 0 40px #B57BE0,0 0 90px #9B4DCA}
+@keyframes bxpopE{0%{transform:scale(0) rotate(-200deg);opacity:0}100%{transform:none}}
+.bx-ov.rv-l .bx-item{width:136px;height:136px;animation:bxpopL 1.1s cubic-bezier(.2,1.35,.4,1);box-shadow:0 0 0 4px #E9C46A,0 0 40px #FFD76A,0 0 110px #E9C46A;background:radial-gradient(circle,#FFF6D5,var(--surface) 70%)}
+@keyframes bxpopL{0%{transform:scale(3.2);opacity:0;filter:brightness(5)}55%{transform:scale(.88);opacity:1}75%{transform:scale(1.06)}100%{transform:none;filter:none}}
+.bx-ov.rv-e .bx-item .pv-emo,.bx-ov.rv-l .bx-item .pv-emo{font-size:60px}
+.bx-stage{position:relative}
+.rv-tag{display:inline-block;font-weight:800;letter-spacing:.22em;animation:tagSlam .65s cubic-bezier(.2,1.6,.4,1) .2s both}
+.rv-e .rv-tag{font-size:17px;text-shadow:0 0 14px rgba(155,77,202,.7)}
+.rv-l .rv-tag,.rv-l h2{background:linear-gradient(90deg,#A8750A,#FFE9A8,#E9C46A,#FFF6D5,#A8750A);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.rv-l .rv-tag{font-size:19px;letter-spacing:.14em;white-space:nowrap;animation:tagSlam .65s cubic-bezier(.2,1.6,.4,1) .2s both,shimmer 2.2s linear 1s infinite}
+.rv-l h2{font-size:26px;animation:shimmer 2.2s linear infinite}
+@keyframes tagSlam{from{transform:scale(3.4);opacity:0;filter:blur(4px)}}
+@keyframes shimmer{to{background-position:-200% 0}}
 .seg.tabs5{display:grid;grid-template-columns:repeat(5,1fr);width:100%}
 .seg.tabs5 button{padding:9px 2px;font-size:13px;min-width:0;position:relative}
 .sdot{display:inline-grid;place-items:center;min-width:16px;height:16px;border-radius:99px;background:var(--ko);color:#fff;font-size:10px;margin-left:3px;padding:0 4px;vertical-align:1px}
@@ -631,7 +668,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.0.2";
+const APP_VERSION = "2.1";
 const CLOUD = !window.claude;
 /* ---------- journal léger (supervision : activité + erreurs, lu par l'alerte bug et le bilan du lundi) ---------- */
 let jrQ = (() => { try { return JSON.parse(localStorage.getItem("mj.jr") || "[]"); } catch (e) { return []; } })(), jrBusy = false; const jrSeen = {};
@@ -863,7 +900,12 @@ let AC = null;
 const soundOn = () => { try { return localStorage.getItem("mj.sound") !== "0"; } catch (e) { return true; } };
 const SND = {
   classic: { ok: [[880, 0, .16, "sine", .16], [1318.5, .08, .32, "sine", .15], [2637, .08, .12, "sine", .03]], ko: [[311, 0, .2, "triangle", .2, 260], [208, .13, .32, "triangle", .2, 175]],
-    combo: [1046.5, 1318.5, 1568, 2093].map((f, i) => [f, i * .065, .22, "sine", .12]), done: [523.25, 659.25, 783.99, 1046.5, 1318.5].map((f, i) => [f, i * .1, i === 4 ? .7 : .3, "triangle", .13]) },
+    combo: [1046.5, 1318.5, 1568, 2093].map((f, i) => [f, i * .065, .22, "sine", .12]), done: [523.25, 659.25, 783.99, 1046.5, 1318.5].map((f, i) => [f, i * .1, i === 4 ? .7 : .3, "triangle", .13]),
+    rise: [[180, 0, 1.15, "sawtooth", .035, 760], [90, 0, 1.15, "sine", .14, 200]],
+    riseL: [[110, 0, 2.1, "sawtooth", .04, 990], [55, 0, 2.1, "sine", .18, 220], [220, 1.2, .9, "triangle", .05, 1760]],
+    boom: [[90, 0, .7, "sine", .55, 32], [180, 0, .25, "square", .05, 60], [2093, .04, .5, "triangle", .07]],
+    epic: [783.99, 987.77, 1174.66, 1567.98, 1975.53].map((f, i) => [f, i * .07, i === 4 ? .7 : .25, "triangle", .11]),
+    fanfare: [[523.25, 0, .18], [659.25, .14, .18], [783.99, .28, .18], [1046.5, .42, .5], [783.99, .7, .14], [1046.5, .84, .9], [1318.5, .84, .9], [1567.98, .84, 1.1], [2093, 1.0, 1.0]].map(([f, t, d]) => [f, t, d, "triangle", .1]) },
   taiko: { ok: [[150, 0, .22, "sine", .5, 70], [900, 0, .03, "square", .03]], ko: [[95, 0, .3, "sine", .45, 55]], combo: [0, .12, .24].map(t => [150, t, .2, "sine", .45, 70]).concat([[300, .36, .3, "sine", .3, 140]]), done: [0, .15, .3, .45, .6].map((t, i) => [i === 4 ? 200 : 140, t, .25, "sine", .45, 70]) },
   furin: { ok: [[2093, 0, .7, "sine", .09], [3136, .02, .5, "sine", .04], [4186, .04, .3, "sine", .02]], ko: [[1318.5, 0, .5, "sine", .07, 1174.7]], combo: [2093, 2637, 3136].map((f, i) => [f, i * .09, .6, "sine", .07]), done: [1568, 2093, 2637, 3136].map((f, i) => [f, i * .14, .9, "sine", .07]) },
   koto: { ok: [[659.25, 0, .3, "triangle", .2], [880, .07, .4, "triangle", .18]], ko: [[329.6, 0, .35, "triangle", .2, 311]], combo: [587.3, 659.25, 880, 987.8].map((f, i) => [f, i * .07, .3, "triangle", .16]), done: [440, 493.9, 587.3, 659.25, 880].map((f, i) => [f, i * .12, .5, "triangle", .15]) },
@@ -1926,6 +1968,14 @@ const STAMPS = [
   { id: "flamme", nm: "Sceau du mois sans pause", k: "炎", src: "ach", ach: "streak30" },
   { id: "examen", nm: "Sceau du départ", k: "免", src: "ach", ach: "examall" }];
 const KINDS = { theme: PALS, frame: FRAMES, anim: ANIMS, title: TITLES, pin: PINS, burst: BURSTS, sound: SOUNDS, train: TRAINS, trail: TRAILS, plate: PLATES, led: LEDS, card: CARDS, sticker: STICKERS, stamp: STAMPS };
+// Rareté de chaque objet hors boîtes : boutique selon le prix, exploits selon la difficulté de l'exploit
+const ACH_R = { first: "c", streak3: "c", s10: "c", st1: "c", lex30: "c", rev1: "c", box1: "c", duel1: "c", group: "c", photo: "c",
+  night: "r", morning: "r", streak7: "r", st2: "r", hira100: "r", kanji10: "r", scenes4: "r", exam1: "r", kx20: "r", omi10: "r", daikichi: "r", m30: "r", clash5: "r",
+  streak14: "e", s50: "e", kata100: "e", st3: "e", st4: "e", perfect: "e", combo20: "e", rev85: "e", kj18: "e", box50: "e", stk20: "e", duel10: "e", champ: "e", lead: "e",
+  streak30: "l", streak60: "l", s100: "l", kanjiAll: "l", st5: "l", examall: "l", kx40: "l", stkall: "l" };
+Object.values(KINDS).forEach(L => L.forEach(x => { if (x.r) return;
+  if (x.src === "shop") x.r = x.price >= 6000 ? "l" : x.price >= 3000 ? "e" : x.price >= 1000 ? "r" : "c";
+  else if (x.src === "ach") x.r = ACH_R[x.ach] || "r"; }));
 const KIND_NM = { theme: "Thème", frame: "Cadre", anim: "Animation", title: "Titre", pin: "Porte-bonheur", burst: "Effet de réussite", sound: "Sons", train: "Train", trail: "Sillage", plate: "Plaque de nom", led: "Panneau", card: "Style de carte", sticker: "Autocollant", stamp: "Tampon" };
 const KIND_PL = { theme: "Thèmes", frame: "Cadres", anim: "Animations", title: "Titres", pin: "Porte-bonheur", burst: "Effets", sound: "Sons", train: "Trains", trail: "Sillages", plate: "Plaques", led: "Panneaux", card: "Cartes", sticker: "Album", stamp: "Tampons" };
 const NOEQUIP = { sticker: 1, stamp: 1 };
@@ -2116,6 +2166,30 @@ function openBox(t) {
   track("box"); jlog("box", t + " " + res.rar); persist(); if (CLOUD) cloudSync();
   boxReveal(t, res);
 }
+/* mise en scène des boîtes épiques (≈1,2 s) et légendaires (≈2,2 s) : la boîte se charge, tremble, s'élève puis explose */
+function boxCine(ov, body, glyph, fi, col, done) {
+  const L = fi === 3, rc = RAR[RORD[fi]].col, dur = L ? 2150 : 1150;
+  ov.classList.add(L ? "dim-l" : "dim-e"); glyph.style.setProperty("--cd", dur + "ms"); glyph.style.setProperty("--rc", rc);
+  glyph.classList.remove("shk", "lv0", "lv1", "lv2", "lv3"); void glyph.offsetWidth; glyph.classList.add("charge");
+  body.querySelectorAll("p,button").forEach(e => { e.style.visibility = "hidden"; });
+  sfx(L ? "riseL" : "rise"); try { if (navigator.vibrate) navigator.vibrate(L ? [20, 90, 25, 70, 30, 50, 40, 40, 60] : [20, 70, 35]); } catch (e) {}
+  if (L) ov.prepend(h("div", { class: "ov-rays pre", style: "--rc:" + rc }));
+  setTimeout(() => {
+    if (!ov.isConnected) return;
+    const r = glyph.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, fx = [h("div", { class: "bx-flash", style: "--rc:" + rc + ";--fd:" + (L ? "1.2s" : ".8s") })];
+    for (let i = 0; i < (L ? 3 : 1); i++) fx.push(h("div", { class: "bx-shock", style: "left:" + cx + "px;top:" + cy + "px;--rc:" + (i === 1 ? "#FFF6D5" : rc) + ";animation-delay:" + (i * 150) + "ms" }));
+    const n = L ? 30 : 16;
+    for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, d = 110 + Math.random() * (L ? 280 : 170);
+      fx.push(h("i", { class: "bx-shard", style: "left:" + cx + "px;top:" + cy + "px;--c:" + (i % 3 ? col : rc) + ";--x:" + Math.round(Math.cos(a) * d) + "px;--y:" + Math.round(Math.sin(a) * d) + "px;--r:" + Math.round(Math.random() * 720 - 360) + "deg" })); }
+    document.body.append(...fx); setTimeout(() => fx.forEach(e => e.remove()), 1600);
+    sfx("boom"); ov.classList.add("quake"); try { if (navigator.vibrate) navigator.vibrate(L ? 260 : 100); } catch (e) {}
+    done();
+  }, dur);
+}
+function boxRain(ov) {
+  const sy = ["✦", "★", "✧", "◆", "✦", "❖"];
+  for (let i = 0; i < 46; i++) ov.append(h("span", { class: "bx-rain", style: "left:" + (Math.random() * 100).toFixed(1) + "%;--s:" + (12 + Math.random() * 20).toFixed(0) + "px;--d:" + (2.4 + Math.random() * 2.2).toFixed(2) + "s;--dl:" + (Math.random() * 2.6).toFixed(2) + "s;--dx:" + Math.round(Math.random() * 80 - 40) + "px;--r:" + Math.round(Math.random() * 540 - 270) + "deg" }, sy[i % sy.length]));
+}
 function boxReveal(t, res) {
   const B = BOXES[t], minR = RORD.find(k => B.odds[k]) || "c", fi = RORD.indexOf(res.rar), mi = RORD.indexOf(minR);
   const steps = [mi, Math.min(fi, mi + Math.round((fi - mi) / 2)), fi]; let tap = 0;
@@ -2124,22 +2198,31 @@ function boxReveal(t, res) {
   const body = h("div", { class: "box bx-ov" }, h("div", { class: "eyebrow" }, B.nm), glyph, hint);
   const ov = h("div", { class: "overlay", id: "boxov", role: "dialog", "aria-label": "Ouverture de boîte" }, body);
   const close = () => { ov.remove(); rwCheck(); render(); };
+  let reduce = false; try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
   const reveal = () => {
-    const R = RAR[res.rar], it = res.got;
-    body.replaceChildren(h("div", { class: "eyebrow", style: "color:" + R.col }, R.nm + (res.forced ? " · garanti" : "")),
-      it ? h("div", { class: "bx-item", style: "--rc:" + R.col }, preview(it.kind, it.x)) : h("div", { class: "bx-item", style: "--rc:" + R.col }, h("span", { style: "font-size:44px" }, "💠")),
+    const R = RAR[res.rar], it = res.got, big = fi >= 2 && !reduce;
+    ov.classList.remove("quake");
+    if (big) { body.classList.add(fi === 3 ? "rv-l" : "rv-e"); ov.classList.add(fi === 3 ? "dim-l" : "dim-e");
+      const pre = ov.querySelector(".ov-rays.pre"); if (pre) pre.remove();
+      ov.prepend(h("div", { class: "ov-rays", style: "--rc:" + R.col })); if (fi === 3) { ov.prepend(h("div", { class: "ov-rays r2" })); boxRain(ov); } }
+    const spk = big ? Array.from({ length: fi === 3 ? 8 : 5 }, (_, i) => { const a = i / (fi === 3 ? 8 : 5) * 6.283 + .4, d = fi === 3 ? 86 : 76;
+      return h("span", { class: "bx-spark", style: "left:calc(50% + " + Math.round(Math.cos(a) * d) + "px - 8px);top:calc(50% + " + Math.round(Math.sin(a) * d) + "px - 8px);--rc:" + R.col + ";--s:" + (12 + (i % 3) * 5) + "px;--dl:" + (i * 190) + "ms" }, i % 2 ? "✦" : "✧"); }) : [];
+    body.replaceChildren(h("div", { class: "eyebrow" + (big ? " rv-tag" : ""), style: "color:" + R.col }, R.nm + (res.forced ? " · garanti" : "")),
+      h("div", { class: "bx-stage" }, it ? h("div", { class: "bx-item", style: "--rc:" + R.col }, preview(it.kind, it.x)) : h("div", { class: "bx-item", style: "--rc:" + R.col }, h("span", { style: "font-size:44px" }, "💠")), ...spk),
       h("h2", { style: "margin:6px 0 2px" }, it ? it.x.nm : "+" + res.frag + " fragment" + (res.frag > 1 ? "s" : "")),
       h("p", { class: "muted", style: "margin:0 0 10px" }, it ? KIND_NM[it.kind] + " · nouveau !" : "Tu as déjà tous les objets de cette rareté : les fragments servent à choisir un objet qui te manque."),
       h("div", { style: "display:flex;gap:8px;justify-content:center;flex-wrap:wrap" },
         it && !NOEQUIP[it.kind] ? h("button", { class: "btn", onclick: () => { equip(it.kind, it.x.id); close(); } }, "Équiper") : null,
         boxCount(t) ? h("button", { class: "btn ghost", onclick: () => { ov.remove(); openBox(t); } }, "Ouvrir la suivante (" + boxCount(t) + ")") : null,
         h("button", { class: "btn ghost", onclick: close }, "Fermer")));
-    sfx(fi >= 2 ? "combo" : "ok"); if (fi >= 2) confetti();
+    if (fi === 3) { sfx("fanfare"); if (!reduce) { confetti(); setTimeout(confetti, 650); setTimeout(confetti, 1400); } }
+    else if (fi === 2) { sfx("epic"); if (!reduce) { confetti(); setTimeout(confetti, 700); } }
+    else sfx(fi === 1 ? "combo" : "ok");
   };
   const step = () => { if (tap >= 3) return; const lv = steps[tap]; tap++;
     glyph.style.setProperty("--rc", RAR[RORD[lv]].col); glyph.classList.remove("shk"); void glyph.offsetWidth; glyph.classList.add("shk", "lv" + lv); sfx("tap");
     hint.textContent = tap < 3 ? "Encore " + (3 - tap) + "…" : "";
-    if (tap >= 3) setTimeout(reveal, 450); };
+    if (tap >= 3) { if (fi >= 2 && !reduce) boxCine(ov, body, glyph, fi, B.col, reveal); else setTimeout(reveal, 450); } };
   glyph.addEventListener("click", step);
   if (fi < 2) body.append(h("button", { class: "btn small ghost", style: "margin-top:12px", onclick: () => { tap = 3; reveal(); } }, "Passer"));
   document.body.append(ov);
@@ -2325,7 +2408,7 @@ function preview(kind, x) {
 }
 const plateName = (lk, txt) => { const id = (lk || {}).plate; return id && id !== "none" && PLATES.some(x => x.id === id) ? h("span", { class: "np np-" + id }, txt) : txt; };
 const titleOf = lk => { const t = TITLES.find(x => x.id === (lk || {}).title); return t ? t.nm : TITLES[0].nm; };
-const howTo = x => x.src === "ach" ? "Exploit : " + ((ACH.find(a => a.id === x.ach) || {}).nm || "") : x.src === "shop" ? "Boutique · ¥" + x.price : x.src === "box" ? "Boîtes · " + RAR[x.r].nm : x.src === "free" ? "Offert" : "";
+const howTo = x => x.src === "ach" ? "Exploit : " + ((ACH.find(a => a.id === x.ach) || {}).nm || "") + (x.r ? " · " + RAR[x.r].nm : "") : x.src === "shop" ? "Boutique · ¥" + x.price + (x.r ? " · " + RAR[x.r].nm : "") : x.src === "box" ? "Boîtes · " + RAR[x.r].nm : x.src === "free" ? "Offert" : "";
 
 /* ---- onglet Missions ---- */
 let mTab = "missions", colKind = "theme";
@@ -2405,7 +2488,7 @@ function viewMissions() {
   } else if (mTab === "boutique") {
     const card = (kind, x) => {
       const has = owns(kind, x.id), on = L[kind] === x.id;
-      return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), h("div", { class: "nm" }, x.nm), kind === "theme" ? h("button", { class: "btn small ghost", onclick: () => startPreview(x.id) }, "👁 Aperçu") : null,
+      return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), x.r ? h("span", { class: "rd", title: RAR[x.r].nm, style: "background:" + RAR[x.r].col }) : null, h("div", { class: "nm" }, x.nm), x.r ? h("div", { class: "rtag", style: "color:" + RAR[x.r].col }, RAR[x.r].nm) : null, kind === "theme" ? h("button", { class: "btn small ghost", onclick: () => startPreview(x.id) }, "👁 Aperçu") : null,
         has ? h("button", { class: "btn small" + (on ? " ghost" : ""), disabled: on, onclick: () => equip(kind, x.id) }, on ? "Équipé" : "Équiper")
           : h("button", { class: "btn small", disabled: yen() < x.price, onclick: e => buy(kind, x.id, e) }, "Acheter ¥" + x.price.toLocaleString("fr-FR")), has || yen() >= x.price ? null : h("div", { class: "how" }, "Il te manque ¥" + (x.price - yen()).toLocaleString("fr-FR")));
     };
