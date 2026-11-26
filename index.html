@@ -450,7 +450,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.4";
+const APP_VERSION = "1.4.1";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -619,7 +619,7 @@ async function pushDb() {
   saving = false; if (pendingSave) { pendingSave = false; pushDb(); }
   updateSync();
 }
-function updateSync() { const el = $("sync"); if (el && CLOUD) { el.textContent = (typeof linked === "function" && linked()) ? "Progression sauvegardée dans ton compte" : "Progression enregistrée sur cet appareil · connecte-toi dans l’onglet Groupe pour la sauvegarder"; return; } if (el) el.textContent = syncState === "cloud" && isMain() ? "Progression synchronisée sur tous tes appareils" : "Progression enregistrée sur cet appareil"; }
+function updateSync() { const el = $("sync"); if (el && CLOUD) { el.textContent = (typeof linked === "function" && linked()) ? (cloudState === "error" ? "⚠️ Synchro impossible pour l’instant : ta progression reste sur cet appareil et repartira dès que possible" : "Progression sauvegardée dans ton compte") : "Progression enregistrée sur cet appareil · connecte-toi dans l’onglet Groupe pour la sauvegarder"; return; } if (el) el.textContent = syncState === "cloud" && isMain() ? "Progression synchronisée sur tous tes appareils" : "Progression enregistrée sur cet appareil"; }
 (async () => {
   try {
     if (!window.claude) return;
@@ -1772,7 +1772,9 @@ function viewSettings() {
       h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" },
         P.list.map(x => h("button", { class: "toggle", "aria-pressed": x.id === P.cur ? "true" : "false", onclick: () => { P.cur = x.id; saveP(); loadProfile(); session = null; if (CLOUD && fb) cloudOnSwitch(); applyTheme(); go("trajet"); } }, x.name + " · " + (LEVELS[x.level] || LEVELS.kana).label)),
         h("button", { class: "toggle", onclick: () => { adding = true; render(); } }, "+ Ajouter"))),
-    CLOUD ? h("section", { class: "set" }, h("h2", {}, "Compte"), h("p", { class: "muted", style: "margin:0 0 8px" }, linked() ? "Connecté : " + (cloudUser.email || "compte Google") + ". Ta progression et tes récompenses sont sauvegardées en ligne." : "Pas encore connecté : tes récompenses restent sur cet appareil."), h("button", { class: "btn small", onclick: () => go("groupe") }, linked() ? "Voir mon groupe" : "Me connecter")) : null,
+    CLOUD ? h("section", { class: "set" }, h("h2", {}, "Compte"), h("p", { class: "muted", style: "margin:0 0 8px" }, linked() ? "Connecté : " + (cloudUser.email || "compte Google") + ". Ta progression, ta personnalisation et tes récompenses suivent ton compte sur tous tes appareils." : cloudUser ? "Ce profil est relié à un autre compte que celui connecté (" + (cloudUser.email || "compte Google") + ")." : "Pas encore connecté : tes récompenses restent sur cet appareil."),
+      h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, linked() ? h("button", { class: "btn small", onclick: e => syncNow(e.currentTarget) }, "Synchroniser maintenant") : null, h("button", { class: "btn small" + (linked() ? " ghost" : ""), onclick: () => go("groupe") }, linked() ? "Voir mon groupe" : "Me connecter")),
+      linked() && lastSync ? h("p", { class: "hint" }, "Dernière synchro : " + new Date(lastSync).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })) : null) : null,
     h("p", { class: "sync", style: "margin-top:14px" }, "Mission Japon · version " + APP_VERSION, window.claude ? null : [" · ", h("a", { href: "guide.html", style: "color:var(--accent)" }, "Guide d’utilisation")]));
 }
 const inputStyle0 = "flex:1;min-width:0;font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface-2);color:var(--ink)";
@@ -1836,9 +1838,13 @@ function mergeState(a, b) {
         return Object.assign({}, x, { p: maxMap(x.p, y.p), c: Object.assign({}, y.c, x.c), omi: x.omi || y.omi || null }); };
       o.day = mergeSet(A2.day, B2.day); o.wk = mergeSet(A2.wk, B2.wk); out.rw = o; } }
   { const la = a.look || {}, lb = b.look || {}, ta = a.lookTs || {}, tb = b.lookTs || {}, L = {}, T = {};
-    for (const k of new Set([...Object.keys(la), ...Object.keys(lb)])) { const useB = (tb[k] || 0) > (ta[k] || 0) || !(k in la); L[k] = useB ? lb[k] : la[k]; T[k] = Math.max(ta[k] || 0, tb[k] || 0); }
+    const def = blankLook(), newerB = (b.updatedAt || 0) > (a.updatedAt || 0);
+    for (const k of new Set([...Object.keys(la), ...Object.keys(lb)])) { const xa = ta[k] || 0, xb = tb[k] || 0; let useB, tie = false;
+      if (!(k in la)) useB = true; else if (!(k in lb)) useB = false; else if (xa !== xb) useB = xb > xa; else if (la[k] === lb[k]) useB = false;
+      else { tie = true; const da = la[k] === def[k], db = lb[k] === def[k]; useB = da !== db ? da : newerB; }
+      L[k] = useB ? lb[k] : la[k]; T[k] = Math.max(xa, xb, tie && L[k] !== def[k] ? 1 : 0); }
     if (a.look || b.look) { out.look = L; out.lookTs = T; }
-    const useBn = (tb.nick || 0) > (ta.nick || 0) || !a.nick; out.nick = useBn ? (b.nick || a.nick) : a.nick; if (out.nick) { out.lookTs = Object.assign({}, out.lookTs, { nick: Math.max(ta.nick || 0, tb.nick || 0) }); } }
+    const useBn = (tb.nick || 0) > (ta.nick || 0) || !a.nick || ((tb.nick || 0) === (ta.nick || 0) && !!b.nick && (b.updatedAt || 0) > (a.updatedAt || 0)); out.nick = useBn ? (b.nick || a.nick) : a.nick; if (out.nick) { out.lookTs = Object.assign({}, out.lookTs, { nick: Math.max(ta.nick || 0, tb.nick || 0) }); } }
   out.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0);
   return out;
 }
@@ -1865,8 +1871,8 @@ async function cloudPush() {
       if (JSON.stringify([S.look, S.nick]) !== before) { if (S.nick && p.name !== S.nick) { p.name = S.nick; saveP(); } applyTheme(); if (!session && !test) render(); } } } catch (e) {}
     await F.setDoc(ref, { json: JSON.stringify(S), updatedAt: Date.now(), v: 2 });
     await F.setDoc(F.doc(db, "users", uid), { name: p.name, level: p.level || "zero", group: (S.grp && S.grp.code) || null, updatedAt: Date.now() }, { merge: true });
-    cloudState = "synced";
-  } catch (e) { cloudDirty = true; cloudState = "error"; }
+    cloudState = "synced"; lastSync = Date.now(); cloudMsg = "";
+  } catch (e) { cloudDirty = true; cloudState = "error"; cloudMsg = "Synchro impossible pour l’instant (" + cloudErr(e) + ")."; }
   updateSync();
 }
 async function pushMember() {
@@ -1891,6 +1897,9 @@ function leadCheck() {
   if (top[0].uid === cloudUser.uid && sc(top[0]) > sc(top[1])) { rw().st.lead = 1; persist(); rwCheck(); }
 }
 function stopMembers() { if (membersUnsub) { membersUnsub(); membersUnsub = null; } members = []; }
+let lastSync = 0;
+async function syncNow(btn) { if (!linked()) return; if (btn) { btn.disabled = true; btn.textContent = "Synchro…"; }
+  await cloudPull(); toast(cloudState === "error" ? (cloudMsg || "Synchro impossible pour l’instant") : "Synchronisé ✓"); if (!session && !test) render(); }
 async function cloudSync() { if (!linked()) return; try { await cloudPush(); await pushMember(); } catch (e) {} }
 async function createGroup() {
   const A = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let code = "MJ-"; for (let i = 0; i < 6; i++) code += A[Math.floor(Math.random() * A.length)];

@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 1.4.1 · 26 novembre 2026
+- Correction : une personnalisation faite avant la 1.2.1 (photo, cadre, thème, mode sombre…) n'arrivait pas sur un autre appareil connecté au même compte. Désormais, une personnalisation l'emporte toujours sur un réglage resté par défaut
+- Profil et réglages : bouton « Synchroniser maintenant » et heure de la dernière synchro
+- L'accueil prévient si la synchro échoue (réseau bloqué, par exemple) au lieu d'afficher « sauvegardée »
+
 ## 1.4 · 25 novembre 2026
 - Scènes : nouveau mode examen en bas de l'onglet. Pas de traduction ni de rōmaji, une seule chance par réplique, réponses mélangées, score sur 100 (80 pour réussir), meilleur score gardé, bilan réplique par réplique à la fin
 - Deux exploits : « Sans filet » (100/100 à un examen, ¥300) et « Bon pour le départ » (les 4 examens réussis, ¥500)
