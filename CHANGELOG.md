@@ -1,7 +1,35 @@
 # Journal des versions
 
-## 2.0.3 · 26 novembre 2026
-- Journal de supervision : sans groupe, on joue en pur solo et anonyme (ni prénom ni identifiant envoyés). Le journal n'est lisible que par le compte de supervision
+## 2.4.1 · 26 novembre 2026
+- Journal de supervision : sans aucun groupe, on joue en pur solo et anonyme (ni prénom ni identifiant envoyés). Le journal n'est lisible que par le compte de supervision
+
+## 2.4 · 26 novembre 2026
+- **Renommer un groupe** : la personne qui a créé le groupe voit « ✎ Renommer » sous la liste de ses groupes. Le nouveau nom s'affiche en direct chez tous les membres, le code ne change pas
+- Les groupes apparaissent par leur nom dans la liste du haut (par leur code tant qu'ils gardent le nom par défaut), et l'invitation partagée mentionne le nom
+- Seul le créateur peut renommer : un autre membre ou une personne extérieure est refusé par les règles Firebase
+
+## 2.3 · 26 novembre 2026
+- **Plusieurs groupes à la fois** : dans l'onglet Groupe, tes groupes apparaissent en haut, touche un code pour passer de l'un à l'autre, et « ＋ Autre groupe » pour en rejoindre ou en créer un nouveau
+- Chaque groupe garde son classement, son défi du jour et ses clashs. Tes sessions et tes points comptent dans tous tes groupes
+- Isolation stricte : les membres d'un groupe ne voient jamais tes autres groupes ni leurs membres, et tes clashs d'un groupe ne sont envoyés qu'à ce groupe
+- « Quitter le groupe » quitte seulement le groupe affiché, tu restes dans les autres
+
+## 2.2.1 · 26 novembre 2026
+- **Kana Express plus accessible** : paliers kana à 6, 12, 18 et 25, kanji à 4, 8, 12 et 16. Le dernier palier s'appelle maintenant **Diamant** 💎 (avant Arc-en-ciel)
+- Exploits recalés : Express à 12, Shinkansen humain à 25, Œil de kanji à 12 ; mission du jour : 10 bonnes réponses en une partie
+
+## 2.2 · 26 novembre 2026
+- **Les récompenses transforment l'app, d'autant plus qu'elles sont rares**
+- Thèmes épiques : reflet qui passe sur les boutons, fond animé plus dense, onglet actif lumineux. Thèmes légendaires : en plus, bordures animées autour des cartes, titre de l'app qui scintille, sceau et barre du bas qui brillent, fond deux fois plus dense
+- Animations : rare = quelques symboles qui flottent dans toute l'app, épique = pétales de sakura, lucioles ou néon sur tout l'écran, légendaire = feux d'artifice (Hanabi) ou shinkansen éclair qui traverse l'écran (Éclair). L'ambiance s'efface pendant les sessions et Kana Express
+- Effets de bonne réponse : plus de particules selon la rareté, onde et halo pour les épiques, pluie d'or ou de flammes et dragon qui traverse l'écran pour les légendaires
+- Titres, cadres, porte-bonheur, trains, sillages, plaques, style de cartes et panneau : couleur, lueur, reflet ou animation selon leur rareté
+- Équiper un objet épique ou légendaire lance une vague de couleur sur tout l'écran : « ton app se transforme »
+
+## 2.1 · 26 novembre 2026
+- **Une rareté pour chaque récompense** : les objets de la boutique (selon leur prix) et ceux des exploits (selon la difficulté de l'exploit) ont maintenant aussi une rareté, affichée dans la collection et la boutique
+- **Ouvertures épiques** : la boîte se charge et tremble, l'écran vire au violet, puis elle explose en éclats avec un flash, une onde de choc, des rayons qui tournent et une fanfare
+- **Ouvertures légendaires** : l'écran s'assombrit, la boîte s'élève et tremble pendant 2 secondes dans des rayons dorés, puis explose (flash blanc et or, 3 ondes de choc, secousse). L'objet arrive en grand, avec une double couronne de rayons, une pluie d'étoiles dorées, un titre en or animé et 3 salves de confettis. Le téléphone vibre aussi (sur Android)
 
 ## 2.0.2 · 26 novembre 2026
 - Petit journal de supervision : l'appli note discrètement les ouvertures, les sessions, missions, défis, clashs, boîtes, ainsi que les erreurs et les échecs de synchro (prénom, heure, type d'événement, jamais le contenu des réponses). Il sert à l'alerte en cas de bug et au bilan du lundi. Rien ne change à l'écran

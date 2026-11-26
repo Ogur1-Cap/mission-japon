@@ -488,6 +488,43 @@ body.pv #app{padding-top:calc(var(--pvh,58px) + 4px)}
 .bx-item{display:grid;place-items:center;margin:12px auto;width:112px;height:112px;border-radius:50%;box-shadow:0 0 0 3px var(--rc),0 0 40px var(--rc);background:var(--surface);animation:bxpop .5s cubic-bezier(.2,1.6,.4,1)}
 .bx-item .pv-emo{background:none;font-size:48px}
 @keyframes bxpop{from{transform:scale(.2);opacity:0}}
+.shop .item{position:relative}.item .rd{position:absolute;top:8px;right:8px;width:9px;height:9px;border-radius:50%}.item .rtag{font-size:11px;font-weight:700;margin-top:-2px}
+#boxov{transition:background .7s}#boxov .box{position:relative;z-index:2}
+#boxov.dim-e{background:rgba(26,8,44,.88)}#boxov.dim-l{background:rgba(5,4,10,.95)}
+.bx-big.charge{animation:bxcharge var(--cd,1.1s) cubic-bezier(.55,0,1,1) forwards;box-shadow:0 0 0 6px var(--rc),0 0 60px var(--rc),0 0 150px var(--rc)}
+@keyframes bxcharge{0%{transform:none}10%{transform:rotate(-4deg) scale(1.03)}20%{transform:rotate(5deg) scale(1.05)}30%{transform:rotate(-6deg) scale(1.08)}40%{transform:rotate(7deg) scale(1.1) translateY(-2px)}50%{transform:rotate(-8deg) scale(1.13) translateY(-5px)}60%{transform:rotate(9deg) scale(1.16) translateY(-8px)}70%{transform:rotate(-10deg) scale(1.2) translateY(-10px);filter:brightness(1.3)}80%{transform:rotate(11deg) scale(1.24) translateY(-12px);filter:brightness(1.6)}90%{transform:rotate(-12deg) scale(1.3) translateY(-14px);filter:brightness(2.2)}100%{transform:scale(1.5) translateY(-14px);filter:brightness(4);opacity:0}}
+.ov-rays{position:absolute;left:50%;top:50%;width:960px;height:960px;margin:-480px 0 0 -480px;pointer-events:none;z-index:1;border-radius:50%;background:repeating-conic-gradient(from 0deg,var(--rc) 0 7deg,transparent 7deg 20deg);-webkit-mask:radial-gradient(circle,#000 0,rgba(0,0,0,.55) 28%,transparent 62%);mask:radial-gradient(circle,#000 0,rgba(0,0,0,.55) 28%,transparent 62%);opacity:0;animation:raysIn .9s ease-out forwards,raysSpin 16s linear infinite}
+.ov-rays.pre{animation:raysPre 2s ease-in forwards,raysSpin 6s linear infinite}
+.ov-rays.r2{background:repeating-conic-gradient(from 10deg,rgba(255,246,213,.7) 0 3deg,transparent 3deg 26deg);animation:raysIn .9s ease-out forwards,raysSpin 26s linear infinite reverse}
+@keyframes raysIn{to{opacity:.6}}@keyframes raysPre{to{opacity:.35}}@keyframes raysSpin{to{transform:rotate(360deg)}}
+.bx-flash{position:fixed;inset:0;z-index:60;pointer-events:none;background:radial-gradient(circle at 50% 45%,#fff 0,#fff 12%,var(--rc) 40%,transparent 80%);animation:bxflash var(--fd,.8s) ease-out forwards}
+@keyframes bxflash{0%{opacity:0}10%{opacity:1}100%{opacity:0}}
+.bx-shock{position:fixed;z-index:59;pointer-events:none;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:5px solid var(--rc);box-shadow:0 0 24px var(--rc),inset 0 0 18px var(--rc);opacity:0;animation:bxshock .95s cubic-bezier(.1,.7,.3,1) forwards}
+@keyframes bxshock{0%{transform:scale(.2);opacity:1}100%{transform:scale(16);opacity:0;border-width:1px}}
+.bx-shard{position:fixed;z-index:58;pointer-events:none;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:2px;background:var(--c);box-shadow:0 0 8px var(--c);animation:bxshard 1.1s cubic-bezier(.1,.8,.3,1) forwards}
+@keyframes bxshard{to{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(.4);opacity:0}}
+.bx-rain{position:absolute;top:-40px;z-index:1;pointer-events:none;font-size:var(--s);line-height:1;color:#FFD76A;text-shadow:0 0 10px #E9C46A;opacity:0;animation:bxrain var(--d) linear var(--dl) forwards}
+@keyframes bxrain{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translate(var(--dx),110vh) rotate(var(--r))}}
+.bx-spark{position:absolute;z-index:3;pointer-events:none;font-size:var(--s);color:var(--rc);text-shadow:0 0 8px var(--rc);animation:bxtw 1.6s ease-in-out var(--dl) infinite;opacity:0}
+@keyframes bxtw{0%,100%{opacity:0;transform:scale(.3) rotate(0)}50%{opacity:1;transform:scale(1) rotate(90deg)}}
+#boxov.quake .box{animation:quake .55s}
+@keyframes quake{10%{transform:translate(-8px,4px) rotate(-1deg)}25%{transform:translate(9px,-5px) rotate(1deg)}40%{transform:translate(-7px,-3px)}55%{transform:translate(6px,5px)}70%{transform:translate(-4px,2px)}85%{transform:translate(2px,-2px)}}
+.bx-ov.rv-e{box-shadow:0 0 0 3px #9B4DCA,0 0 50px rgba(155,77,202,.65)}
+.bx-ov.rv-l{box-shadow:0 0 0 3px #E9C46A,0 0 70px rgba(233,196,106,.75);animation:glowL 1.8s ease-in-out infinite alternate}
+@keyframes glowL{to{box-shadow:0 0 0 4px #FFE9A8,0 0 120px rgba(233,196,106,1)}}
+.bx-ov.rv-e .bx-item{width:124px;height:124px;animation:bxpopE .85s cubic-bezier(.2,1.5,.4,1);box-shadow:0 0 0 4px #9B4DCA,0 0 40px #B57BE0,0 0 90px #9B4DCA}
+@keyframes bxpopE{0%{transform:scale(0) rotate(-200deg);opacity:0}100%{transform:none}}
+.bx-ov.rv-l .bx-item{width:136px;height:136px;animation:bxpopL 1.1s cubic-bezier(.2,1.35,.4,1);box-shadow:0 0 0 4px #E9C46A,0 0 40px #FFD76A,0 0 110px #E9C46A;background:radial-gradient(circle,#FFF6D5,var(--surface) 70%)}
+@keyframes bxpopL{0%{transform:scale(3.2);opacity:0;filter:brightness(5)}55%{transform:scale(.88);opacity:1}75%{transform:scale(1.06)}100%{transform:none;filter:none}}
+.bx-ov.rv-e .bx-item .pv-emo,.bx-ov.rv-l .bx-item .pv-emo{font-size:60px}
+.bx-stage{position:relative}
+.rv-tag{display:inline-block;font-weight:800;letter-spacing:.22em;animation:tagSlam .65s cubic-bezier(.2,1.6,.4,1) .2s both}
+.rv-e .rv-tag{font-size:17px;text-shadow:0 0 14px rgba(155,77,202,.7)}
+.rv-l .rv-tag,.rv-l h2{background:linear-gradient(90deg,#A8750A,#FFE9A8,#E9C46A,#FFF6D5,#A8750A);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.rv-l .rv-tag{font-size:19px;letter-spacing:.14em;white-space:nowrap;animation:tagSlam .65s cubic-bezier(.2,1.6,.4,1) .2s both,shimmer 2.2s linear 1s infinite}
+.rv-l h2{font-size:26px;animation:shimmer 2.2s linear infinite}
+@keyframes tagSlam{from{transform:scale(3.4);opacity:0;filter:blur(4px)}}
+@keyframes shimmer{to{background-position:-200% 0}}
 .seg.tabs5{display:grid;grid-template-columns:repeat(5,1fr);width:100%}
 .seg.tabs5 button{padding:9px 2px;font-size:13px;min-width:0;position:relative}
 .sdot{display:inline-grid;place-items:center;min-width:16px;height:16px;border-radius:99px;background:var(--ko);color:#fff;font-size:10px;margin-left:3px;padding:0 4px;vertical-align:1px}
@@ -605,6 +642,106 @@ body.pv #app{padding-top:calc(var(--pvh,58px) + 4px)}
 .clash .ic{font-size:18px}
 .gtrack{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
 .gtrack i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--ko),#E6A23C 30%,var(--ok) 60%);border-radius:99px}
+
+/* ===== prestige : plus la récompense est rare, plus elle transforme l'app ===== */
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+/* titres */
+.ttl.rt-r{color:#fff;background:#3A7BD5;border-color:#3A7BD5}
+.ttl.rt-e{color:#fff;background:linear-gradient(90deg,#6A1FB0,#B36BE8,#6A1FB0);background-size:200% 100%;border-color:transparent;box-shadow:0 0 10px rgba(155,77,202,.6);animation:shimmer 4s linear infinite}
+.ttl.rt-l{color:#3A2600;background:linear-gradient(90deg,#B8860B,#FFE9A8,#E9C46A,#FFF6D5,#B8860B);background-size:200% 100%;border-color:#FFE9A8;box-shadow:0 0 14px rgba(233,196,106,.85);animation:shimmer 2.6s linear infinite;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+@keyframes shimmer{to{background-position:-200% 0}}
+/* cadres */
+.av.rf-r .fr{box-shadow:0 0 6px rgba(58,123,213,.55)}
+.av.rf-e .fr{animation:frPulse 2.2s ease-in-out infinite}.av.rf-e .fr.spin{animation:spin 5s linear infinite,frPulse 2.2s ease-in-out infinite}
+@keyframes frPulse{0%,100%{box-shadow:0 0 6px 1px rgba(179,107,232,.6)}50%{box-shadow:0 0 18px 5px rgba(179,107,232,.85)}}
+.av.rf-l::before{content:"";position:absolute;inset:-16%;border-radius:50%;background:conic-gradient(from var(--ang),transparent 0 10%,#FFE9A8 18%,transparent 30% 45%,#E9C46A 55%,transparent 65% 80%,#FFF6D5 90%,transparent);animation:ang 2.6s linear infinite;filter:blur(1.5px);pointer-events:none}
+.av.rf-l::after{content:"✦";position:absolute;left:50%;top:50%;width:0;height:0;color:#FFE9A8;font-size:calc(var(--s) * .22);line-height:0;text-shadow:0 0 6px #E9C46A;animation:orbit 3.2s linear infinite;z-index:4;pointer-events:none}
+.av.rf-l .fr{box-shadow:0 0 14px 3px rgba(233,196,106,.8)}
+@keyframes ang{to{--ang:360deg}}
+@keyframes orbit{from{transform:rotate(0) translateX(calc(var(--s) * .62)) rotate(0)}to{transform:rotate(360deg) translateX(calc(var(--s) * .62)) rotate(-360deg)}}
+/* porte-bonheur */
+.av.rp-r .pinb{animation:pinBob 2.4s ease-in-out infinite}
+.av.rp-e .pinb{animation:pinBob 1.6s ease-in-out infinite;filter:drop-shadow(0 0 6px #B36BE8)}
+.av.rp-l .pinb{font-size:calc(var(--s) * .38);animation:pinBob 1.3s ease-in-out infinite,pinGlow 1.3s ease-in-out infinite alternate}
+@keyframes pinBob{50%{transform:translateY(-14%) rotate(-9deg)}}
+@keyframes pinGlow{from{filter:drop-shadow(0 0 4px #F7D774)}to{filter:drop-shadow(0 0 12px #FFE9A8) drop-shadow(0 0 3px #fff)}}
+/* style des cartes */
+:root[data-r-card="e"] .card[class*="cs-"]:not(.cs-base),:root[data-r-card="l"] .card[class*="cs-"]:not(.cs-base){overflow:hidden}
+:root[data-r-card="e"] .card[class*="cs-"]:not(.cs-base)::after,:root[data-r-card="l"] .card[class*="cs-"]:not(.cs-base)::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.4) 46%,rgba(255,226,150,.55) 50%,transparent 60%);background-size:260% 100%;animation:foil 4.5s ease-in-out infinite;mix-blend-mode:soft-light;z-index:3}
+@keyframes foil{0%{background-position:160% 0}55%,100%{background-position:-70% 0}}
+:root[data-r-card="r"] .card[class*="cs-"]:not(.cs-base){box-shadow:0 0 0 2px rgba(58,123,213,.35)}
+/* panneau LED */
+:root[data-r-led="r"] section.led{box-shadow:inset 0 0 0 2px #2a2a2a,0 0 16px rgba(58,123,213,.25)}
+:root[data-r-led="e"] section.led{animation:ledGlow 3s ease-in-out infinite}
+@keyframes ledGlow{0%,100%{box-shadow:inset 0 0 0 2px #2a2a2a,0 0 14px rgba(155,77,202,.3)}50%{box-shadow:inset 0 0 0 2px #3a2a4a,0 0 34px rgba(179,107,232,.6)}}
+/* plaques */
+.np.rpl-e,.np.rpl-l{position:relative;overflow:hidden}
+.np.rpl-e::after,.np.rpl-l::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);background-size:250% 100%;animation:foil 3.5s ease-in-out infinite;pointer-events:none}
+/* trains et sillages */
+.rail .train.rtr-r>span:last-child{filter:drop-shadow(0 0 4px rgba(58,123,213,.8))!important}
+.rail .train.rtr-e>span:last-child{animation:trainE 1.8s ease-in-out infinite}
+@keyframes trainE{0%,100%{filter:drop-shadow(0 0 4px #B36BE8)}50%{filter:drop-shadow(0 0 12px #B36BE8) drop-shadow(0 0 2px #fff)}}
+.rail .train.rtr-l>span:last-child{animation:trainL 1.2s ease-in-out infinite}
+@keyframes trainL{0%,100%{filter:drop-shadow(0 0 6px #E9C46A) drop-shadow(0 0 2px #fff)}50%{filter:drop-shadow(0 0 16px #FFE9A8) drop-shadow(0 0 4px #fff)}}
+.rail .train.rtr-l::before{content:"";position:absolute;right:70%;top:12px;width:70px;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,#FFE9A8);box-shadow:0 -8px 0 -1px rgba(255,233,168,.6),0 8px 0 -1px rgba(255,233,168,.6);animation:speed .5s linear infinite;pointer-events:none}
+@keyframes speed{0%{opacity:.3;transform:translateX(8px)}50%{opacity:1}100%{opacity:.3;transform:translateX(-8px)}}
+.rail .train.rtl-e .trail i{filter:drop-shadow(0 0 5px #B36BE8);font-size:16px}
+.rail .train.rtl-l .trail i{font-size:18px;animation:trailL .7s ease-in-out infinite;filter:drop-shadow(0 0 6px #FF6A00)}
+.rail .train.rtl-l .trail i:nth-child(n+4){font-size:13px;opacity:.5}
+@keyframes trailL{0%,100%{transform:scale(.8) translateY(0)}50%{transform:scale(1.25) translateY(-3px)}}
+/* thèmes épiques et légendaires */
+:root[data-r-theme="e"] .btn:not(.ghost),:root[data-r-theme="l"] .btn:not(.ghost){position:relative;overflow:hidden}
+:root[data-r-theme="e"] .btn:not(.ghost)::after,:root[data-r-theme="l"] .btn:not(.ghost)::after{content:"";position:absolute;top:-10%;bottom:-10%;left:-60%;width:38%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);animation:btnSheen 4s ease-in-out infinite;pointer-events:none}
+:root[data-r-theme="l"] .btn:not(.ghost)::after{animation-duration:2.8s}
+@keyframes btnSheen{0%{left:-60%}35%,100%{left:130%}}
+:root[data-r-theme="e"] .nav button[aria-current="page"] .g{text-shadow:0 0 10px var(--accent)}
+:root[data-r-theme="l"] .card:not([class*="cs-"]){border:2px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,conic-gradient(from var(--ang),var(--line) 0 20%,var(--accent) 30%,#FFE9A8 38%,var(--accent) 46%,var(--line) 56% 100%) border-box;animation:ang 6s linear infinite}
+:root[data-r-theme="l"] .brand h1{background:linear-gradient(90deg,var(--accent),#FFE9A8,var(--accent),var(--accent));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 3.2s linear infinite}
+:root[data-r-theme="l"] .nav{box-shadow:0 -6px 24px -10px var(--accent)}
+:root[data-r-theme="l"] .nav button[aria-current="page"] .g{text-shadow:0 0 12px var(--accent),0 0 4px #FFE9A8;animation:navGlow 2s ease-in-out infinite}
+@keyframes navGlow{50%{transform:scale(1.18)}}
+:root[data-r-theme="l"] .seal{box-shadow:0 0 0 2px #FFE9A8,0 0 16px var(--accent);animation:sealPulse 2.4s ease-in-out infinite}
+@keyframes sealPulse{50%{box-shadow:0 0 0 3px #FFE9A8,0 0 28px var(--accent)}}
+/* ambiance plein écran des animations rares, épiques et légendaires */
+#ambfx{position:fixed;inset:0;z-index:15;pointer-events:none;overflow:hidden}
+body.focus #ambfx{opacity:.25}
+#ambfx i{position:absolute;font-style:normal;line-height:1;will-change:transform}
+#ambfx .af-fall{top:-40px;animation:afFall linear infinite}
+@keyframes afFall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),110vh) rotate(var(--rot))}}
+#ambfx .af-rise{bottom:-40px;animation:afRise linear infinite}
+@keyframes afRise{0%{transform:translate(0,0);opacity:0}15%{opacity:var(--op,.7)}85%{opacity:var(--op,.7)}100%{transform:translate(var(--dx),-110vh);opacity:0}}
+#ambfx .af-fly{width:6px;height:6px;border-radius:50%;background:#FFF39A;box-shadow:0 0 10px 3px rgba(255,236,120,.8);animation:afFly ease-in-out infinite alternate}
+@keyframes afFly{0%{transform:translate(0,0);opacity:.15}50%{opacity:1}100%{transform:translate(var(--dx),var(--dy));opacity:.3}}
+#ambfx .af-neon{position:absolute;inset:0;box-shadow:inset 0 0 30px 4px rgba(255,47,214,.5),inset 0 0 70px 8px rgba(47,243,255,.25);animation:afNeon 2.2s ease-in-out infinite}
+@keyframes afNeon{0%,100%{opacity:.55}45%{opacity:1}50%{opacity:.4}55%{opacity:1}}
+#ambfx .fw{position:absolute;width:0;height:0}
+#ambfx .fw i{left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 10px 2px var(--c);opacity:0;animation:fwP 1.8s cubic-bezier(.1,.7,.3,1) forwards}
+#ambfx .fw u{position:absolute;left:-90px;top:-90px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 65%);opacity:0;animation:fwG 1s ease-out .5s forwards}
+@keyframes fwG{0%{opacity:0;transform:scale(.3)}20%{opacity:.55}100%{opacity:0;transform:scale(1.4)}}
+@keyframes fwP{0%{transform:translate(0,0) scale(1);opacity:1}70%{opacity:1}100%{transform:translate(var(--x),calc(var(--y) + 40px)) scale(.3);opacity:0}}
+#ambfx .fw b{position:absolute;left:-2px;width:4px;height:60px;border-radius:2px;background:linear-gradient(transparent,#fff);opacity:0;animation:fwT .55s ease-out forwards}
+@keyframes fwT{0%{transform:translateY(140px);opacity:0}30%{opacity:1}100%{transform:translateY(0);opacity:0}}
+#ambfx .bolt{position:absolute;left:-30%;height:3px;width:30%;border-radius:3px;background:linear-gradient(90deg,transparent,#9FE6FF,#fff);box-shadow:0 0 14px 3px rgba(120,210,255,.9);animation:bolt .9s cubic-bezier(.6,0,.4,1) forwards}
+#ambfx .bolt::after{content:"🚄";position:absolute;right:-30px;top:-14px;font-size:26px;filter:drop-shadow(0 0 8px #9FE6FF)}
+@keyframes bolt{to{left:130%}}
+#ambfx .zap{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 50%,rgba(120,210,255,.35));animation:zap .7s ease-out forwards}
+@keyframes zap{0%,100%{opacity:0}15%{opacity:1}30%{opacity:.2}45%{opacity:.8}}
+/* effets de bonne réponse épiques et légendaires */
+.bfx-ring{position:fixed;z-index:51;pointer-events:none;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:3px solid var(--c);box-shadow:0 0 12px var(--c);animation:bxshock .7s cubic-bezier(.1,.7,.3,1) forwards}
+.bfx-edge{position:fixed;inset:0;z-index:50;pointer-events:none;box-shadow:inset 0 0 60px 10px var(--c);animation:edgeF .8s ease-out forwards}
+@keyframes edgeF{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+.bfx-rain{position:fixed;top:-40px;z-index:52;pointer-events:none;font-style:normal;line-height:1;animation:bfxRain var(--d) cubic-bezier(.3,0,.8,1) var(--dl) forwards;opacity:0}
+@keyframes bfxRain{0%{opacity:0;transform:translate(0,0) rotate(0)}10%{opacity:1}100%{opacity:0;transform:translate(var(--dx),105vh) rotate(var(--r))}}
+.bfx-fly{position:fixed;z-index:52;pointer-events:none;font-size:64px;line-height:1;top:30%;left:-80px;animation:bfxFly 1.4s cubic-bezier(.4,0,.3,1) forwards;filter:drop-shadow(0 0 12px #FF6A00)}
+@keyframes bfxFly{0%{transform:translate(0,0) scaleX(-1)}50%{transform:translate(55vw,-40px) scaleX(-1)}100%{transform:translate(120vw,20px) scaleX(-1)}}
+/* équiper un objet épique ou légendaire */
+.eqfx{position:fixed;inset:0;z-index:70;pointer-events:none;background:radial-gradient(circle at var(--x) var(--y),transparent 0,transparent var(--rr),var(--c) calc(var(--rr) + 30px),transparent calc(var(--rr) + 120px));animation:eqWipe 1s cubic-bezier(.2,.6,.3,1) forwards}
+@property --rr{syntax:"<length>";inherits:false;initial-value:0px}
+@keyframes eqWipe{0%{--rr:0px;opacity:1}100%{--rr:1400px;opacity:.2}}
+.eqfx-msg{position:fixed;left:50%;top:42%;z-index:71;pointer-events:none;transform:translate(-50%,-50%);font-weight:800;font-size:22px;padding:14px 22px;border-radius:18px;background:var(--surface);color:var(--ink);box-shadow:0 0 0 3px var(--c),0 0 40px var(--c);animation:eqMsg 1.8s cubic-bezier(.2,1.4,.4,1) forwards;white-space:nowrap}
+@keyframes eqMsg{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}15%{transform:translate(-50%,-50%) scale(1.08);opacity:1}25%,75%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-60%) scale(.9);opacity:0}}
+@media (prefers-reduced-motion: reduce){#ambfx,.bfx-rain,.bfx-fly,.eqfx,.av.rf-l::after{display:none}}
+.grpsel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 12px}.grpsel .toggle{font-family:var(--f-led,monospace);letter-spacing:.04em}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -631,7 +768,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.0.3";
+const APP_VERSION = "2.4.1";
 const CLOUD = !window.claude;
 /* ---------- journal léger (supervision : activité + erreurs, lu par l'alerte bug et le bilan du lundi) ---------- */
 let jrQ = (() => { try { return JSON.parse(localStorage.getItem("mj.jr") || "[]"); } catch (e) { return []; } })(), jrBusy = false; const jrSeen = {};
@@ -644,7 +781,7 @@ function jlog(t, x) { if (!CLOUD) return; try {
 function jlogOpen() { try { const l = +localStorage.getItem("mj.jrOpen") || 0; if (Date.now() - l < 18e5) return; localStorage.setItem("mj.jrOpen", Date.now()); } catch (e) {} jlog("open"); }
 async function jrFlush() {
   if (!CLOUD || jrBusy || !jrQ.length || !fb || !cloudUser) return; jrBusy = true;
-  const solo = !(S && S.grp && S.grp.code); // sans groupe = pur solo : anonyme, personne ne sait qui utilise l'appli
+  let solo = true; try { solo = !allGroups().length; } catch (e) {} // sans groupe = pur solo : anonyme, personne ne sait qui utilise l'appli
   const batch = jrQ.slice(0, 25), { F, db } = fb, uid = linked() && !solo ? cloudUser.uid.slice(0, 8) : "";
   try { await Promise.all(batch.map(e => F.addDoc(F.collection(db, "journal"), { t: e.t, at: e.at, x: e.x, name: solo ? "" : e.name, uid, v: APP_VERSION })));
     jrQ = jrQ.slice(batch.length); try { localStorage.setItem("mj.jr", JSON.stringify(jrQ)); } catch (e) {} } catch (e) {}
@@ -864,7 +1001,12 @@ let AC = null;
 const soundOn = () => { try { return localStorage.getItem("mj.sound") !== "0"; } catch (e) { return true; } };
 const SND = {
   classic: { ok: [[880, 0, .16, "sine", .16], [1318.5, .08, .32, "sine", .15], [2637, .08, .12, "sine", .03]], ko: [[311, 0, .2, "triangle", .2, 260], [208, .13, .32, "triangle", .2, 175]],
-    combo: [1046.5, 1318.5, 1568, 2093].map((f, i) => [f, i * .065, .22, "sine", .12]), done: [523.25, 659.25, 783.99, 1046.5, 1318.5].map((f, i) => [f, i * .1, i === 4 ? .7 : .3, "triangle", .13]) },
+    combo: [1046.5, 1318.5, 1568, 2093].map((f, i) => [f, i * .065, .22, "sine", .12]), done: [523.25, 659.25, 783.99, 1046.5, 1318.5].map((f, i) => [f, i * .1, i === 4 ? .7 : .3, "triangle", .13]),
+    rise: [[180, 0, 1.15, "sawtooth", .035, 760], [90, 0, 1.15, "sine", .14, 200]],
+    riseL: [[110, 0, 2.1, "sawtooth", .04, 990], [55, 0, 2.1, "sine", .18, 220], [220, 1.2, .9, "triangle", .05, 1760]],
+    boom: [[90, 0, .7, "sine", .55, 32], [180, 0, .25, "square", .05, 60], [2093, .04, .5, "triangle", .07]],
+    epic: [783.99, 987.77, 1174.66, 1567.98, 1975.53].map((f, i) => [f, i * .07, i === 4 ? .7 : .25, "triangle", .11]),
+    fanfare: [[523.25, 0, .18], [659.25, .14, .18], [783.99, .28, .18], [1046.5, .42, .5], [783.99, .7, .14], [1046.5, .84, .9], [1318.5, .84, .9], [1567.98, .84, 1.1], [2093, 1.0, 1.0]].map(([f, t, d]) => [f, t, d, "triangle", .1]) },
   taiko: { ok: [[150, 0, .22, "sine", .5, 70], [900, 0, .03, "square", .03]], ko: [[95, 0, .3, "sine", .45, 55]], combo: [0, .12, .24].map(t => [150, t, .2, "sine", .45, 70]).concat([[300, .36, .3, "sine", .3, 140]]), done: [0, .15, .3, .45, .6].map((t, i) => [i === 4 ? 200 : 140, t, .25, "sine", .45, 70]) },
   furin: { ok: [[2093, 0, .7, "sine", .09], [3136, .02, .5, "sine", .04], [4186, .04, .3, "sine", .02]], ko: [[1318.5, 0, .5, "sine", .07, 1174.7]], combo: [2093, 2637, 3136].map((f, i) => [f, i * .09, .6, "sine", .07]), done: [1568, 2093, 2637, 3136].map((f, i) => [f, i * .14, .9, "sine", .07]) },
   koto: { ok: [[659.25, 0, .3, "triangle", .2], [880, .07, .4, "triangle", .18]], ko: [[329.6, 0, .35, "triangle", .2, 311]], combo: [587.3, 659.25, 880, 987.8].map((f, i) => [f, i * .07, .3, "triangle", .16]), done: [440, 493.9, 587.3, 659.25, 880].map((f, i) => [f, i * .12, .5, "triangle", .15]) },
@@ -888,7 +1030,14 @@ function burst(el, ok, style) {
   if (!el) return; const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
   const B = BURSTS.find(x => x.id === (style || (P.cur ? look().burst : "base"))) || BURSTS[0];
   const box = h("div", { class: "burst2", style: "left:" + cx + "px;top:" + cy + "px", "aria-hidden": "true" });
-  const n = ok ? (B.big ? 20 : 12) : 0;
+  const n = ok ? ({ r: 16, e: 24, l: 30 }[B.r] || (B.big ? 20 : 12)) : 0;
+  if (ok && (B.r === "e" || B.r === "l")) { const c = (B.col && B.col[0]) || (B.r === "l" ? "#E9C46A" : "#B36BE8"), fx = [h("div", { class: "bfx-ring", style: "left:" + cx + "px;top:" + cy + "px;--c:" + c })];
+    if (B.r === "e") fx.push(h("div", { class: "bfx-edge", style: "--c:" + c + "88" }));
+    if (B.r === "l") { const lc = B.id === "dragon" ? "#FF6A00" : "#E9C46A"; fx.push(h("div", { class: "bfx-edge", style: "--c:" + lc + "aa" }), h("div", { class: "bfx-ring", style: "left:" + cx + "px;top:" + cy + "px;--c:#FFF6D5;animation-delay:.12s" }));
+      const sy = B.id === "dragon" ? ["🔥", "🔥", "✦"] : ["✨", "✦", "✧"];
+      for (let i = 0; i < 22; i++) fx.push(h("i", { class: "bfx-rain", style: "left:" + (Math.random() * 100).toFixed(1) + "vw;font-size:" + (12 + Math.random() * 16).toFixed(0) + "px;--d:" + (1 + Math.random() * .8).toFixed(2) + "s;--dl:" + (Math.random() * .35).toFixed(2) + "s;--dx:" + Math.round(Math.random() * 60 - 30) + "px;--r:" + Math.round(Math.random() * 360) + "deg;" + (B.id === "dragon" ? "" : "color:#F7D774;text-shadow:0 0 8px #E9C46A") }, sy[i % sy.length]));
+      if (B.id === "dragon") fx.push(h("div", { class: "bfx-fly" }, "🐉")); }
+    document.body.append(...fx); setTimeout(() => fx.forEach(e => e.remove()), 2000); }
   for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2 + Math.random() * .4, d = (B.big ? 60 : 46) + Math.random() * (B.big ? 70 : 40);
     const pos = "--x:" + Math.round(Math.cos(a) * d) + "px;--y:" + Math.round(Math.sin(a) * d) + "px;animation-delay:" + Math.round(Math.random() * 60) + "ms";
     if (B.sym && (!B.col || i % 2)) box.append(h("i", { class: "sym", style: pos }, B.sym[i % B.sym.length]));
@@ -993,7 +1142,8 @@ function railView(cur) {
   let from = idx; try { const v = sessionStorage.getItem("mj.train"); if (v !== null) from = +v; else from = Math.max(0, idx - 1); } catch (e) { from = Math.max(0, idx - 1); }
   const pct = i => "calc(12px + (100% - 24px) * " + (i / (CH.length - 1)) + ")";
   const TR = TRAINS.find(x => x.id === look().train && owns("train", x.id)) || TRAINS[0], TL = TRAILS.find(x => x.id === look().trail && owns("trail", x.id));
-  const train = h("div", { class: "train", style: "left:" + pct(from), "aria-hidden": "true" }, TL && TL.sym ? h("span", { class: "trail" }, h("i", {}, TL.sym), h("i", {}, TL.sym), h("i", {}, TL.sym)) : null, h("span", { style: "display:inline-block;transform:scaleX(-1)" + (TR.f ? ";filter:" + TR.f : "") }, TR.e));
+  const nTr = TL ? ({ e: 4, l: 6 }[TL.r] || 3) : 0;
+  const train = h("div", { class: "train" + (TR.r ? " rtr-" + TR.r : "") + (TL && TL.r ? " rtl-" + TL.r : ""), style: "left:" + pct(from), "aria-hidden": "true" }, TL && TL.sym ? h("span", { class: "trail" }, Array.from({ length: nTr }, () => h("i", {}, TL.sym))) : null, h("span", { style: "display:inline-block;transform:scaleX(-1)" + (TR.f ? ";filter:" + TR.f : "") }, TR.e));
   const rail = h("div", { class: "rail", role: "img", "aria-label": "Ton train est à " + cur.ro },
     h("div", { class: "line" }),
     CH.map((c, i) => h("div", { class: "st" + (i < idx ? " done" : ""), style: "left:" + pct(i) + ";--lc:var(" + c.lc + ")" })),
@@ -1035,6 +1185,7 @@ function confetti() {
 }
 function render() {
   const app = $("app"); app.replaceChildren();
+  try { document.body.classList.toggle("focus", view === "session" || !!(xp && !xp.done) || !!(typeof game !== "undefined" && game && !game.done)); } catch (e) {}
   const vk = (!P.cur || adding) ? "welcome" : test ? "test" + (test.done ? "done" : "") : view + (chapter ? chapter.id : "") + (role ? "role" : "");
   if (vk !== lastViewKey) { lastViewKey = vk; app.classList.remove("view-in"); void app.offsetWidth; app.classList.add("view-in"); }
   if (!P.cur || adding) { $("nav").replaceChildren(); app.append(viewWelcome()); return; }
@@ -1064,7 +1215,7 @@ function viewHome() {
   const doneToday = (S.daily[todayKey()] || {}).cards || 0;
   return h("div", {},
     h("header", { class: "top", style: "flex-wrap:nowrap;align-items:center" },
-      h("div", { class: "brand", style: "min-width:0" }, h("div", { class: "seal jp", "aria-hidden": "true" }, "旅"), h("div", { style: "min-width:0" }, h("h1", {}, "Mission Japon"), h("small", {}, "Bonjour " + prof().name + " · ", h("span", { class: "ttl" }, titleOf(look()))))),
+      h("div", { class: "brand", style: "min-width:0" }, h("div", { class: "seal jp", "aria-hidden": "true" }, "旅"), h("div", { style: "min-width:0" }, h("h1", {}, "Mission Japon"), h("small", {}, "Bonjour " + prof().name + " · ", h("span", { class: ttlCls(look()) }, titleOf(look()))))),
       h("button", { class: "me-btn gear", onclick: () => go("reglages"), "aria-label": "Mon profil et réglages" }, avatar(look(), prof().name, 50), h("span", { class: "cog", "aria-hidden": "true" }, "⚙"))),
     h("section", { class: "led led-" + (owns("led", look().led) ? look().led : "ambre"), "aria-label": "Compte à rebours" },
       h("div", { class: "lbl" }, "発車まで"), h("div", { class: "dest" }, "関西空港 · Kansai"), h("div", { class: "lbl" }, "M01"),
@@ -1333,7 +1484,7 @@ function finishSession() {
     const hr = new Date().getHours(); if (hr >= 22 || hr < 4) st.night = 1; if (hr >= 4 && hr < 8) st.morning = 1;
   }
   rwCheck();
-  if (CLOUD && session.done >= 10 && !session.counted) { session.counted = true; addPts(50 + 5 * Math.min(S.streak.n || 0, 7)); if (S.grp && S.grp.code) S.grp.sessions = (S.grp.sessions || 0) + 1; }
+  if (CLOUD && session.done >= 10 && !session.counted) { session.counted = true; addPts(50 + 5 * Math.min(S.streak.n || 0, 7)); if (S.grp && S.grp.code) S.grp.sessions = (S.grp.sessions || 0) + 1; for (const b of Object.values(S.grpOff || {})) if (b && b.grp) b.grp.sessions = (b.grp.sessions || 0) + 1; }
   persist(); if (!session.finished && session.done) sfx("done"); session.finished = true; render();
   if (CLOUD) cloudSync();
 }
@@ -1552,7 +1703,7 @@ function examResult(wrap) {
 function startFree(f) { role = { mode: "free", sc: f, log: [], busy: false, turns: 0, done: false }; render(); claudeTurn(null); window.scrollTo(0, 0); }
 /* ---------- Kana Express : le plus de bonnes réponses en 60 s ---------- */
 let xp = null, xpT = null;
-const XP_TIERS = { kana: [10, 20, 30, 40], kanji: [6, 12, 18, 25] }, XP_NM = ["Bronze", "Argent", "Or", "Arc-en-ciel"], XP_K = ["銅", "銀", "金", "虹"], XP_BOX = ["bois", "bambou", "bambou", "laque"], XP_MS = 60000;
+const XP_TIERS = { kana: [6, 12, 18, 25], kanji: [4, 8, 12, 16] }, XP_NM = ["Bronze", "Argent", "Or", "Diamant"], XP_K = ["銅", "銀", "金", "💎"], XP_BOX = ["bois", "bambou", "bambou", "laque"], XP_MS = 60000;
 function xpPool(mode) { const cat = mode === "kanji" ? "kanji" : "kana"; let ids = Object.keys(S.srs).filter(id => ITEMS[id] && ITEMS[id].cat === cat);
   if (ids.length < 8) ids = [...new Set(ids.concat(ORDER[cat].slice(0, mode === "kanji" ? 10 : 15)))]; return ids; }
 function xpQ() {
@@ -1610,7 +1761,7 @@ function viewExpress() {
       h("p", { class: "muted" }, "Précision " + Math.round(100 * xp.acc) + " % · " + (xp.tier >= 0 ? "palier " + XP_NM[xp.tier] : "pas encore de palier") + " · record : " + Math.max(xp.best, xp.ok) + (xp.record ? " (nouveau record !)" : "")),
       B ? h("div", { class: "rev", style: "max-width:420px;margin:10px auto;text-align:left" }, h("div", { class: "bxg jp", style: "--bc:" + B.col }, B.k), h("div", { class: "tx" }, h("b", {}, "+1 " + B.nm), h("small", {}, "À ouvrir dans Missions › Boîtes")), h("button", { class: "btn small", onclick: () => { quitExpress(); mTab = "boites"; go("missions"); } }, "Ouvrir"))
         : h("p", { class: "hint" }, xp.why),
-      h("p", { class: "hint" }, "Paliers : " + T.map((v, i) => XP_NM[i] + " " + v).join(" · ") + ". Bronze donne une boîte en bois, Argent et Or une boîte en bambou, Arc-en-ciel une boîte en laque."),
+      h("p", { class: "hint" }, "Paliers : " + T.map((v, i) => XP_NM[i] + " " + v).join(" · ") + ". Bronze donne une boîte en bois, Argent et Or une boîte en bambou, Diamant une boîte en laque."),
       h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
         h("button", { class: "btn", onclick: () => startExpress(xp.mode) }, "Rejouer"),
         h("button", { class: "btn ghost", onclick: () => { quitExpress(); render(); } }, "Retour à la pratique"))));
@@ -1622,7 +1773,7 @@ function viewExpress() {
       h("div", { class: "xp-mid" }, h("span", { class: "xp-time" + (left < 10000 ? " low" : ""), id: "xptime" }, Math.ceil(left / 1000)), h("small", {}, "s")),
       h("span", { class: "gsc" }, h("span", { id: "xpsc" }, xp.ok), " ✓")),
     h("div", { class: "xp-bar" }, h("i", { id: "xpbar", style: "width:" + (100 * left / XP_MS) + "%" })),
-    h("p", { class: "hint", style: "text-align:center;margin:6px 0 0" }, next ? "Prochain palier : " + next + " · record " + xp.best : "Palier Arc-en-ciel atteint ! Record " + xp.best),
+    h("p", { class: "hint", style: "text-align:center;margin:6px 0 0" }, next ? "Prochain palier : " + next + " · record " + xp.best : "Palier Diamant atteint ! Record " + xp.best),
     h("div", { class: "card cs-" + (owns("card", look().card) ? look().card : "base"), style: "margin-top:10px" },
       h("div", { class: "kind" }, q.sub),
       h("div", { class: "prompt" + (q.jp ? " jp" : "") + (q.prompt.length > 3 && !q.jp ? " mid" : "") }, q.prompt),
@@ -1637,7 +1788,7 @@ function xpBlock() {
     h("div", { class: "xpcard" },
       h("div", { class: "xpk jp", "aria-hidden": "true" }, "速"),
       h("div", { class: "tx" }, h("b", {}, "Le plus de bonnes réponses en 60 secondes"),
-        h("small", {}, "Une erreur coûte 2 s. Bronze, Argent, Or et Arc-en-ciel donnent des boîtes (2 par jour max). Records : kana " + (st.kxBest || 0) + " · kanji " + (st.kjBest || 0) + " · boîtes du jour " + Math.min(2, d.gb || 0) + "/2")),
+        h("small", {}, "Une erreur coûte 2 s. Bronze, Argent, Or et Diamant donnent des boîtes (2 par jour max). Records : kana " + (st.kxBest || 0) + " · kanji " + (st.kjBest || 0) + " · boîtes du jour " + Math.min(2, d.gb || 0) + "/2")),
       h("div", { class: "xpgo" }, h("button", { class: "btn small", onclick: () => startExpress("kana") }, "かな Kana"), h("button", { class: "btn small ghost", onclick: () => startExpress("kanji") }, "漢字 Kanji")))];
 }
 function viewRoles() {
@@ -1927,6 +2078,14 @@ const STAMPS = [
   { id: "flamme", nm: "Sceau du mois sans pause", k: "炎", src: "ach", ach: "streak30" },
   { id: "examen", nm: "Sceau du départ", k: "免", src: "ach", ach: "examall" }];
 const KINDS = { theme: PALS, frame: FRAMES, anim: ANIMS, title: TITLES, pin: PINS, burst: BURSTS, sound: SOUNDS, train: TRAINS, trail: TRAILS, plate: PLATES, led: LEDS, card: CARDS, sticker: STICKERS, stamp: STAMPS };
+// Rareté de chaque objet hors boîtes : boutique selon le prix, exploits selon la difficulté de l'exploit
+const ACH_R = { first: "c", streak3: "c", s10: "c", st1: "c", lex30: "c", rev1: "c", box1: "c", duel1: "c", group: "c", photo: "c",
+  night: "r", morning: "r", streak7: "r", st2: "r", hira100: "r", kanji10: "r", scenes4: "r", exam1: "r", kx20: "r", omi10: "r", daikichi: "r", m30: "r", clash5: "r",
+  streak14: "e", s50: "e", kata100: "e", st3: "e", st4: "e", perfect: "e", combo20: "e", rev85: "e", kj18: "e", box50: "e", stk20: "e", duel10: "e", champ: "e", lead: "e",
+  streak30: "l", streak60: "l", s100: "l", kanjiAll: "l", st5: "l", examall: "l", kx40: "l", stkall: "l" };
+Object.values(KINDS).forEach(L => L.forEach(x => { if (x.r) return;
+  if (x.src === "shop") x.r = x.price >= 6000 ? "l" : x.price >= 3000 ? "e" : x.price >= 1000 ? "r" : "c";
+  else if (x.src === "ach") x.r = ACH_R[x.ach] || "r"; }));
 const KIND_NM = { theme: "Thème", frame: "Cadre", anim: "Animation", title: "Titre", pin: "Porte-bonheur", burst: "Effet de réussite", sound: "Sons", train: "Train", trail: "Sillage", plate: "Plaque de nom", led: "Panneau", card: "Style de carte", sticker: "Autocollant", stamp: "Tampon" };
 const KIND_PL = { theme: "Thèmes", frame: "Cadres", anim: "Animations", title: "Titres", pin: "Porte-bonheur", burst: "Effets", sound: "Sons", train: "Trains", trail: "Sillages", plate: "Plaques", led: "Panneaux", card: "Cartes", sticker: "Album", stamp: "Tampons" };
 const NOEQUIP = { sticker: 1, stamp: 1 };
@@ -1967,9 +2126,9 @@ const ACH = [
   { id: "lex30", g: "Exploits", nm: "Oreille fine", d: "Écoute 30 caractères dans le Lexique", t: st => [st.lex || 0, 30], k: "耳" },
   { id: "rev1", g: "Exploits", nm: "Bonne mémoire", d: "Termine une révision", t: st => [st.revs || 0, 1], k: "復" },
   { id: "rev85", g: "Exploits", nm: "Mémoire d’éléphant", d: "Fais 85/100 ou plus à une révision de la semaine", t: st => [st.rev85 || 0, 85], k: "憶" },
-  { id: "kx20", g: "Kana Express", nm: "Express", d: "20 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 20], k: "速" },
-  { id: "kx40", g: "Kana Express", nm: "Shinkansen humain", d: "40 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 40], k: "光" },
-  { id: "kj18", g: "Kana Express", nm: "Œil de kanji", d: "18 bonnes réponses en une partie de Kana Express (kanji)", t: st => [st.kjBest || 0, 18], k: "眼" },
+  { id: "kx20", g: "Kana Express", nm: "Express", d: "12 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 12], k: "速" },
+  { id: "kx40", g: "Kana Express", nm: "Shinkansen humain", d: "25 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 25], k: "光" },
+  { id: "kj18", g: "Kana Express", nm: "Œil de kanji", d: "12 bonnes réponses en une partie de Kana Express (kanji)", t: st => [st.kjBest || 0, 12], k: "眼" },
   { id: "box1", g: "Boîtes", nm: "Premier cadeau", d: "Ouvre ta première boîte", t: st => [st.boxes || 0, 1], k: "箱" },
   { id: "box50", g: "Boîtes", nm: "Collectionneur", d: "Ouvre 50 boîtes", t: st => [st.boxes || 0, 50], k: "蔵" },
   { id: "stk20", g: "Boîtes", nm: "Otaku du gashapon", d: "Colle 20 autocollants dans ton album", t: () => [STICKERS.filter(x => owns("sticker", x.id)).length, 20], k: "貼" },
@@ -1995,7 +2154,7 @@ const DAILY = [
   { id: "scene", nm: "Réussis une scène (même déjà jouée)", goal: 1, ev: "scene" },
   { id: "lex", nm: "Écoute 5 caractères dans le Lexique", goal: 5, ev: "lex" },
   { id: "kx", nm: "Joue une partie de Kana Express", goal: 1, ev: "kx" },
-  { id: "kx15", nm: "Fais 15 bonnes réponses en une partie de Kana Express", goal: 15, ev: "kxok", max: true },
+  { id: "kx15", nm: "Fais 10 bonnes réponses en une partie de Kana Express", goal: 10, ev: "kxok", max: true },
   { id: "revmix", nm: "Fais une révision mélangée", goal: 1, ev: "revmix", need: () => revPool("mix").length >= 8 },
   { id: "duel", nm: "Joue le défi du jour du groupe", goal: 1, ev: "duel", need: () => inGroup() },
   { id: "box", nm: "Ouvre une boîte", goal: 1, ev: "box" }];
@@ -2117,6 +2276,30 @@ function openBox(t) {
   track("box"); jlog("box", t + " " + res.rar); persist(); if (CLOUD) cloudSync();
   boxReveal(t, res);
 }
+/* mise en scène des boîtes épiques (≈1,2 s) et légendaires (≈2,2 s) : la boîte se charge, tremble, s'élève puis explose */
+function boxCine(ov, body, glyph, fi, col, done) {
+  const L = fi === 3, rc = RAR[RORD[fi]].col, dur = L ? 2150 : 1150;
+  ov.classList.add(L ? "dim-l" : "dim-e"); glyph.style.setProperty("--cd", dur + "ms"); glyph.style.setProperty("--rc", rc);
+  glyph.classList.remove("shk", "lv0", "lv1", "lv2", "lv3"); void glyph.offsetWidth; glyph.classList.add("charge");
+  body.querySelectorAll("p,button").forEach(e => { e.style.visibility = "hidden"; });
+  sfx(L ? "riseL" : "rise"); try { if (navigator.vibrate) navigator.vibrate(L ? [20, 90, 25, 70, 30, 50, 40, 40, 60] : [20, 70, 35]); } catch (e) {}
+  if (L) ov.prepend(h("div", { class: "ov-rays pre", style: "--rc:" + rc }));
+  setTimeout(() => {
+    if (!ov.isConnected) return;
+    const r = glyph.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, fx = [h("div", { class: "bx-flash", style: "--rc:" + rc + ";--fd:" + (L ? "1.2s" : ".8s") })];
+    for (let i = 0; i < (L ? 3 : 1); i++) fx.push(h("div", { class: "bx-shock", style: "left:" + cx + "px;top:" + cy + "px;--rc:" + (i === 1 ? "#FFF6D5" : rc) + ";animation-delay:" + (i * 150) + "ms" }));
+    const n = L ? 30 : 16;
+    for (let i = 0; i < n; i++) { const a = Math.random() * 6.283, d = 110 + Math.random() * (L ? 280 : 170);
+      fx.push(h("i", { class: "bx-shard", style: "left:" + cx + "px;top:" + cy + "px;--c:" + (i % 3 ? col : rc) + ";--x:" + Math.round(Math.cos(a) * d) + "px;--y:" + Math.round(Math.sin(a) * d) + "px;--r:" + Math.round(Math.random() * 720 - 360) + "deg" })); }
+    document.body.append(...fx); setTimeout(() => fx.forEach(e => e.remove()), 1600);
+    sfx("boom"); ov.classList.add("quake"); try { if (navigator.vibrate) navigator.vibrate(L ? 260 : 100); } catch (e) {}
+    done();
+  }, dur);
+}
+function boxRain(ov) {
+  const sy = ["✦", "★", "✧", "◆", "✦", "❖"];
+  for (let i = 0; i < 46; i++) ov.append(h("span", { class: "bx-rain", style: "left:" + (Math.random() * 100).toFixed(1) + "%;--s:" + (12 + Math.random() * 20).toFixed(0) + "px;--d:" + (2.4 + Math.random() * 2.2).toFixed(2) + "s;--dl:" + (Math.random() * 2.6).toFixed(2) + "s;--dx:" + Math.round(Math.random() * 80 - 40) + "px;--r:" + Math.round(Math.random() * 540 - 270) + "deg" }, sy[i % sy.length]));
+}
 function boxReveal(t, res) {
   const B = BOXES[t], minR = RORD.find(k => B.odds[k]) || "c", fi = RORD.indexOf(res.rar), mi = RORD.indexOf(minR);
   const steps = [mi, Math.min(fi, mi + Math.round((fi - mi) / 2)), fi]; let tap = 0;
@@ -2125,22 +2308,31 @@ function boxReveal(t, res) {
   const body = h("div", { class: "box bx-ov" }, h("div", { class: "eyebrow" }, B.nm), glyph, hint);
   const ov = h("div", { class: "overlay", id: "boxov", role: "dialog", "aria-label": "Ouverture de boîte" }, body);
   const close = () => { ov.remove(); rwCheck(); render(); };
+  let reduce = false; try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
   const reveal = () => {
-    const R = RAR[res.rar], it = res.got;
-    body.replaceChildren(h("div", { class: "eyebrow", style: "color:" + R.col }, R.nm + (res.forced ? " · garanti" : "")),
-      it ? h("div", { class: "bx-item", style: "--rc:" + R.col }, preview(it.kind, it.x)) : h("div", { class: "bx-item", style: "--rc:" + R.col }, h("span", { style: "font-size:44px" }, "💠")),
+    const R = RAR[res.rar], it = res.got, big = fi >= 2 && !reduce;
+    ov.classList.remove("quake");
+    if (big) { body.classList.add(fi === 3 ? "rv-l" : "rv-e"); ov.classList.add(fi === 3 ? "dim-l" : "dim-e");
+      const pre = ov.querySelector(".ov-rays.pre"); if (pre) pre.remove();
+      ov.prepend(h("div", { class: "ov-rays", style: "--rc:" + R.col })); if (fi === 3) { ov.prepend(h("div", { class: "ov-rays r2" })); boxRain(ov); } }
+    const spk = big ? Array.from({ length: fi === 3 ? 8 : 5 }, (_, i) => { const a = i / (fi === 3 ? 8 : 5) * 6.283 + .4, d = fi === 3 ? 86 : 76;
+      return h("span", { class: "bx-spark", style: "left:calc(50% + " + Math.round(Math.cos(a) * d) + "px - 8px);top:calc(50% + " + Math.round(Math.sin(a) * d) + "px - 8px);--rc:" + R.col + ";--s:" + (12 + (i % 3) * 5) + "px;--dl:" + (i * 190) + "ms" }, i % 2 ? "✦" : "✧"); }) : [];
+    body.replaceChildren(h("div", { class: "eyebrow" + (big ? " rv-tag" : ""), style: "color:" + R.col }, R.nm + (res.forced ? " · garanti" : "")),
+      h("div", { class: "bx-stage" }, it ? h("div", { class: "bx-item", style: "--rc:" + R.col }, preview(it.kind, it.x)) : h("div", { class: "bx-item", style: "--rc:" + R.col }, h("span", { style: "font-size:44px" }, "💠")), ...spk),
       h("h2", { style: "margin:6px 0 2px" }, it ? it.x.nm : "+" + res.frag + " fragment" + (res.frag > 1 ? "s" : "")),
       h("p", { class: "muted", style: "margin:0 0 10px" }, it ? KIND_NM[it.kind] + " · nouveau !" : "Tu as déjà tous les objets de cette rareté : les fragments servent à choisir un objet qui te manque."),
       h("div", { style: "display:flex;gap:8px;justify-content:center;flex-wrap:wrap" },
         it && !NOEQUIP[it.kind] ? h("button", { class: "btn", onclick: () => { equip(it.kind, it.x.id); close(); } }, "Équiper") : null,
         boxCount(t) ? h("button", { class: "btn ghost", onclick: () => { ov.remove(); openBox(t); } }, "Ouvrir la suivante (" + boxCount(t) + ")") : null,
         h("button", { class: "btn ghost", onclick: close }, "Fermer")));
-    sfx(fi >= 2 ? "combo" : "ok"); if (fi >= 2) confetti();
+    if (fi === 3) { sfx("fanfare"); if (!reduce) { confetti(); setTimeout(confetti, 650); setTimeout(confetti, 1400); } }
+    else if (fi === 2) { sfx("epic"); if (!reduce) { confetti(); setTimeout(confetti, 700); } }
+    else sfx(fi === 1 ? "combo" : "ok");
   };
   const step = () => { if (tap >= 3) return; const lv = steps[tap]; tap++;
     glyph.style.setProperty("--rc", RAR[RORD[lv]].col); glyph.classList.remove("shk"); void glyph.offsetWidth; glyph.classList.add("shk", "lv" + lv); sfx("tap");
     hint.textContent = tap < 3 ? "Encore " + (3 - tap) + "…" : "";
-    if (tap >= 3) setTimeout(reveal, 450); };
+    if (tap >= 3) { if (fi >= 2 && !reduce) boxCine(ov, body, glyph, fi, B.col, reveal); else setTimeout(reveal, 450); } };
   glyph.addEventListener("click", step);
   if (fi < 2) body.append(h("button", { class: "btn small ghost", style: "margin-top:12px", onclick: () => { tap = 3; reveal(); } }, "Passer"));
   document.body.append(ov);
@@ -2225,8 +2417,9 @@ function rwCheck() {
   }
 }
 function equip(kind, id) {
-  if (!owns(kind, id)) return;
+  if (!owns(kind, id)) return; const was = look()[kind];
   setLook({ [kind]: id }); persist(); applyTheme(); if (CLOUD && typeof cloudSync === "function") cloudSync(); render();
+  if (was !== id) equipFx(kind, id, window.event);
 }
 function buy(kind, id, ev) {
   const x = KINDS[kind].find(i => i.id === id); if (!x || x.src !== "shop" || owns(kind, id)) return;
@@ -2238,13 +2431,64 @@ function buyFreeze() { const r = rw(); if (yen() < FREEZE_PRICE || freezes() >= 
 
 /* ---- thème ---- */
 let mq = null; try { mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener("change", () => applyTheme()); } catch (e) {}
+function eqR(kind, lk) {
+  const L = lk ? Object.assign(blankLook(), lk) : P.cur ? look() : null; if (!L) return "";
+  const id = kind === "theme" && pvPal && !lk ? pvPal : L[kind], x = (KINDS[kind] || []).find(i => i.id === id);
+  return x && x.r && (lk || (kind === "theme" && pvPal) || owns(kind, id)) ? x.r : "";
+}
+const PRESTIGE_K = ["theme", "anim", "card", "led", "burst", "frame", "pin", "train", "trail", "plate", "title"];
+function prestige() {
+  const root = document.documentElement;
+  PRESTIGE_K.forEach(k => { const r = P.cur ? eqR(k) : ""; if (r) root.setAttribute("data-r-" + k, r); else root.removeAttribute("data-r-" + k); });
+  ambFx();
+}
+/* ambiance plein écran selon l'animation équipée : rare = quelques symboles, épique = tout l'écran, légendaire = spectacle en continu */
+let ambKey = "", ambT = null;
+function ambFx() {
+  let reduce = false; try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  const L = P.cur ? look() : null, a = L && ANIMS.find(x => x.id === L.anim), r = a && P.cur && owns("anim", a.id) ? (a.r || "") : "";
+  const key = !reduce && L && L.bgfx !== false && a && r && r !== "c" ? a.id : "";
+  let el = $("ambfx"); if (key === ambKey && (el || !key)) return; ambKey = key;
+  clearInterval(ambT); ambT = null; if (el) el.remove(); if (!key) return;
+  el = h("div", { id: "ambfx", "aria-hidden": "true" }); document.body.append(el);
+  const R = (x, y) => (x + Math.random() * (y - x)).toFixed(2);
+  const fall = (n, sym, op, sz) => { for (let i = 0; i < n; i++) el.append(h("i", { class: "af-fall", style: "left:" + R(0, 100) + "vw;font-size:" + R(sz[0], sz[1]) + "px;opacity:" + op + ";animation-duration:" + R(9, 17) + "s;animation-delay:-" + R(0, 17) + "s;--dx:" + R(-90, 90) + "px;--rot:" + R(180, 720) + "deg" }, sym)); };
+  const rise = (n, sym, op, sz) => { for (let i = 0; i < n; i++) el.append(h("i", { class: "af-rise", style: "left:" + R(0, 100) + "vw;font-size:" + R(sz[0], sz[1]) + "px;--op:" + op + ";animation-duration:" + R(12, 22) + "s;animation-delay:-" + R(0, 22) + "s;--dx:" + R(-60, 60) + "px" }, sym)); };
+  if (key === "onsen") rise(7, "♨️", .45, [16, 26]);
+  else if (key === "lanterne") rise(6, "🏮", .7, [18, 28]);
+  else if (key === "koinobori") rise(5, "🎏", .6, [20, 30]);
+  else if (key === "momiji") fall(6, "🍁", .7, [14, 22]);
+  else if (key === "sakura") { fall(18, "🌸", .85, [12, 22]); fall(8, "❀", .6, [10, 16]); }
+  else if (key === "hotaru") { for (let i = 0; i < 20; i++) el.append(h("i", { class: "af-fly", style: "left:" + R(0, 100) + "vw;top:" + R(0, 100) + "vh;animation-duration:" + R(3, 7) + "s;animation-delay:-" + R(0, 7) + "s;--dx:" + R(-80, 80) + "px;--dy:" + R(-80, 80) + "px" })); }
+  else if (key === "neon") el.append(h("div", { class: "af-neon" }));
+  else if (key === "hanabi") {
+    const cols = ["#FF5E7E", "#FFC53D", "#47C1FF", "#B388FF", "#7BD389", "#FFFFFF"];
+    const fire = () => { if (!el.isConnected || document.hidden) return; const fw = h("div", { class: "fw", style: "left:" + R(12, 88) + "vw;top:" + R(8, 45) + "vh" }), c = cols[Math.floor(Math.random() * cols.length)], c2 = cols[Math.floor(Math.random() * cols.length)];
+      fw.append(h("b", {}), h("u", { style: "--c:" + c })); for (let i = 0; i < 36; i++) { const ang = i / 36 * 6.283, d = (i % 2 ? 95 : 60) + Math.random() * 70; fw.append(h("i", { style: "--c:" + (i % 3 ? c : c2) + ";--x:" + Math.round(Math.cos(ang) * d) + "px;--y:" + Math.round(Math.sin(ang) * d) + "px;animation-delay:.5s" })); }
+      el.append(fw); setTimeout(() => fw.remove(), 2400); };
+    fire(); setTimeout(fire, 900); ambT = setInterval(() => { fire(); if (Math.random() < .5) setTimeout(fire, 400); }, 2600);
+  }
+  else if (key === "eclair") {
+    for (let i = 0; i < 10; i++) el.append(h("i", { class: "af-fall", style: "left:" + R(0, 100) + "vw;font-size:" + R(10, 16) + "px;color:#9FE6FF;text-shadow:0 0 8px #9FE6FF;opacity:.8;animation-duration:" + R(7, 12) + "s;animation-delay:-" + R(0, 12) + "s;--dx:0px;--rot:0deg" }, "⚡"));
+    const strike = () => { if (!el.isConnected || document.hidden) return; const b = h("div", { class: "bolt", style: "top:" + R(15, 75) + "vh" }), z = h("div", { class: "zap" }); el.append(z, b); setTimeout(() => { b.remove(); z.remove(); }, 1000); };
+    setTimeout(strike, 600); ambT = setInterval(strike, 3800);
+  }
+}
+function equipFx(kind, id, ev) {
+  const x = (KINDS[kind] || []).find(i => i.id === id); if (!x || (x.r !== "e" && x.r !== "l")) return;
+  try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
+  const c = RAR[x.r].col, px = ev && ev.clientX ? ev.clientX : innerWidth / 2, py = ev && ev.clientY ? ev.clientY : innerHeight / 2;
+  const w = h("div", { class: "eqfx", style: "--c:" + c + ";--x:" + px + "px;--y:" + py + "px" }), m = h("div", { class: "eqfx-msg", style: "--c:" + c }, (x.r === "l" ? "✨ " : "") + x.nm + " : ton app se transforme");
+  document.body.append(w, m); setTimeout(() => { w.remove(); m.remove(); }, 1900);
+  sfx(x.r === "l" ? "fanfare" : "epic"); if (x.r === "l") confetti();
+}
 function applyTheme() {
   const L = P.cur ? look() : blankLook(), root = document.documentElement;
   const dark = L.mode === "dark" || (L.mode === "auto" && mq && mq.matches);
   root.setAttribute("data-theme", dark ? "dark" : "light");
   const pal = pvPal || (L.theme && L.theme !== "jr" && owns("theme", L.theme) ? L.theme : "");
   if (pal && pal !== "jr") root.setAttribute("data-pal", pal); else root.removeAttribute("data-pal");
-  bgFx(pal || "jr");
+  bgFx(pal || "jr"); prestige();
   const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", getComputedStyle(root).getPropertyValue("--bg").trim() || "#2B3A8C");
 }
 
@@ -2273,7 +2517,8 @@ function bgFx(pal) {
   if (cfg.layer) el.append(h("div", { class: "layer" }));
   if (cfg.mt) el.append(h("div", { class: "mt" }));
   const R = (a, b) => (a + Math.random() * (b - a)).toFixed(2);
-  for (let i = 0; i < (cfg.n || 0); i++) {
+  const dens = { r: 1.25, e: 1.6, l: 2.2 }[eqR("theme")] || 1;
+  for (let i = 0; i < Math.round((cfg.n || 0) * dens); i++) {
     let st = "";
     if (cfg.kind === "fall") st = "left:" + R(0, 100) + "vw;top:0;animation-duration:" + R(14, 24) + "s;animation-delay:-" + R(0, 24) + "s;--dx:" + R(-60, 60) + "px;--rot:" + R(180, 540) + "deg";
     else if (cfg.kind === "snow") { const z = R(2, 5); st = "left:" + R(0, 100) + "vw;top:0;width:" + z + "px;height:" + z + "px;animation-duration:" + R(18, 32) + "s;animation-delay:-" + R(0, 32) + "s;--dx:" + R(-30, 30) + "px;--rot:0deg"; }
@@ -2305,14 +2550,14 @@ function avatar(lk, name, size, extra) {
   const pic = h("div", { class: "pic" }, lk.photo ? h("img", { src: lk.photo, alt: "" }) : (name || "?").trim().charAt(0).toUpperCase());
   const ab = a.base || a.id, pn = PINS.find(x => x.id === lk.pin);
   const fx = ab !== "none" && ab !== "neon" ? h("div", { class: "fx", "aria-hidden": "true" }, [0, 1, 2, 3, 4].map(() => h("i", {}, a.sym || ""))) : null;
-  return h("div", { class: "av f-" + f.id + " a-" + ab + (extra ? " " + extra : ""), style: "--s:" + size + "px", "aria-hidden": "true" },
+  return h("div", { class: "av f-" + f.id + " a-" + ab + (f.r ? " rf-" + f.r : "") + (pn && pn.r ? " rp-" + pn.r : "") + (extra ? " " + extra : ""), style: "--s:" + size + "px", "aria-hidden": "true" },
     h("div", { class: "fr" + (f.spin ? " spin" : "") }), pic, f.orn ? h("span", { class: "orn" }, f.orn) : null, fx, pn && pn.e ? h("span", { class: "pinb" + (pn.r === "l" ? " gold" : "") }, pn.e) : null);
 }
 function preview(kind, x) {
   const L = look(), nm = prof() ? prof().name : "?";
   if (kind === "frame") return avatar(Object.assign({}, L, { frame: x.id, anim: "none" }), nm, 54);
   if (kind === "anim") return avatar(Object.assign({}, L, { anim: x.id }), nm, 54);
-  if (kind === "title") return h("span", { class: "ttl", style: "margin:10px 0" }, x.nm);
+  if (kind === "title") return h("span", { class: "ttl" + (x.r ? " rt-" + x.r : ""), style: "margin:10px 0" }, x.nm);
   if (kind === "pin" || kind === "sticker") return h("span", { class: "pv-emo" + (kind === "sticker" ? " stk" : "") + (x.r === "l" ? " gold" : "") }, x.e || "∅");
   if (kind === "burst") return h("span", { class: "pv-emo", onclick: e => { e.stopPropagation(); burst(e.currentTarget, true, x.id); } }, x.sym ? x.sym[0] : h("span", { class: "dots", style: x.col ? "--d1:" + x.col[0] + ";--d2:" + x.col[1 % x.col.length] : "" }));
   if (kind === "sound") return h("span", { class: "pv-emo", onclick: e => { e.stopPropagation(); sfx("ok", x.id); setTimeout(() => sfx("combo", x.id), 450); } }, "🔊");
@@ -2324,9 +2569,10 @@ function preview(kind, x) {
   if (kind === "stamp") return h("span", { class: "pv-stamp jp" + (x.eki ? " eki" : "") }, x.k);
   return h("span", { class: "swatch" }, h("i", { style: "background:" + x.c[0] }), h("i", { style: "background:" + x.c[1] }));
 }
-const plateName = (lk, txt) => { const id = (lk || {}).plate; return id && id !== "none" && PLATES.some(x => x.id === id) ? h("span", { class: "np np-" + id }, txt) : txt; };
+const plateName = (lk, txt) => { const id = (lk || {}).plate; return id && id !== "none" && PLATES.some(x => x.id === id) ? h("span", { class: "np np-" + id + ((PLATES.find(x => x.id === id) || {}).r ? " rpl-" + PLATES.find(x => x.id === id).r : "") }, txt) : txt; };
 const titleOf = lk => { const t = TITLES.find(x => x.id === (lk || {}).title); return t ? t.nm : TITLES[0].nm; };
-const howTo = x => x.src === "ach" ? "Exploit : " + ((ACH.find(a => a.id === x.ach) || {}).nm || "") : x.src === "shop" ? "Boutique · ¥" + x.price : x.src === "box" ? "Boîtes · " + RAR[x.r].nm : x.src === "free" ? "Offert" : "";
+const ttlCls = lk => { const t = TITLES.find(x => x.id === (lk || {}).title); return "ttl" + (t && t.r ? " rt-" + t.r : ""); };
+const howTo = x => x.src === "ach" ? "Exploit : " + ((ACH.find(a => a.id === x.ach) || {}).nm || "") + (x.r ? " · " + RAR[x.r].nm : "") : x.src === "shop" ? "Boutique · ¥" + x.price + (x.r ? " · " + RAR[x.r].nm : "") : x.src === "box" ? "Boîtes · " + RAR[x.r].nm : x.src === "free" ? "Offert" : "";
 
 /* ---- onglet Missions ---- */
 let mTab = "missions", colKind = "theme";
@@ -2394,7 +2640,7 @@ function viewMissions() {
       h("div", { class: "revs" },
         h("div", { class: "rev" + (d.free ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:" + BOXES.bois.col }, "木"), h("div", { class: "tx" }, h("b", {}, "Boîte du jour"), h("small", {}, d.free ? "Reçue ✓ · la prochaine demain" : "Une boîte en bois offerte chaque jour")), d.free ? h("span", { class: "muted" }, "✓") : h("button", { class: "btn small claim", onclick: claimFreeBox }, "Récupérer")),
         h("div", { class: "rev" + (d.lesson ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:" + BOXES.bambou.col }, "竹"), h("div", { class: "tx" }, h("b", {}, "Leçon du jour"), h("small", {}, d.lesson ? "Reçue ✓" : "Fais au moins 10 cartes de ta session pour gagner une boîte en bambou")), d.lesson ? h("span", { class: "muted" }, "✓") : h("button", { class: "btn small ghost", onclick: () => go("trajet") }, "Y aller")),
-        h("div", { class: "rev" + ((d.gb || 0) >= 2 ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:var(--accent)" }, "速"), h("div", { class: "tx" }, h("b", {}, "Kana Express"), h("small", {}, Math.min(2, d.gb || 0) + "/2 boîtes gagnées aujourd’hui · palier Bronze → bois, Argent/Or → bambou, Arc-en-ciel → laque")), h("button", { class: "btn small ghost", onclick: () => startExpress("kana") }, "Jouer"))),
+        h("div", { class: "rev" + ((d.gb || 0) >= 2 ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:var(--accent)" }, "速"), h("div", { class: "tx" }, h("b", {}, "Kana Express"), h("small", {}, Math.min(2, d.gb || 0) + "/2 boîtes gagnées aujourd’hui · palier Bronze → bois, Argent/Or → bambou, Diamant → laque")), h("button", { class: "btn small ghost", onclick: () => startExpress("kana") }, "Jouer"))),
       h("div", { class: "sec-h" }, h("h2", {}, "Mes boîtes"), h("span", { class: "muted", style: "font-size:13px" }, own + " / " + tot + " objets trouvés")),
       mine.length ? h("div", { class: "revs" }, mine.map(t => h("div", { class: "rev bxrow" }, h("div", { class: "bxg jp", style: "--bc:" + BOXES[t].col }, BOXES[t].k),
         h("div", { class: "tx" }, h("b", {}, BOXES[t].nm + " × " + boxCount(t)), h("small", { class: "odds" }, ...oddsTxt(t))),
@@ -2406,7 +2652,7 @@ function viewMissions() {
   } else if (mTab === "boutique") {
     const card = (kind, x) => {
       const has = owns(kind, x.id), on = L[kind] === x.id;
-      return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), h("div", { class: "nm" }, x.nm), kind === "theme" ? h("button", { class: "btn small ghost", onclick: () => startPreview(x.id) }, "👁 Aperçu") : null,
+      return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), x.r ? h("span", { class: "rd", title: RAR[x.r].nm, style: "background:" + RAR[x.r].col }) : null, h("div", { class: "nm" }, x.nm), x.r ? h("div", { class: "rtag", style: "color:" + RAR[x.r].col }, RAR[x.r].nm) : null, kind === "theme" ? h("button", { class: "btn small ghost", onclick: () => startPreview(x.id) }, "👁 Aperçu") : null,
         has ? h("button", { class: "btn small" + (on ? " ghost" : ""), disabled: on, onclick: () => equip(kind, x.id) }, on ? "Équipé" : "Équiper")
           : h("button", { class: "btn small", disabled: yen() < x.price, onclick: e => buy(kind, x.id, e) }, "Acheter ¥" + x.price.toLocaleString("fr-FR")), has || yen() >= x.price ? null : h("div", { class: "how" }, "Il te manque ¥" + (x.price - yen()).toLocaleString("fr-FR")));
     };
@@ -2450,7 +2696,7 @@ function viewMissions() {
   }
   return h("div", {},
     h("div", { class: "wallet" }, h("button", { class: "me-btn", onclick: () => go("reglages"), "aria-label": "Modifier mon profil" }, avatar(L, p.name, 64)),
-      h("div", { class: "who" }, h("b", {}, plateName(L, p.name)), h("span", { class: "ttl" }, titleOf(L))),
+      h("div", { class: "who" }, h("b", {}, plateName(L, p.name)), h("span", { class: ttlCls(L) }, titleOf(L))),
       h("div", { class: "yen" }, "¥" + yen().toLocaleString("fr-FR"), h("small", {}, Object.keys(r.ach).length + " exploits"))),
     seg, mTab === "missions" && toClaim.n >= 2 ? h("button", { class: "btn claim-all", onclick: e => claimAll(e) }, "🎁 Tout récupérer · " + toClaim.n + " récompenses · +¥" + toClaim.y) : null, body);
 }
@@ -2492,7 +2738,7 @@ function viewSettings() {
       h("div", { style: "display:flex;gap:16px;align-items:center;flex-wrap:wrap" },
         h("button", { class: "me-btn", onclick: () => file.click(), "aria-label": "Changer ma photo" }, avatar(L, p.name, 84)),
         h("div", { style: "display:grid;gap:8px;flex:1;min-width:200px" },
-          h("span", { class: "ttl", style: "justify-self:start" }, titleOf(L)),
+          h("span", { class: ttlCls(L), style: "justify-self:start" }, titleOf(L)),
           h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, h("button", { class: "btn small", onclick: () => file.click() }, L.photo ? "Changer la photo" : "Ajouter une photo"),
             L.photo ? h("button", { class: "btn small ghost", onclick: () => { setLook({ photo: "" }); persist(); if (CLOUD) cloudSync(); render(); } }, "Retirer") : null))),
       file,
@@ -2522,8 +2768,36 @@ const FB_CONFIG = { apiKey: "AIzaSyB6oF1oppPS_znM2m1KZZ2jAVOIF61jyS4", authDomai
 const FB_BASE = "https://www.gstatic.com/firebasejs/10.12.2/";
 let fb = null, cloudUser = null, cloudState = "off", cloudDirty = false, members = [], membersUnsub = null, emailPending = false, cloudMsg = "", lbMode = "week", cloudBusy = false;
 const weekKeyOf = (d = new Date()) => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return todayKey(x); };
-function grpEnsureWeek() { if (!S.grp) return; const wk = weekKeyOf(); if (S.grp.weekKey !== wk) { S.grp.weekKey = wk; S.grp.week = 0; S.grp.sessions = 0; } }
-function addPts(n) { if (!S.grp || !S.grp.code) return; grpEnsureWeek(); S.grp.points = (S.grp.points || 0) + n; S.grp.week = (S.grp.week || 0) + n; }
+function wkFix(g) { const wk = weekKeyOf(); if (g && g.weekKey !== wk) { g.weekKey = wk; g.week = 0; g.sessions = 0; } }
+function grpEnsureWeek() { if (!S.grp) return; wkFix(S.grp); }
+function addPts(n) { if (!S.grp || !S.grp.code) return; grpEnsureWeek(); S.grp.points = (S.grp.points || 0) + n; S.grp.week = (S.grp.week || 0) + n;
+  for (const b of Object.values(S.grpOff || {})) { if (!b || !b.grp) continue; wkFix(b.grp); b.grp.points = (b.grp.points || 0) + n; b.grp.week = (b.grp.week || 0) + n; } }
+/* ---- plusieurs groupes : un groupe actif (classement, défi, clashs affichés), les autres rangés dans S.grpOff avec leurs propres défis et clashs.
+   Rien ne passe d'un groupe à l'autre : chaque fiche membre ne reçoit que les défis et clashs de son groupe. ---- */
+function grpOffs() { if (!S.grpOff) S.grpOff = {}; return S.grpOff; }
+function allGroups() { return [S.grp && S.grp.code, ...Object.keys(S.grpOff || {})].filter(Boolean); }
+function stashActive() { if (S.grp && S.grp.code) grpOffs()[S.grp.code] = { grp: S.grp, duel: S.duel || {}, clashOut: S.clashOut || [], clashIn: S.clashIn || {} }; }
+function loadGroup(code) { const b = (S.grpOff || {})[code]; if (S.grpOff) delete S.grpOff[code];
+  S.grp = b && b.grp ? b.grp : { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }; S.duel = (b && b.duel) || {}; S.clashOut = (b && b.clashOut) || []; S.clashIn = (b && b.clashIn) || {}; }
+function clearSlots() { S.grp = null; S.duel = {}; S.clashOut = []; S.clashIn = {}; }
+async function switchGroup(code) {
+  if (!S.grp || S.grp.code === code || !(S.grpOff || {})[code] || game) return;
+  stashActive(); loadGroup(code); stopMembers(); persist(); render(); toast("Groupe " + code);
+  try { await pushMember(); watchMembers(); cloudDirty = true; await cloudPush(); } catch (e) {}
+  render();
+}
+let grpAddOpen = false, grpRenOpen = false, grpDocUnsub = null;
+const GRP_DEF = "Mission Japon";
+const cleanGrpName = v => String(v || "").replace(/\s+/g, " ").trim().slice(0, 28);
+/* nom affiché d’un groupe : son nom s’il a été changé, sinon son code (plusieurs groupes peuvent garder le nom par défaut) */
+const grpLabel = g => g && g.name && g.name !== GRP_DEF ? g.name : (g && g.code) || "";
+async function renameGroup(v) {
+  const nm = cleanGrpName(v), code = S.grp && S.grp.code; if (!code) return;
+  if (!nm) { toast("Donne un nom au groupe"); return; }
+  try { await fb.F.updateDoc(fb.F.doc(fb.db, "groups", code), { name: nm }); if (S.grp && S.grp.code === code) S.grp.name = nm; persist(); cloudDirty = true; grpRenOpen = false; toast("Groupe renommé"); }
+  catch (e) { toast(e && e.code === "permission-denied" ? "Seule la personne qui a créé le groupe peut le renommer" : "Renommage impossible (" + cloudErr(e) + ")"); }
+  render();
+}
 function linked() { return !!(cloudUser && prof() && prof().uid === cloudUser.uid); }
 const cloudErr = e => (e && e.code) || "inconnue";
 
@@ -2556,7 +2830,18 @@ function rwNorm(r) { if (!r) return null; r = Object.assign({}, r);
   if (typeof r.yen === "number") { r.earn = Object.assign({}, r.earn, { legacy: Math.max((r.earn || {}).legacy || 0, r.yen) }); delete r.yen; }
   if (typeof r.freeze === "number") { r.fb = Object.assign({}, r.fb, { legacy: Math.max((r.fb || {}).legacy || 0, r.freeze) }); delete r.freeze; }
   return r; }
-function mergeState(a, b) {
+function mergeState(a0, b0) {
+  let a = a0, b = b0;
+  if (a && b && a.grp && b.grp && a.grp.code && b.grp.code && a.grp.code !== b.grp.code) {
+    b = Object.assign({}, b0, { grp: null, duel: {}, clashOut: [], clashIn: {}, grpOff: Object.assign({}, b0.grpOff || {}) });
+    if (!b.grpOff[b0.grp.code]) b.grpOff[b0.grp.code] = { grp: b0.grp, duel: b0.duel || {}, clashOut: b0.clashOut || [], clashIn: b0.clashIn || {} };
+  }
+  const out = mergeState0(a, b), act = out.grp && out.grp.code, offs = {};
+  for (const src of [b.grpOff || {}, a.grpOff || {}]) for (const [c, v] of Object.entries(src)) { if (!v || !v.grp || c === act) continue; const w = offs[c]; if (!w || (v.grp.points || 0) >= (w.grp.points || 0)) offs[c] = v; }
+  out.grpOff = offs;
+  return out;
+}
+function mergeState0(a, b) {
   const out = Object.assign(blank(), a, { srs: Object.assign({}, a.srs) });
   for (const [id, v] of Object.entries(b.srs || {})) { const w = out.srs[id]; if (!w || v[2] > w[2] || (v[2] === w[2] && v[1] > w[1])) out.srs[id] = v; }
   out.daily = Object.assign({}, b.daily || {}, a.daily || {});
@@ -2604,7 +2889,9 @@ async function cloudPull() {
     const [pSnap, uSnap] = await Promise.all([F.getDoc(F.doc(db, "users", uid, "progress", "main")), F.getDoc(F.doc(db, "users", uid))]);
     if (pSnap.exists() && typeof pSnap.data().json === "string") S = mergeState(S, JSON.parse(pSnap.data().json));
     const u = uSnap.exists() ? uSnap.data() : {};
-    if (u.group && (!S.grp || S.grp.code !== u.group)) S.grp = { code: u.group, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
+    { const codes = Array.isArray(u.groups) ? u.groups.filter(c => typeof c === "string") : u.group ? [u.group] : [];
+      if (Array.isArray(u.groups)) for (const c of Object.keys(S.grpOff || {})) if (!codes.includes(c)) delete S.grpOff[c];
+      for (const c of codes) if (!allGroups().includes(c)) { if (!S.grp || !S.grp.code) loadGroup(c); else grpOffs()[c] = { grp: { code: c, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }, duel: {}, clashOut: [], clashIn: {} }; } }
     if (S.nick && prof() && prof().name !== S.nick) { prof().name = S.nick; saveP(); }
     applyTheme();
     try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
@@ -2620,7 +2907,7 @@ async function cloudPush() {
     try { const sn = await F.getDoc(ref); if (sn.exists() && typeof sn.data().json === "string") { const before = JSON.stringify([S.look, S.nick]); S = mergeState(S, JSON.parse(sn.data().json)); try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
       if (JSON.stringify([S.look, S.nick]) !== before) { if (S.nick && p.name !== S.nick) { p.name = S.nick; saveP(); } applyTheme(); if (!session && !test) render(); } } } catch (e) {}
     await F.setDoc(ref, { json: JSON.stringify(S), updatedAt: Date.now(), v: 2 });
-    await F.setDoc(F.doc(db, "users", uid), { name: p.name, level: p.level || "zero", group: (S.grp && S.grp.code) || null, updatedAt: Date.now() }, { merge: true });
+    await F.setDoc(F.doc(db, "users", uid), { name: p.name, level: p.level || "zero", group: (S.grp && S.grp.code) || null, groups: allGroups(), updatedAt: Date.now() }, { merge: true });
     cloudState = "synced"; lastSync = Date.now(); cloudMsg = ""; jrFlush();
   } catch (e) { cloudDirty = true; cloudState = "error"; jlog("sync", "push " + cloudErr(e)); cloudMsg = "Synchro impossible pour l’instant (" + cloudErr(e) + ")."; }
   updateSync();
@@ -2628,17 +2915,25 @@ async function cloudPush() {
 async function pushMember() {
   if (!linked() || !S.grp || !S.grp.code) return false;
   grpEnsureWeek();
-  const { F, db } = fb, ref = F.doc(db, "groups", S.grp.code, "members", cloudUser.uid);
+  await pushMemberB(S.grp, S.duel, S.clashOut, S.clashIn);
+  for (const b of Object.values(S.grpOff || {})) { if (!b || !b.grp || !b.grp.code) continue; try { wkFix(b.grp); await pushMemberB(b.grp, b.duel, b.clashOut, b.clashIn); } catch (e) {} }
+  return true;
+}
+async function pushMemberB(g, duel, cout, cin) {
+  const { F, db } = fb, ref = F.doc(db, "groups", g.code, "members", cloudUser.uid);
   let old = null; try { const sn = await F.getDoc(ref); if (sn.exists()) old = sn.data().points || 0; } catch (e) {}
-  let pts = S.grp.points || 0;
+  let pts = g.points || 0;
   if (old === null) pts = Math.min(pts, 390); else { if (pts < old) pts = old; if (pts - old > 390) pts = old + 390; }
-  S.grp.points = pts;
-  await F.setDoc(ref, { name: prof().name, points: pts, week: S.grp.week || 0, weekKey: S.grp.weekKey, sessions: S.grp.sessions || 0, streak: S.streak.n || 0, station: CH.indexOf(currentChapter()), duel: S.duel || {}, cout: (S.clashOut || []).slice(-12), cin: S.clashIn || {}, look: (() => { const L = look(); return { frame: L.frame, title: L.title, anim: L.anim, photo: L.photo || "" }; })(), updatedAt: Date.now() });
+  g.points = pts;
+  await F.setDoc(ref, { name: prof().name, points: pts, week: g.week || 0, weekKey: g.weekKey, sessions: g.sessions || 0, streak: S.streak.n || 0, station: CH.indexOf(currentChapter()), duel: duel || {}, cout: (cout || []).slice(-12), cin: cin || {}, look: (() => { const L = look(); return { frame: L.frame, title: L.title, anim: L.anim, photo: L.photo || "" }; })(), updatedAt: Date.now() });
   return true;
 }
 function watchMembers() {
   if (membersUnsub || !S.grp || !S.grp.code) return;
   const { F, db } = fb;
+  const gcode = S.grp.code;
+  grpDocUnsub = F.onSnapshot(F.doc(db, "groups", gcode), d => { if (!d.exists() || !S.grp || S.grp.code !== gcode) return; const x = d.data() || {}, nm = cleanGrpName(x.name) || GRP_DEF;
+    if (S.grp.name !== nm || S.grp.owner !== x.owner) { S.grp.name = nm; S.grp.owner = x.owner || ""; persist(); if (view === "groupe" && !game && !grpRenOpen && !grpAddOpen && !session && !test) render(); } }, () => {});
   membersUnsub = F.onSnapshot(F.collection(db, "groups", S.grp.code, "members"), snap => { members = snap.docs.map(d => Object.assign({ uid: d.id }, d.data())); leadCheck(); gameRewards(); if ((view === "groupe" || (view === "trajet" && !chapter)) && !session && !test && P.cur && !adding) render(); else if (P.cur && !test && !adding && view !== "session") renderNav(); }, () => { membersUnsub = null; });
 }
 function leadCheck() {
@@ -2646,7 +2941,7 @@ function leadCheck() {
   const wk = weekKeyOf(), sc = m => m.weekKey === wk ? (m.week || 0) : 0, top = members.slice().sort((x, y) => sc(y) - sc(x));
   if (top[0].uid === cloudUser.uid && sc(top[0]) > sc(top[1])) { rw().st.lead = 1; persist(); rwCheck(); }
 }
-function stopMembers() { if (membersUnsub) { membersUnsub(); membersUnsub = null; } members = []; }
+function stopMembers() { if (grpDocUnsub) { grpDocUnsub(); grpDocUnsub = null; } grpRenOpen = false; if (membersUnsub) { membersUnsub(); membersUnsub = null; } members = []; }
 let lastSync = 0;
 async function syncNow(btn) { if (!linked()) return; if (btn) { btn.disabled = true; btn.textContent = "Synchro…"; }
   await cloudPull(); toast(cloudState === "error" ? (cloudMsg || "Synchro impossible pour l’instant") : "Synchronisé ✓"); if (!session && !test) render(); }
@@ -2654,27 +2949,30 @@ async function cloudSync() { if (!linked()) return; try { await cloudPush(); awa
 async function createGroup() {
   const A = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let code = "MJ-"; for (let i = 0; i < 6; i++) code += A[Math.floor(Math.random() * A.length)];
   const { F, db } = fb; cloudBusy = true; render();
+  const prevCode = S.grp && S.grp.code;
   try {
     await F.setDoc(F.doc(db, "groups", code), { name: "Mission Japon", owner: cloudUser.uid, createdAt: Date.now() });
-    S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }; persist();
-    await pushMember(); cloudDirty = true; await cloudPush(); watchMembers(); toast("Groupe créé : " + code);
-  } catch (e) { cloudMsg = "Création impossible (" + cloudErr(e) + ")."; }
+    stashActive(); clearSlots(); S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf(), name: GRP_DEF, owner: cloudUser.uid }; stopMembers(); persist();
+    await pushMember(); cloudDirty = true; await cloudPush(); watchMembers(); grpAddOpen = false; toast("Groupe créé : " + code);
+  } catch (e) { if (!S.grp || S.grp.code !== prevCode) { clearSlots(); if (prevCode) loadGroup(prevCode); } cloudMsg = "Création impossible (" + cloudErr(e) + ")."; }
   cloudBusy = false; render();
 }
 async function joinGroup(raw) {
   const code = raw.trim().toUpperCase().replace(/\s+/g, "");
   if (!/^[A-Z0-9-]{6,20}$/.test(code)) { cloudMsg = "Ce code n’a pas le bon format (exemple : MJ-K7P2QX)."; render(); return; }
+  if (S.grp && S.grp.code === code) { grpAddOpen = false; render(); return; }
+  if ((S.grpOff || {})[code]) { grpAddOpen = false; switchGroup(code); return; }
   cloudBusy = true; render();
-  const prev = S.grp; S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
-  try { await pushMember(); persist(); cloudDirty = true; await cloudPush(); watchMembers(); cloudMsg = ""; toast("Bienvenue dans le groupe !"); rwCheck(); }
-  catch (e) { S.grp = prev; cloudMsg = e && e.code === "permission-denied" ? "Code inconnu. Vérifie-le auprès de la personne qui a créé le groupe." : "Impossible de rejoindre (" + cloudErr(e) + ")."; }
+  const prevCode = S.grp && S.grp.code; stashActive(); clearSlots(); S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() };
+  try { await pushMemberB(S.grp, {}, [], {}); stopMembers(); persist(); cloudDirty = true; await cloudPush(); pushMember(); watchMembers(); cloudMsg = ""; grpAddOpen = false; toast("Bienvenue dans le groupe !"); rwCheck(); }
+  catch (e) { clearSlots(); if (prevCode) loadGroup(prevCode); cloudMsg = e && e.code === "permission-denied" ? "Code inconnu. Vérifie-le auprès de la personne qui a créé le groupe." : "Impossible de rejoindre (" + cloudErr(e) + ")."; }
   cloudBusy = false; render();
 }
 async function leaveGroup(e) {
   if (!leaveArmed) { leaveArmed = true; e.currentTarget.textContent = "Confirmer : quitter le groupe"; return; }
   leaveArmed = false;
   try { await fb.F.deleteDoc(fb.F.doc(fb.db, "groups", S.grp.code, "members", cloudUser.uid)); } catch (err) {}
-  stopMembers(); S.grp = null; persist(); cloudDirty = true; await cloudPush(); render();
+  stopMembers(); clearSlots(); const nx = Object.keys(S.grpOff || {})[0]; if (nx) loadGroup(nx); persist(); cloudDirty = true; await cloudPush(); if (nx) watchMembers(); render();
 }
 let leaveArmed = false;
 async function signInGoogle() {
@@ -2718,19 +3016,31 @@ function viewGroupe() {
       msg);
     return wrap;
   }
-  if (!S.grp || !S.grp.code) {
+  const joinBox = () => {
     const inp = h("input", { id: "joinCode", placeholder: "Code du groupe, ex. MJ-K7P2QX", style: inputStyle + ";text-transform:uppercase", autocomplete: "off", autocapitalize: "characters" });
     inp.addEventListener("keydown", e => { if (e.key === "Enter") joinGroup(inp.value); });
     wrap.append(
       h("div", { class: "today", style: "grid-template-columns:1fr;margin-top:0" },
-        h("div", {}, h("div", { class: "eyebrow" }, "Rejoindre le groupe"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Entre le code envoyé par la personne qui a créé le groupe.")),
+        h("div", {}, h("div", { class: "eyebrow" }, S.grp && S.grp.code ? "Rejoindre un autre groupe" : "Rejoindre le groupe"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Entre le code envoyé par la personne qui a créé le groupe.")),
         h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, inp, h("button", { class: "btn", onclick: () => joinGroup(inp.value), disabled: cloudBusy }, "Rejoindre"))),
-      h("div", { class: "today" }, h("div", {}, h("div", { class: "eyebrow" }, "Personne n’a encore de groupe ?"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Crée-le et partage le code à tes potes.")), h("button", { class: "btn ghost", onclick: createGroup, disabled: cloudBusy }, "Créer un groupe")),
-      msg, accountFooter());
-    return wrap;
-  }
+      h("div", { class: "today" }, h("div", {}, h("div", { class: "eyebrow" }, S.grp && S.grp.code ? "Un nouveau groupe ?" : "Personne n’a encore de groupe ?"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Crée-le et partage le code à tes potes.")), h("button", { class: "btn ghost", onclick: createGroup, disabled: cloudBusy }, "Créer un groupe")));
+  };
+  if (!S.grp || !S.grp.code) { joinBox(); wrap.append(msg, accountFooter()); return wrap; }
+  { const codes = allGroups();
+    wrap.append(h("div", { class: "grpsel" }, h("span", { class: "muted", style: "font-size:13px" }, codes.length > 1 ? "Mes groupes" : "Mon groupe"),
+      ...codes.map(c => h("button", { class: "toggle", title: c, "aria-pressed": c === S.grp.code ? "true" : "false", disabled: !!game, onclick: () => switchGroup(c) }, grpLabel(c === S.grp.code ? S.grp : ((S.grpOff || {})[c] || {}).grp) || c)),
+      h("button", { class: "toggle", "aria-pressed": grpAddOpen ? "true" : "false", onclick: () => { grpAddOpen = !grpAddOpen; render(); } }, grpAddOpen ? "✕ Fermer" : "＋ Autre groupe")));
+    if (grpAddOpen) { joinBox(); wrap.append(h("p", { class: "hint" }, "Chaque groupe a son classement, son défi du jour et ses clashs. Tes sessions comptent dans tous tes groupes, mais personne ne voit tes autres groupes.")); } }
   grpEnsureWeek();
   if (game) return viewGame();
+  { const isOwner = !!(S.grp.owner && cloudUser && S.grp.owner === cloudUser.uid);
+    if (grpRenOpen && isOwner) {
+      const ri = h("input", { id: "grpName", value: S.grp.name || GRP_DEF, maxlength: "28", style: inputStyle, autocomplete: "off" });
+      ri.addEventListener("keydown", e => { if (e.key === "Enter") renameGroup(ri.value); if (e.key === "Escape") { grpRenOpen = false; render(); } });
+      wrap.append(h("div", { class: "today", style: "grid-template-columns:1fr;margin-top:0" }, h("div", {}, h("div", { class: "eyebrow" }, "Renommer le groupe"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Tout le groupe verra le nouveau nom. Le code ne change pas.")),
+        h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, ri, h("button", { class: "btn", onclick: () => renameGroup(ri.value) }, "Enregistrer"), h("button", { class: "btn ghost", onclick: () => { grpRenOpen = false; render(); } }, "Annuler"))));
+      setTimeout(() => { try { ri.focus(); ri.select(); } catch (e) {} }, 30);
+    } else wrap.append(h("div", { class: "sec-h grp-name", style: "margin-top:0" }, h("h2", {}, S.grp.name || GRP_DEF), isOwner ? h("button", { class: "btn small ghost", onclick: () => { grpRenOpen = true; render(); } }, "✎ Renommer") : null)); }
   gameRewards();
   const wk = weekKeyOf();
   const list = members.map(m => Object.assign({}, m, { wpts: m.weekKey === wk ? (m.week || 0) : 0, wses: m.weekKey === wk ? (m.sessions || 0) : 0 }));
@@ -2738,7 +3048,7 @@ function viewGroupe() {
   list.sort((a, b) => (b[key] || 0) - (a[key] || 0));
   const maxV = Math.max(1, ...list.map(m => m[key] || 0));
   const target = Math.max(10, 5 * list.length), done = list.reduce((s2, m) => s2 + m.wses, 0);
-  const shareTxt = "Rejoins-moi sur Mission Japon 🇯🇵 " + location.origin + location.pathname + " · code du groupe : " + S.grp.code;
+  const shareTxt = "Rejoins " + (S.grp.name && S.grp.name !== GRP_DEF ? "mon groupe « " + S.grp.name + " »" : "moi") + " sur Mission Japon 🇯🇵 " + location.origin + location.pathname + " · code du groupe : " + S.grp.code;
   const copyCode = async () => { try { if (navigator.share) { await navigator.share({ text: shareTxt }); return; } } catch (e) { if (e && e.name === "AbortError") return; } try { await navigator.clipboard.writeText(shareTxt); toast("Invitation copiée"); } catch (e) { toast("Code : " + S.grp.code); } };
   const medal = i => ["🥇", "🥈", "🥉"][i] || String(i + 1);
   const pctSt = i => "calc(12px + (100% - 24px) * " + (i / (CH.length - 1)) + ")";
@@ -2755,7 +3065,7 @@ function viewGroupe() {
     h("div", { class: "sec-h" }, h("h2", {}, "Classement"), h("div", { class: "seg" }, h("button", { "aria-pressed": lbMode === "week" ? "true" : "false", onclick: () => { lbMode = "week"; render(); } }, "Semaine"), h("button", { "aria-pressed": lbMode === "total" ? "true" : "false", onclick: () => { lbMode = "total"; render(); } }, "Total"))),
     h("div", { class: "plist" }, list.length ? list.map((m, i) => h("div", { class: "ph", style: m.uid === cloudUser.uid ? "border-color:var(--accent);border-width:2px" : "" },
       h("div", { style: "display:flex;gap:10px;align-items:center;min-width:0" }, h("span", { style: "font-size:18px;width:24px;text-align:center;flex:none" }, medal(i)), avatar(m.look || {}, m.name, 44),
-        h("div", { style: "min-width:0;flex:1" }, h("div", { class: "j", style: "font-size:16px" }, plateName(m.look, (m.name || "?") + (m.uid === cloudUser.uid ? " (toi)" : ""))), h("span", { class: "ttl" }, titleOf(m.look)),
+        h("div", { style: "min-width:0;flex:1" }, h("div", { class: "j", style: "font-size:16px" }, plateName(m.look, (m.name || "?") + (m.uid === cloudUser.uid ? " (toi)" : ""))), h("span", { class: ttlCls(m.look) }, titleOf(m.look)),
           h("div", { class: "ro" }, "🔥 " + (m.streak || 0) + " j · " + (CH[Math.max(0, Math.min(5, m.station || 0))].ro) + " · " + m.wses + " session(s) cette semaine"),
           h("div", { style: "height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden" }, h("i", { style: "display:block;height:100%;border-radius:3px;background:var(--accent);width:" + Math.round(100 * (m[key] || 0) / maxV) + "%;transition:width .8s" })))),
       h("div", { class: "j", style: "grid-row:1/span 2;grid-column:2;font-variant-numeric:tabular-nums" }, (m[key] || 0) + " pts"))) : h("p", { class: "muted" }, "Chargement du classement…")),
@@ -2900,7 +3210,7 @@ function accountFooter(inGroup) {
   return h("div", { style: "display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;align-items:center" },
     h("span", { class: "sync" }, "Connecté : " + (cloudUser.email || "compte Google")),
     h("button", { class: "toggle", onclick: cloudSignOut }, "Se déconnecter"),
-    inGroup ? h("button", { class: "toggle", onclick: leaveGroup }, "Quitter le groupe") : null);
+    inGroup ? h("button", { class: "toggle", onclick: leaveGroup }, "Quitter le groupe " + S.grp.code) : null);
 }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") jlogOpen(); if (document.visibilityState === "hidden") { cloudPush(); jrFlush(); } else if (linked() && !session && !test) { cloudDirty = true; cloudPush(); } });
 setInterval(() => { cloudPush(); jrFlush(); }, 60000);
