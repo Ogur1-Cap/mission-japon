@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 2.2.1 · 26 novembre 2026
+- **Kana Express plus accessible** : paliers kana à 6, 12, 18 et 25, kanji à 4, 8, 12 et 16. Le dernier palier s'appelle maintenant **Diamant** 💎 (avant Arc-en-ciel)
+- Exploits recalés : Express à 12, Shinkansen humain à 25, Œil de kanji à 12 ; mission du jour : 10 bonnes réponses en une partie
+
 ## 2.2 · 26 novembre 2026
 - **Les récompenses transforment l'app, d'autant plus qu'elles sont rares**
 - Thèmes épiques : reflet qui passe sur les boutons, fond animé plus dense, onglet actif lumineux. Thèmes légendaires : en plus, bordures animées autour des cartes, titre de l'app qui scintille, sceau et barre du bas qui brillent, fond deux fois plus dense

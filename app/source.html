@@ -767,7 +767,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.2";
+const APP_VERSION = "2.2.1";
 const CLOUD = !window.claude;
 /* ---------- journal léger (supervision : activité + erreurs, lu par l'alerte bug et le bilan du lundi) ---------- */
 let jrQ = (() => { try { return JSON.parse(localStorage.getItem("mj.jr") || "[]"); } catch (e) { return []; } })(), jrBusy = false; const jrSeen = {};
@@ -1701,7 +1701,7 @@ function examResult(wrap) {
 function startFree(f) { role = { mode: "free", sc: f, log: [], busy: false, turns: 0, done: false }; render(); claudeTurn(null); window.scrollTo(0, 0); }
 /* ---------- Kana Express : le plus de bonnes réponses en 60 s ---------- */
 let xp = null, xpT = null;
-const XP_TIERS = { kana: [10, 20, 30, 40], kanji: [6, 12, 18, 25] }, XP_NM = ["Bronze", "Argent", "Or", "Arc-en-ciel"], XP_K = ["銅", "銀", "金", "虹"], XP_BOX = ["bois", "bambou", "bambou", "laque"], XP_MS = 60000;
+const XP_TIERS = { kana: [6, 12, 18, 25], kanji: [4, 8, 12, 16] }, XP_NM = ["Bronze", "Argent", "Or", "Diamant"], XP_K = ["銅", "銀", "金", "💎"], XP_BOX = ["bois", "bambou", "bambou", "laque"], XP_MS = 60000;
 function xpPool(mode) { const cat = mode === "kanji" ? "kanji" : "kana"; let ids = Object.keys(S.srs).filter(id => ITEMS[id] && ITEMS[id].cat === cat);
   if (ids.length < 8) ids = [...new Set(ids.concat(ORDER[cat].slice(0, mode === "kanji" ? 10 : 15)))]; return ids; }
 function xpQ() {
@@ -1759,7 +1759,7 @@ function viewExpress() {
       h("p", { class: "muted" }, "Précision " + Math.round(100 * xp.acc) + " % · " + (xp.tier >= 0 ? "palier " + XP_NM[xp.tier] : "pas encore de palier") + " · record : " + Math.max(xp.best, xp.ok) + (xp.record ? " (nouveau record !)" : "")),
       B ? h("div", { class: "rev", style: "max-width:420px;margin:10px auto;text-align:left" }, h("div", { class: "bxg jp", style: "--bc:" + B.col }, B.k), h("div", { class: "tx" }, h("b", {}, "+1 " + B.nm), h("small", {}, "À ouvrir dans Missions › Boîtes")), h("button", { class: "btn small", onclick: () => { quitExpress(); mTab = "boites"; go("missions"); } }, "Ouvrir"))
         : h("p", { class: "hint" }, xp.why),
-      h("p", { class: "hint" }, "Paliers : " + T.map((v, i) => XP_NM[i] + " " + v).join(" · ") + ". Bronze donne une boîte en bois, Argent et Or une boîte en bambou, Arc-en-ciel une boîte en laque."),
+      h("p", { class: "hint" }, "Paliers : " + T.map((v, i) => XP_NM[i] + " " + v).join(" · ") + ". Bronze donne une boîte en bois, Argent et Or une boîte en bambou, Diamant une boîte en laque."),
       h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
         h("button", { class: "btn", onclick: () => startExpress(xp.mode) }, "Rejouer"),
         h("button", { class: "btn ghost", onclick: () => { quitExpress(); render(); } }, "Retour à la pratique"))));
@@ -1771,7 +1771,7 @@ function viewExpress() {
       h("div", { class: "xp-mid" }, h("span", { class: "xp-time" + (left < 10000 ? " low" : ""), id: "xptime" }, Math.ceil(left / 1000)), h("small", {}, "s")),
       h("span", { class: "gsc" }, h("span", { id: "xpsc" }, xp.ok), " ✓")),
     h("div", { class: "xp-bar" }, h("i", { id: "xpbar", style: "width:" + (100 * left / XP_MS) + "%" })),
-    h("p", { class: "hint", style: "text-align:center;margin:6px 0 0" }, next ? "Prochain palier : " + next + " · record " + xp.best : "Palier Arc-en-ciel atteint ! Record " + xp.best),
+    h("p", { class: "hint", style: "text-align:center;margin:6px 0 0" }, next ? "Prochain palier : " + next + " · record " + xp.best : "Palier Diamant atteint ! Record " + xp.best),
     h("div", { class: "card cs-" + (owns("card", look().card) ? look().card : "base"), style: "margin-top:10px" },
       h("div", { class: "kind" }, q.sub),
       h("div", { class: "prompt" + (q.jp ? " jp" : "") + (q.prompt.length > 3 && !q.jp ? " mid" : "") }, q.prompt),
@@ -1786,7 +1786,7 @@ function xpBlock() {
     h("div", { class: "xpcard" },
       h("div", { class: "xpk jp", "aria-hidden": "true" }, "速"),
       h("div", { class: "tx" }, h("b", {}, "Le plus de bonnes réponses en 60 secondes"),
-        h("small", {}, "Une erreur coûte 2 s. Bronze, Argent, Or et Arc-en-ciel donnent des boîtes (2 par jour max). Records : kana " + (st.kxBest || 0) + " · kanji " + (st.kjBest || 0) + " · boîtes du jour " + Math.min(2, d.gb || 0) + "/2")),
+        h("small", {}, "Une erreur coûte 2 s. Bronze, Argent, Or et Diamant donnent des boîtes (2 par jour max). Records : kana " + (st.kxBest || 0) + " · kanji " + (st.kjBest || 0) + " · boîtes du jour " + Math.min(2, d.gb || 0) + "/2")),
       h("div", { class: "xpgo" }, h("button", { class: "btn small", onclick: () => startExpress("kana") }, "かな Kana"), h("button", { class: "btn small ghost", onclick: () => startExpress("kanji") }, "漢字 Kanji")))];
 }
 function viewRoles() {
@@ -2124,9 +2124,9 @@ const ACH = [
   { id: "lex30", g: "Exploits", nm: "Oreille fine", d: "Écoute 30 caractères dans le Lexique", t: st => [st.lex || 0, 30], k: "耳" },
   { id: "rev1", g: "Exploits", nm: "Bonne mémoire", d: "Termine une révision", t: st => [st.revs || 0, 1], k: "復" },
   { id: "rev85", g: "Exploits", nm: "Mémoire d’éléphant", d: "Fais 85/100 ou plus à une révision de la semaine", t: st => [st.rev85 || 0, 85], k: "憶" },
-  { id: "kx20", g: "Kana Express", nm: "Express", d: "20 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 20], k: "速" },
-  { id: "kx40", g: "Kana Express", nm: "Shinkansen humain", d: "40 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 40], k: "光" },
-  { id: "kj18", g: "Kana Express", nm: "Œil de kanji", d: "18 bonnes réponses en une partie de Kana Express (kanji)", t: st => [st.kjBest || 0, 18], k: "眼" },
+  { id: "kx20", g: "Kana Express", nm: "Express", d: "12 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 12], k: "速" },
+  { id: "kx40", g: "Kana Express", nm: "Shinkansen humain", d: "25 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 25], k: "光" },
+  { id: "kj18", g: "Kana Express", nm: "Œil de kanji", d: "12 bonnes réponses en une partie de Kana Express (kanji)", t: st => [st.kjBest || 0, 12], k: "眼" },
   { id: "box1", g: "Boîtes", nm: "Premier cadeau", d: "Ouvre ta première boîte", t: st => [st.boxes || 0, 1], k: "箱" },
   { id: "box50", g: "Boîtes", nm: "Collectionneur", d: "Ouvre 50 boîtes", t: st => [st.boxes || 0, 50], k: "蔵" },
   { id: "stk20", g: "Boîtes", nm: "Otaku du gashapon", d: "Colle 20 autocollants dans ton album", t: () => [STICKERS.filter(x => owns("sticker", x.id)).length, 20], k: "貼" },
@@ -2152,7 +2152,7 @@ const DAILY = [
   { id: "scene", nm: "Réussis une scène (même déjà jouée)", goal: 1, ev: "scene" },
   { id: "lex", nm: "Écoute 5 caractères dans le Lexique", goal: 5, ev: "lex" },
   { id: "kx", nm: "Joue une partie de Kana Express", goal: 1, ev: "kx" },
-  { id: "kx15", nm: "Fais 15 bonnes réponses en une partie de Kana Express", goal: 15, ev: "kxok", max: true },
+  { id: "kx15", nm: "Fais 10 bonnes réponses en une partie de Kana Express", goal: 10, ev: "kxok", max: true },
   { id: "revmix", nm: "Fais une révision mélangée", goal: 1, ev: "revmix", need: () => revPool("mix").length >= 8 },
   { id: "duel", nm: "Joue le défi du jour du groupe", goal: 1, ev: "duel", need: () => inGroup() },
   { id: "box", nm: "Ouvre une boîte", goal: 1, ev: "box" }];
@@ -2638,7 +2638,7 @@ function viewMissions() {
       h("div", { class: "revs" },
         h("div", { class: "rev" + (d.free ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:" + BOXES.bois.col }, "木"), h("div", { class: "tx" }, h("b", {}, "Boîte du jour"), h("small", {}, d.free ? "Reçue ✓ · la prochaine demain" : "Une boîte en bois offerte chaque jour")), d.free ? h("span", { class: "muted" }, "✓") : h("button", { class: "btn small claim", onclick: claimFreeBox }, "Récupérer")),
         h("div", { class: "rev" + (d.lesson ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:" + BOXES.bambou.col }, "竹"), h("div", { class: "tx" }, h("b", {}, "Leçon du jour"), h("small", {}, d.lesson ? "Reçue ✓" : "Fais au moins 10 cartes de ta session pour gagner une boîte en bambou")), d.lesson ? h("span", { class: "muted" }, "✓") : h("button", { class: "btn small ghost", onclick: () => go("trajet") }, "Y aller")),
-        h("div", { class: "rev" + ((d.gb || 0) >= 2 ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:var(--accent)" }, "速"), h("div", { class: "tx" }, h("b", {}, "Kana Express"), h("small", {}, Math.min(2, d.gb || 0) + "/2 boîtes gagnées aujourd’hui · palier Bronze → bois, Argent/Or → bambou, Arc-en-ciel → laque")), h("button", { class: "btn small ghost", onclick: () => startExpress("kana") }, "Jouer"))),
+        h("div", { class: "rev" + ((d.gb || 0) >= 2 ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:var(--accent)" }, "速"), h("div", { class: "tx" }, h("b", {}, "Kana Express"), h("small", {}, Math.min(2, d.gb || 0) + "/2 boîtes gagnées aujourd’hui · palier Bronze → bois, Argent/Or → bambou, Diamant → laque")), h("button", { class: "btn small ghost", onclick: () => startExpress("kana") }, "Jouer"))),
       h("div", { class: "sec-h" }, h("h2", {}, "Mes boîtes"), h("span", { class: "muted", style: "font-size:13px" }, own + " / " + tot + " objets trouvés")),
       mine.length ? h("div", { class: "revs" }, mine.map(t => h("div", { class: "rev bxrow" }, h("div", { class: "bxg jp", style: "--bc:" + BOXES[t].col }, BOXES[t].k),
         h("div", { class: "tx" }, h("b", {}, BOXES[t].nm + " × " + boxCount(t)), h("small", { class: "odds" }, ...oddsTxt(t))),
