@@ -445,6 +445,12 @@ body.pv #app{padding-top:calc(var(--pvh,58px) + 4px)}
 @keyframes comboHit{0%{transform:scale(.4)}60%{transform:scale(1.35)}100%{transform:none}}
 .claim-all{display:block;width:100%;margin-top:14px;animation:glowA 1.8s ease-in-out infinite}
 @keyframes glowA{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 25%,transparent)}}
+.revs{display:grid;gap:8px}
+.rev{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.rev .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:18px}
+.rev.lock .ic{background:var(--line);color:var(--muted)}
+.rev .tx{display:grid;min-width:0}
+.rev .tx small{font-size:12px;color:var(--muted)}
 </style>
 
 <div class="wrap" id="app"></div>
@@ -471,7 +477,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.5";
+const APP_VERSION = "1.6";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -1077,6 +1083,26 @@ function viewChapter() {
 }
 
 /* ---- session ---- */
+/* ---- révisions : cartes vues les jours passés ---- */
+function logSeen(id) { const k = todayKey(); S.seen = S.seen || {}; const a = S.seen[k] || (S.seen[k] = []); if (!a.includes(id) && a.length < 120) a.push(id);
+  const ks = Object.keys(S.seen).sort(); while (ks.length > 35) delete S.seen[ks.shift()]; }
+const dayAdd = (k, n) => { const d = new Date(k + "T12:00:00"); d.setDate(d.getDate() + n); return todayKey(d); };
+function seenBetween(from, to) { const out = new Set(); for (const [k, ids] of Object.entries(S.seen || {})) if (k >= from && k <= to) ids.forEach(id => ITEMS[id] && S.srs[id] && out.add(id)); return [...out]; }
+function revPool(kind, wk) {
+  if (kind === "mix") { const ids = seenBetween("0000", dayAdd(todayKey(), -1)); if (ids.length >= 8) return ids;
+    return Object.keys(S.srs).filter(id => ITEMS[id] && S.srs[id][0] >= 1 && !(S.seen && (S.seen[todayKey()] || []).includes(id) && !Object.keys(S.seen).some(k => k < todayKey()))); }
+  return seenBetween(wk, dayAdd(wk, 6));
+}
+const weekOpen = wk => wk < weekKeyOf() || [0, 6].includes(new Date().getDay());
+const REV_N = 20, REV_YEN = 200;
+function startRevision(kind, wk) {
+  const pool = revPool(kind, wk); if (pool.length < 8) { toast("Pas encore assez de cartes vues pour cette révision."); return; }
+  const weak = pool.slice().sort((a, b) => (S.srs[a][0] - S.srs[b][0]) || (Math.random() - .5));
+  const pick = shuffle(weak.slice(0, Math.max(REV_N, Math.ceil(pool.length * .6)))).slice(0, REV_N);
+  const queue = pick.map(id => ({ id, first: false, introDone: true }));
+  session = { queue, total: queue.length, done: 0, ok: 0, start: now(), card: null, answered: false, timeUp: false, practice: { kind, wk: wk || null } };
+  view = "session"; nextCard();
+}
 function startSession() {
   const ids = [...dueIds().slice(0, 45), ...newIds()];
   if (!ids.length) { toast("Rien à réviser pour l’instant. Reviens plus tard ou joue une scène !"); return; }
@@ -1088,7 +1114,7 @@ function startSession() {
 function nextCard() {
   if (!session) return; clearAdv(); session.adv = null; session.readyAt = now() + 450;
   const elapsed = now() - session.start;
-  if (!session.queue.length || (elapsed > 15 * 60e3 && !session.timeUp)) { if (session.queue.length) session.timeUp = true; finishSession(); return; }
+  if (!session.queue.length || (elapsed > 15 * 60e3 && !session.timeUp && !session.practice)) { if (session.queue.length) session.timeUp = true; finishSession(); return; }
   const q = session.queue.shift(); const it0 = ITEMS[q.id];
   if (q.first && !q.introDone && box(q.id) === 0 && !(it0.cat === "kana" && levelOf().shortcut)) {
     session.card = { id: q.id, type: "intro", speak: it0.cat === "phrase" ? it0.jp : it0.c, autoplay: true }; session.answered = false;
@@ -1100,6 +1126,12 @@ function nextCard() {
 }
 function finishSession() {
   clearAdv(); const k = todayKey();
+  if (session.practice) { const pr = session.practice;
+    if (!session.finished && session.done) { const pts = Math.round(100 * session.ok / Math.max(1, session.total)); pr.pts = pts;
+      if (pr.kind === "week") { S.rev = Object.assign({}, S.rev); const prev = S.rev[pr.wk] || 0; pr.prev = prev; S.rev[pr.wk] = Math.max(prev, pts);
+        if (pts >= 70 && !(S.revPaid || {})[pr.wk]) { S.revPaid = Object.assign({}, S.revPaid, { [pr.wk]: 1 }); addYen(REV_YEN); pr.paid = true; } }
+      sfx("done"); }
+    rwCheck(); persist(); session.finished = true; render(); if (CLOUD) cloudSync(); return; }
   if (session.done >= 10 && S.streak.last !== k) {
     const gap = S.streak.last ? Math.round((new Date(k) - new Date(S.streak.last)) / DAY) : 99, fr = freezes();
     if (gap === 1) S.streak.n = S.streak.n + 1;
@@ -1119,14 +1151,15 @@ function finishSession() {
 }
 function answer(ok, btn) {
   const s = session; if (!s || s.answered || (s.readyAt && now() < s.readyAt)) return; s.answered = true;
-  const c = s.card; grade(c.id, ok, c.first);
+  const c = s.card; if (!s.practice) grade(c.id, ok, c.first); logSeen(c.id);
   s.done++; if (ok) s.ok++;
   s.combo = ok ? (s.combo || 0) + 1 : 0; const st0 = rw().st; if (s.combo > (st0.comboMax || 0)) st0.comboMax = s.combo;
   if (ok) { track("ok"); track("combo", s.combo); }
   if (c.first) track("new"); else track("review");
   if (ok && CLOUD && (s.pts || 0) < 150) { addPts(2); s.pts = (s.pts || 0) + 2; }
   const d = today(); d.cards++; if (ok) d.ok++;
-  if (!ok) s.queue.splice(Math.min(3, s.queue.length), 0, { id: c.id, first: false });
+  if (!ok && !s.practice) s.queue.splice(Math.min(3, s.queue.length), 0, { id: c.id, first: false });
+  if (!ok && s.practice) { const cur = S.srs[c.id]; if (cur && cur[0] > 1) S.srs[c.id] = [cur[0] - 1, Math.min(cur[1], now() + DAY), cur[2]]; }
   persist();
   document.querySelectorAll(".choice").forEach(b => { b.disabled = true; if (b.dataset.ok === "1") b.classList.add("ok"); });
   if (btn && !ok) btn.classList.add("ko");
@@ -1158,6 +1191,18 @@ function viewSession() {
       h("button", { class: "btn", onclick: startSession }, "Lancer la session"));
   }
   const s = session;
+  if (s.finished && s.practice) { const pr = s.practice, pts = pr.pts || 0;
+    if (!s.celebrated) { s.celebrated = true; if (pts >= 70) setTimeout(confetti, 350); }
+    return h("div", { class: "done" }, h("div", { class: "stamp jp stamp-drop" }, pts >= 90 ? "優" : pts >= 70 ? "良" : "可"),
+      h("h2", {}, pr.kind === "week" ? "Révision de la semaine terminée" : "Révision terminée"),
+      h("div", { class: "exam-pts" }, h("b", {}, pts), h("span", {}, "/100")),
+      h("p", { class: "muted" }, s.ok + " bonnes réponses sur " + s.total + (pr.kind === "week" ? " · meilleur score de la semaine : " + ((S.rev || {})[pr.wk] || pts) + "/100" : "")),
+      pr.paid ? h("p", {}, "+¥" + REV_YEN + " pour ta première révision réussie de cette semaine !") : pr.kind === "week" && pts < 70 && !(S.revPaid || {})[pr.wk] ? h("p", { class: "hint" }, "Fais 70/100 ou plus pour gagner ¥" + REV_YEN + ".") : null,
+      h("p", { class: "hint" }, "Les cartes ratées reviendront plus vite dans tes sessions."),
+      h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
+        h("button", { class: "btn ghost", onclick: () => startRevision(pr.kind, pr.wk) }, "Recommencer"),
+        h("button", { class: "btn", onclick: () => { session = null; mTab = "missions"; go("missions"); } }, "Retour aux missions")));
+  }
   if (s.finished) {
     const rate = s.done ? Math.round(100 * s.ok / s.done) : 0;
     if (!s.celebrated) { s.celebrated = true; if (rate >= 60) setTimeout(confetti, 350); }
@@ -1750,6 +1795,22 @@ const howTo = x => x.src === "ach" ? "Exploit : " + ((ACH.find(a => a.id === x.a
 
 /* ---- onglet Missions ---- */
 let mTab = "missions";
+function revBlock() {
+  const wk = weekKeyOf(), fmt = k => new Date(k + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+  const weeks = [wk, dayAdd(wk, -7), dayAdd(wk, -14), dayAdd(wk, -21)];
+  const mixN = revPool("mix").length;
+  const rows = [h("div", { class: "rev" + (mixN >= 8 ? "" : " lock") },
+    h("div", { class: "ic jp" }, "復"), h("div", { class: "tx" }, h("b", {}, "Révision mélangée"), h("small", {}, mixN >= 8 ? REV_N + " questions tirées de tes jours précédents, en priorité celles qui te résistent" : "Disponible dès que tu as vu 8 cartes les jours précédents")),
+    h("button", { class: "btn small", disabled: mixN < 8, onclick: () => startRevision("mix") }, "Réviser"))];
+  weeks.forEach((k, i) => { const n = revPool("week", k).length; if (i > 0 && n < 8) return;
+    const open = weekOpen(k) && n >= 8, best = (S.rev || {})[k], paid = (S.revPaid || {})[k];
+    rows.push(h("div", { class: "rev" + (open ? "" : " lock") }, h("div", { class: "ic jp" }, "週"),
+      h("div", { class: "tx" }, h("b", {}, i === 0 ? "Révision de la semaine" : "Semaine du " + fmt(k)),
+        h("small", {}, !open ? (n < 8 ? "🔒 Se débloque samedi · " + n + " carte(s) vue(s) cette semaine (8 minimum)" : "🔒 Se débloque samedi · " + n + " cartes vues cette semaine") : n + " cartes de la semaine · " + (best ? "meilleur : " + best + "/100" : "pas encore faite") + (paid ? " · ¥ gagnés ✓" : " · ¥" + REV_YEN + " à 70/100"))),
+      h("button", { class: "btn small", disabled: !open, onclick: () => startRevision("week", k) }, open ? "Jouer" : "🔒")));
+  });
+  return [h("div", { class: "sec-h" }, h("h2", {}, "Révisions"), h("span", { class: "muted", style: "font-size:13px" }, "sans limite")), h("div", { class: "revs" }, rows)];
+}
 function viewMissions() {
   const r = rw(), d = rwDay(), w = rwWeek(), L = look(), p = prof();
   rwCheck();
@@ -1774,6 +1835,7 @@ function viewMissions() {
       h("div", { class: "mlist" }, d.ids.map(id => row(d, id, false))), omi,
       h("div", { class: "sec-h" }, h("h2", {}, "Missions de la semaine"), h("span", { class: "muted", style: "font-size:13px" }, left ? "encore " + left + " j" : "dernier jour")),
       h("div", { class: "mlist" }, w.ids.map(id => row(w, id, true))),
+      revBlock(),
       h("p", { class: "hint" }, "Les missions se valident toutes seules pendant tes sessions normales. Les yens servent dans la boutique, ils ne comptent pas dans le classement."));
   } else if (mTab === "boutique") {
     const card = (kind, x) => {
@@ -1917,6 +1979,9 @@ function mergeState(a, b) {
   out.station = Math.max(a.station || 0, b.station || 0);
   if (a.grp || b.grp) { const ga = a.grp || {}, gb = b.grp || {}; out.grp = Object.assign({}, (gb.points || 0) > (ga.points || 0) ? gb : ga); out.grp.code = out.grp.code || ga.code || gb.code; }
   out.scenes = Object.assign({}, b.scenes || {}, a.scenes || {});
+  if (a.seen || b.seen) { out.seen = {}; for (const src of [b.seen || {}, a.seen || {}]) for (const [k, ids] of Object.entries(src)) out.seen[k] = [...new Set([...(out.seen[k] || []), ...ids])].slice(0, 120); }
+  if (a.rev || b.rev) { out.rev = Object.assign({}, b.rev, a.rev); for (const k in (b.rev || {})) out.rev[k] = Math.max((a.rev || {})[k] || 0, b.rev[k]); }
+  if (a.revPaid || b.revPaid) out.revPaid = Object.assign({}, b.revPaid, a.revPaid);
   { const ra = rwNorm(a.rw), rb = rwNorm(b.rw);
     if (ra || rb) { const A2 = ra || {}, B2 = rb || {}, maxMap = (x, y) => { const o = Object.assign({}, x); for (const k in (y || {})) o[k] = Math.max(o[k] || 0, y[k] || 0); return o; };
       const o = { earn: maxMap(A2.earn, B2.earn), spent: maxMap(A2.spent, B2.spent), fb: maxMap(A2.fb, B2.fb), fu: maxMap(A2.fu, B2.fu),

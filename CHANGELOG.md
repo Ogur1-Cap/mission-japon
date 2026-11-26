@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 1.6 · 26 novembre 2026
+- Missions : nouvelle rubrique « Révisions », sans limite et sans toucher à ta session du jour
+- Révision mélangée : 20 questions tirées de tes jours précédents, en priorité les cartes qui te résistent. Disponible tout le temps
+- Révision de la semaine : se débloque le samedi avec les cartes vues du lundi au dimanche. Score sur 100, ¥200 la première fois que tu fais 70 ou plus. Les 3 semaines précédentes restent jouables
+- Les révisions comptent pour les missions (bonnes réponses, cartes revues…) ; une carte ratée revient plus vite dans tes sessions
+
 ## 1.5 · 26 novembre 2026
 - Session : après chaque réponse, une barre se remplit puis passe à la question suivante (4 s si c'est juste, 7 s si c'est faux, un peu plus pour les phrases). Touche la barre pour faire pause, ou « Suivant » pour enchaîner
 - Fini les validations par erreur : un double tap ou un tap trop rapide sur la nouvelle question est ignoré
