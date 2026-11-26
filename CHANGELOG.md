@@ -1,5 +1,14 @@
 # Journal des versions
 
+## 2.0 · 26 novembre 2026
+- **Boîtes** : 木 bois, 竹 bambou, 漆 laque et 金 or, avec 4 raretés (commun, rare, épique, légendaire). Une boîte en bois gratuite chaque jour, une boîte en bambou pour ta leçon du jour (10 cartes), d'autres avec Kana Express et certains exploits. Jamais de doublon, chances affichées, épique garanti au moins toutes les 10 boîtes et légendaire toutes les 30. Quand une rareté est complète, les boîtes donnent des fragments pour fabriquer l'objet de ton choix à l'Atelier
+- **Kana Express** (onglet Pratique) : le plus de bonnes réponses en 1 minute, en kana (son ↔ caractère) ou en kanji (lecture ou sens). Une erreur coûte 2 s. Paliers Bronze, Argent, Or et Arc-en-ciel (10/20/30/40 en kana, 6/12/18/25 en kanji) qui donnent des boîtes, 2 par jour maximum, avec 70 % de précision minimum
+- **10 nouveaux types de récompenses** : porte-bonheur sur l'avatar, effets de bonne réponse, packs de sons, trains et sillages sur ta ligne, plaques de nom au classement, panneau LED de l'accueil, style des cartes, album d'autocollants gashapon et carnet de tampons de gare. 200 objets en tout
+- **Une seule source par objet** : la boutique (thèmes, sons, plaques, panneaux, cartes, cadres), les boîtes (effets, porte-bonheur, animations, sillages, autocollants) ou les exploits (titres, trains, tampons, cadres et thèmes spéciaux). Tout ce que tu possédais est gardé, et les exploits déjà obtenus livrent leurs nouvelles récompenses
+- **Nouveaux exploits** (Kana Express, boîtes, album, défi du jour, clashs, révisions…) et **nouvelles missions** (Kana Express, révision mélangée, défi du jour, clashs, examen de scène, révision de la semaine)
+- Missions : nouveaux onglets Boîtes et Collection. La collection quitte les réglages
+- Prix revus : thèmes Sakura et Matcha ¥3 500, Indigo et Fuji ¥4 500, Or impérial ¥10 000 (le thème phare). Boîtes en boutique : bois ¥350, bambou ¥1 000, laque ¥2 500 (une par semaine)
+
 ## 1.9.1 · 26 novembre 2026
 - Révisions : quand tu te trompes, une vraie correction s'affiche (« Ta réponse » en rouge, « Bonne réponse » en vert, avec la lecture) et la suite automatique se met en pause. Tu passes à la suite avec « Suivant » quand tu as compris
 - Fin de révision : la liste « Tes erreurs à retenir » reprend chaque erreur avec la bonne réponse

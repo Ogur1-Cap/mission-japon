@@ -435,6 +435,83 @@ body.pv #app{padding-top:calc(var(--pvh,58px) + 4px)}
 .claim-all{display:block;width:100%;margin-top:14px;animation:glowA 1.8s ease-in-out infinite}
 @keyframes glowA{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 25%,transparent)}}
 .revs{display:grid;gap:8px}
+.av .pinb{position:absolute;left:-6%;bottom:-6%;font-size:calc(var(--s) * .3);line-height:1;z-index:3;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.pinb.gold,.pv-emo.gold{filter:drop-shadow(0 0 5px #F7D774)}
+.pv-emo{font-size:32px;line-height:1;display:grid;place-items:center;width:56px;height:56px;margin:4px auto;border-radius:50%;background:var(--surface-2);cursor:default}
+.pv-emo.stk{border-radius:14px;border:2px dashed var(--line);background:var(--surface)}
+.pv-emo .dots{width:10px;height:10px;border-radius:50%;background:var(--d1,var(--accent));box-shadow:14px 0 0 var(--d2,#E9C46A),-14px 0 0 var(--ok)}
+.burst2 i.sym{background:none!important;width:auto;height:auto;font-size:18px;font-style:normal;left:-9px;top:-9px;line-height:1}
+.burst2 i.sq{border-radius:2px}
+.burst2 i.blob{width:14px;height:14px;left:-7px;top:-7px;border-radius:50% 40% 55% 45%}
+.rail .train .trail{position:absolute;right:88%;top:8px;display:flex;flex-direction:row-reverse;gap:1px;font-size:13px;pointer-events:none}
+.rail .train .trail i{font-style:normal;animation:trailf 1.2s ease-in-out infinite}
+.rail .train .trail i:nth-child(2){opacity:.6;animation-delay:.2s}.rail .train .trail i:nth-child(3){opacity:.3;animation-delay:.4s}
+@keyframes trailf{50%{transform:translateY(-3px)}}
+.np{display:inline-block;padding:1px 8px;border-radius:6px;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.4);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;font-weight:700}
+.np-ai{background:linear-gradient(90deg,#1F3A68,#3E6AA8)}
+.np-beni{background:linear-gradient(90deg,#B8232A,#E0503A)}
+.np-matsu{background:linear-gradient(90deg,#2F5D2A,#4E8A3A)}
+.np-kogane{background:linear-gradient(90deg,#8A650C,#E9C46A 50%,#8A650C);color:#2a1d00;text-shadow:none}
+.np-seigaiha{background:radial-gradient(circle at 50% 100%,transparent 5px,rgba(255,255,255,.35) 6px,transparent 7px,transparent 9px,rgba(255,255,255,.35) 10px,transparent 11px) 0 0/16px 8px,#1F5FB0}
+.np-ichimatsu{background:conic-gradient(#2E7D5B 25%,#1B4F39 0 50%,#2E7D5B 0 75%,#1B4F39 0) 0 0/12px 12px}
+.np-asanoha{background:repeating-conic-gradient(from 30deg,#6A2E80 0 30deg,#8E4BA8 30deg 60deg)}
+.np-sakura{background:linear-gradient(90deg,#FF8FAB,#FFC2D1);color:#5a1028;text-shadow:none}
+.np-yoru{background:#0A0614;color:#FF6FE0;text-shadow:0 0 6px #FF3FD8;box-shadow:inset 0 0 0 1px #2FF3FF;animation:npn 2s ease-in-out infinite}
+@keyframes npn{50%{text-shadow:0 0 12px #FF3FD8,0 0 2px #fff}}
+.led.led-vert,.pv-led.led-vert{--led-fg:#3DFF7A}.led-vert .big{text-shadow:0 0 8px rgba(61,255,122,.45)}
+.led.led-bleu,.pv-led.led-bleu{--led-fg:#4FC3FF}.led-bleu .big{text-shadow:0 0 8px rgba(79,195,255,.45)}
+.led.led-rouge,.pv-led.led-rouge{--led-fg:#FF4D4D}.led-rouge .big{text-shadow:0 0 8px rgba(255,77,77,.45)}
+.led.led-blanc,.pv-led.led-blanc{--led-fg:#F4F4F4}.led-blanc .big{text-shadow:0 0 8px rgba(255,255,255,.4)}
+.led.led-volets,.pv-led.led-volets{--led-fg:#FFFFFF}
+.led-volets .big span,.pv-led.led-volets span{background:linear-gradient(#2c2c2c 49%,#151515 51%);border-radius:4px;padding:0 .06em;margin-right:2px;text-shadow:none;font-family:var(--f-display)}
+.led.led-arc,.pv-led.led-arc{--led-fg:#FF7AD9}
+.led-arc .big{text-shadow:0 0 10px currentColor}
+.led-arc .big span{animation:ledOn .5s steps(3) both,arcc 3.5s linear infinite}
+.pv-led.led-arc span{animation:arcc 3.5s linear infinite}
+@keyframes arcc{0%,100%{color:#FF5E7E}20%{color:#FFC53D}40%{color:#7BD389}60%{color:#47C1FF}80%{color:#B388FF}}
+.pv-led{display:inline-block;background:var(--led-bg,#111);border-radius:8px;padding:6px 10px;font-family:var(--f-led);color:var(--led-fg);font-size:15px;margin:8px 0;white-space:nowrap}
+.card.cs-washi{--surface:#FBF7EE;--ink:#2B2B2B;--muted:#6B6457;--line:#E2D6BE;--surface-2:#F1E9D8;background:#FBF7EE repeating-linear-gradient(115deg,transparent 0 9px,rgba(160,130,80,.07) 9px 10px);color:var(--ink)}
+.card.cs-ardoise{--surface:#2E3440;--ink:#ECEFF4;--muted:#AEB6C6;--line:#4C566A;--surface-2:#3B4252;background:radial-gradient(circle at 20% 0%,#3B4252,#2E3440 70%);color:var(--ink)}
+.card.cs-bois{--surface:#F3E2C8;--ink:#3A2410;--muted:#6E4B2A;--line:#C9A47A;--surface-2:#F7EAD6;background:repeating-linear-gradient(90deg,#E4C9A3 0 3px,#EBD5B4 3px 11px,#DDBF95 11px 12px);color:var(--ink)}
+.card.cs-hanafuda{--surface:#FFF8EC;--ink:#2B1A10;--muted:#7A5A40;--line:#E2C9A8;--surface-2:#FCEBD5;background:#FFF8EC;color:var(--ink);border:3px solid #C0392B;box-shadow:inset 0 0 0 4px #FFF8EC,inset 0 0 0 6px #D4A017}
+.card.cs-laque{--surface:#1C1416;--ink:#F6EBD9;--muted:#C9B79A;--line:#5A4420;--surface-2:#2A1E20;background:radial-gradient(circle at 30% 0%,#4a1618,#151012 65%);color:var(--ink);border:2px solid #C9A227}
+.pv-card{display:inline-grid!important;place-items:center;width:46px;height:60px;padding:0!important;margin:6px auto;font-size:24px;border-radius:8px!important}
+.pv-stamp{display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;border:3px solid #C0392B;color:#C0392B;font-weight:700;font-size:18px;margin:4px auto;transform:rotate(-8deg);background:rgba(192,57,43,.06)}
+.pv-stamp.eki{border-color:#2B5BA8;color:#2B5BA8;border-style:double;border-width:5px;font-size:15px;background:rgba(43,91,168,.06)}
+.bxg{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:20px;color:#fff;background:var(--bc);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.odds{display:flex;flex-wrap:wrap;gap:2px 10px}
+.bx-ov{text-align:center}
+.bx-big{width:120px;height:120px;margin:18px auto 4px;display:grid;place-items:center;font-size:56px;font-weight:700;color:#fff;background:var(--bc);border-radius:24px;box-shadow:0 0 0 4px var(--rc),0 0 30px var(--rc);cursor:pointer;user-select:none;transition:box-shadow .3s}
+.bx-big.shk{animation:bxshake .42s}
+.bx-big.lv2{box-shadow:0 0 0 5px var(--rc),0 0 50px var(--rc)}.bx-big.lv3{box-shadow:0 0 0 6px var(--rc),0 0 70px var(--rc),0 0 120px var(--rc)}
+@keyframes bxshake{20%{transform:rotate(-9deg) scale(1.06)}40%{transform:rotate(8deg) scale(1.1)}60%{transform:rotate(-5deg)}80%{transform:rotate(3deg)}}
+.bx-item{display:grid;place-items:center;margin:12px auto;width:112px;height:112px;border-radius:50%;box-shadow:0 0 0 3px var(--rc),0 0 40px var(--rc);background:var(--surface);animation:bxpop .5s cubic-bezier(.2,1.6,.4,1)}
+.bx-item .pv-emo{background:none;font-size:48px}
+@keyframes bxpop{from{transform:scale(.2);opacity:0}}
+.seg.tabs5{display:grid;grid-template-columns:repeat(5,1fr);width:100%}
+.seg.tabs5 button{padding:9px 2px;font-size:13px;min-width:0;position:relative}
+.sdot{display:inline-grid;place-items:center;min-width:16px;height:16px;border-radius:99px;background:var(--ko);color:#fff;font-size:10px;margin-left:3px;padding:0 4px;vertical-align:1px}
+.kinds{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.kinds .toggle{padding:6px 10px;font-size:13px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-top:8px}
+.ctile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 6px;text-align:center;display:grid;gap:4px;justify-items:center;align-content:start;position:relative;min-width:0}
+.ctile.lock>:first-child{filter:grayscale(1);opacity:.45}
+.ctile.on{border:2px solid var(--accent)}
+.ctile .nm{font-size:13px;font-weight:700;line-height:1.2}
+.ctile .how{font-size:11px;color:var(--muted);line-height:1.25}
+.ctile .rd{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%}
+.ctile .btn.small{padding:6px 10px;font-size:12px}
+.xpcard{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.xpk{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:18px}
+.xpcard .tx{display:grid;min-width:0}.xpcard .tx small{color:var(--muted);font-size:13px}
+.xpgo{grid-column:1/-1;display:flex;gap:8px}.xpgo .btn{flex:1}
+.xp-mid{flex:1;display:flex;justify-content:center;align-items:baseline;gap:2px}
+.xp-time{font-family:var(--f-display);font-size:34px;line-height:1;min-width:48px;text-align:center}
+.xp-time.low{color:var(--ko)}
+.xp-time.pen{animation:pen .5s}
+@keyframes pen{30%{transform:scale(1.3);color:var(--ko)}}
+.xp-bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
+.xp-bar i{display:block;height:100%;background:var(--accent);transition:width .1s linear}
 .rev.plan{width:100%;text-align:left;color:var(--ink);font:inherit;cursor:pointer}
 .rev.plan .arr{font-size:20px;color:var(--accent)}
 .rev.plan:not(.hot) .ic{background:var(--line);color:var(--ink)}
@@ -554,7 +631,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.9.1";
+const APP_VERSION = "2.0";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -765,27 +842,38 @@ const audioBtn = (text, big) => h("button", { class: "audio" + (big ? " big" : "
 /* ---------- sons (Web Audio, aucun fichier) ---------- */
 let AC = null;
 const soundOn = () => { try { return localStorage.getItem("mj.sound") !== "0"; } catch (e) { return true; } };
-function sfx(kind) {
-  if (!soundOn()) return;
+const SND = {
+  classic: { ok: [[880, 0, .16, "sine", .16], [1318.5, .08, .32, "sine", .15], [2637, .08, .12, "sine", .03]], ko: [[311, 0, .2, "triangle", .2, 260], [208, .13, .32, "triangle", .2, 175]],
+    combo: [1046.5, 1318.5, 1568, 2093].map((f, i) => [f, i * .065, .22, "sine", .12]), done: [523.25, 659.25, 783.99, 1046.5, 1318.5].map((f, i) => [f, i * .1, i === 4 ? .7 : .3, "triangle", .13]) },
+  taiko: { ok: [[150, 0, .22, "sine", .5, 70], [900, 0, .03, "square", .03]], ko: [[95, 0, .3, "sine", .45, 55]], combo: [0, .12, .24].map(t => [150, t, .2, "sine", .45, 70]).concat([[300, .36, .3, "sine", .3, 140]]), done: [0, .15, .3, .45, .6].map((t, i) => [i === 4 ? 200 : 140, t, .25, "sine", .45, 70]) },
+  furin: { ok: [[2093, 0, .7, "sine", .09], [3136, .02, .5, "sine", .04], [4186, .04, .3, "sine", .02]], ko: [[1318.5, 0, .5, "sine", .07, 1174.7]], combo: [2093, 2637, 3136].map((f, i) => [f, i * .09, .6, "sine", .07]), done: [1568, 2093, 2637, 3136].map((f, i) => [f, i * .14, .9, "sine", .07]) },
+  koto: { ok: [[659.25, 0, .3, "triangle", .2], [880, .07, .4, "triangle", .18]], ko: [[329.6, 0, .35, "triangle", .2, 311]], combo: [587.3, 659.25, 880, 987.8].map((f, i) => [f, i * .07, .3, "triangle", .16]), done: [440, 493.9, 587.3, 659.25, 880].map((f, i) => [f, i * .12, .5, "triangle", .15]) },
+  cloche: { ok: [[523.25, 0, 1.2, "sine", .14], [1307, 0, .8, "sine", .05], [1977, 0, .4, "sine", .02]], ko: [[220, 0, 1, "sine", .14], [554, 0, .6, "sine", .04]], combo: [[784, 0, 1.2, "sine", .13], [1960, 0, .7, "sine", .04]], done: [[392, 0, 1.8, "sine", .16], [980, 0, 1.2, "sine", .05], [1480, .02, .8, "sine", .03]] },
+  bit: { ok: [[987.8, 0, .08, "square", .07], [1318.5, .08, .16, "square", .07]], ko: [[196, 0, .28, "square", .08, 98]], combo: [523.25, 659.25, 783.99, 1046.5].map((f, i) => [f, i * .06, .1, "square", .06]), done: [523.25, 659.25, 783.99, 1046.5, 1318.5, 1568].map((f, i) => [f, i * .08, .14, "square", .06]) },
+  quai: { ok: [[783.99, 0, .2, "sine", .14], [987.8, .1, .2, "sine", .13], [1174.7, .2, .35, "sine", .13]], ko: [[587.3, 0, .25, "sine", .14], [493.9, .14, .35, "sine", .13]], combo: [783.99, 987.8, 1174.7, 1568].map((f, i) => [f, i * .09, .3, "sine", .12]), done: [587.3, 783.99, 987.8, 1174.7, 987.8, 1174.7, 1568].map((f, i) => [f, i * .13, i === 6 ? .8 : .22, "sine", .12]) } };
+function sfx(kind, pack) {
+  if (!soundOn() && !pack) return;
   try {
     AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume();
     const t = AC.currentTime + .01, out = AC.createGain(); out.gain.value = .9; out.connect(AC.destination);
     const tone = (f, st, d, type, vol, f2) => { const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.setValueAtTime(f, t + st); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + st + d);
       g.gain.setValueAtTime(0, t + st); g.gain.linearRampToValueAtTime(vol, t + st + .012); g.gain.exponentialRampToValueAtTime(.0001, t + st + d); o.connect(g); g.connect(out); o.start(t + st); o.stop(t + st + d + .03); };
-    if (kind === "ok") { tone(880, 0, .16, "sine", .16); tone(1318.5, .08, .32, "sine", .15); tone(2637, .08, .12, "sine", .03); }
-    else if (kind === "ko") { tone(311, 0, .2, "triangle", .2, 260); tone(208, .13, .32, "triangle", .2, 175); }
-    else if (kind === "combo") [1046.5, 1318.5, 1568, 2093].forEach((f, i) => tone(f, i * .065, .22, "sine", .12));
-    else if (kind === "done") [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => tone(f, i * .1, i === 4 ? .7 : .3, "triangle", .13));
-    else if (kind === "tap") tone(1200, 0, .05, "sine", .05);
+    if (kind === "tap") { tone(1200, 0, .05, "sine", .05); return; }
+    const P2 = SND[pack || (P.cur ? look().sound : "classic")] || SND.classic;
+    (P2[kind] || SND.classic[kind] || []).forEach(a => tone(...a));
   } catch (e) {}
 }
-function burst(el, ok) {
+function burst(el, ok, style) {
   try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
   if (!el) return; const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const B = BURSTS.find(x => x.id === (style || (P.cur ? look().burst : "base"))) || BURSTS[0];
   const box = h("div", { class: "burst2", style: "left:" + cx + "px;top:" + cy + "px", "aria-hidden": "true" });
-  const n = ok ? 12 : 0;
-  for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2 + Math.random() * .4, d = 46 + Math.random() * 40;
-    box.append(h("i", { style: "--x:" + Math.round(Math.cos(a) * d) + "px;--y:" + Math.round(Math.sin(a) * d) + "px;animation-delay:" + Math.round(Math.random() * 60) + "ms" + (i % 3 === 0 ? ";background:var(--ok)" : i % 3 === 1 ? ";background:#E9C46A" : "") })); }
+  const n = ok ? (B.big ? 20 : 12) : 0;
+  for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2 + Math.random() * .4, d = (B.big ? 60 : 46) + Math.random() * (B.big ? 70 : 40);
+    const pos = "--x:" + Math.round(Math.cos(a) * d) + "px;--y:" + Math.round(Math.sin(a) * d) + "px;animation-delay:" + Math.round(Math.random() * 60) + "ms";
+    if (B.sym && (!B.col || i % 2)) box.append(h("i", { class: "sym", style: pos }, B.sym[i % B.sym.length]));
+    else if (B.col) box.append(h("i", { class: B.sq ? "sq" : B.blob ? "blob" : "", style: pos + ";background:" + B.col[i % B.col.length] }));
+    else box.append(h("i", { style: pos + (i % 3 === 0 ? ";background:var(--ok)" : i % 3 === 1 ? ";background:#E9C46A" : "") })); }
   document.body.append(box); setTimeout(() => box.remove(), 900);
 }
 /* suite automatique après une réponse : barre qui se remplit, pause au toucher, bouton Suivant */
@@ -878,13 +966,14 @@ const TABS = [["trajet", "道", "Trajet"], ["lexique", "字", "Lexique"], ["role
 function renderNav() {
   const n = $("nav"); n.replaceChildren(...TABS.map(([id, g, l]) => h("button", { "aria-current": view === id ? "page" : false, onclick: () => go(id) }, h("span", { class: "g jp" }, g), l, (id === "missions" && claimable()) || (id === "groupe" && typeof incomingClashes === "function" && incomingClashes().length) || (id === "roles" && weekRevReady()) ? h("span", { class: "dot", "aria-label": id === "groupe" ? "Un pote te défie" : id === "roles" ? "Révision de la semaine disponible" : "Récompense à récupérer" }) : null)));
 }
-function go(v) { if (game && (v !== "groupe" || v === view)) quitGame(); const again = v === view; view = v; if (v !== "trajet" || again) chapter = null; if (v !== "roles" || again) stopRole(); render(); window.scrollTo(0, 0); }
+function go(v) { if (game && (v !== "groupe" || v === view)) quitGame(); const again = v === view; view = v; if (v !== "trajet" || again) chapter = null; if (v !== "roles" || again) { stopRole(); if (xp) quitExpress(); } render(); window.scrollTo(0, 0); }
 let lastViewKey = "";
 function railView(cur) {
   const idx = CH.indexOf(cur);
   let from = idx; try { const v = sessionStorage.getItem("mj.train"); if (v !== null) from = +v; else from = Math.max(0, idx - 1); } catch (e) { from = Math.max(0, idx - 1); }
   const pct = i => "calc(12px + (100% - 24px) * " + (i / (CH.length - 1)) + ")";
-  const train = h("div", { class: "train", style: "left:" + pct(from), "aria-hidden": "true" }, h("span", { style: "display:inline-block;transform:scaleX(-1)" }, "🚄"));
+  const TR = TRAINS.find(x => x.id === look().train && owns("train", x.id)) || TRAINS[0], TL = TRAILS.find(x => x.id === look().trail && owns("trail", x.id));
+  const train = h("div", { class: "train", style: "left:" + pct(from), "aria-hidden": "true" }, TL && TL.sym ? h("span", { class: "trail" }, h("i", {}, TL.sym), h("i", {}, TL.sym), h("i", {}, TL.sym)) : null, h("span", { style: "display:inline-block;transform:scaleX(-1)" + (TR.f ? ";filter:" + TR.f : "") }, TR.e));
   const rail = h("div", { class: "rail", role: "img", "aria-label": "Ton train est à " + cur.ro },
     h("div", { class: "line" }),
     CH.map((c, i) => h("div", { class: "st" + (i < idx ? " done" : ""), style: "left:" + pct(i) + ";--lc:var(" + c.lc + ")" })),
@@ -957,7 +1046,7 @@ function viewHome() {
     h("header", { class: "top", style: "flex-wrap:nowrap;align-items:center" },
       h("div", { class: "brand", style: "min-width:0" }, h("div", { class: "seal jp", "aria-hidden": "true" }, "旅"), h("div", { style: "min-width:0" }, h("h1", {}, "Mission Japon"), h("small", {}, "Bonjour " + prof().name + " · ", h("span", { class: "ttl" }, titleOf(look()))))),
       h("button", { class: "me-btn gear", onclick: () => go("reglages"), "aria-label": "Mon profil et réglages" }, avatar(look(), prof().name, 50), h("span", { class: "cog", "aria-hidden": "true" }, "⚙"))),
-    h("section", { class: "led", "aria-label": "Compte à rebours" },
+    h("section", { class: "led led-" + (owns("led", look().led) ? look().led : "ambre"), "aria-label": "Compte à rebours" },
       h("div", { class: "lbl" }, "発車まで"), h("div", { class: "dest" }, "関西空港 · Kansai"), h("div", { class: "lbl" }, "M01"),
       h("div", { class: "big", style: "grid-column:1/-1", "aria-label": days > 0 ? "あと " + days + " 日" : "出発！" }, [...(days > 0 ? "あと " + days + " 日" : "出発！")].map((ch, i) => h("span", { style: "animation-delay:" + (i * 70) + "ms", "aria-hidden": "true" }, ch === " " ? "\u00a0" : ch))),
       h("div", { class: "row" }, h("span", {}, days > 0 ? "Départ dans " + days + " jours · 18 février 2027" : "C’est le grand départ !"), h("span", { class: "blink" }, "● 定刻"))),
@@ -1205,6 +1294,7 @@ function finishSession() {
   clearAdv(); const k = todayKey();
   if (session.practice) { const pr = session.practice;
     if (!session.finished && session.done) { const pts = Math.round(100 * session.ok / Math.max(1, session.total)); pr.pts = pts;
+      if (session.done >= session.total) { track(pr.kind === "week" ? "revweek" : "revmix"); const st9 = rw().st; st9.revs = (st9.revs || 0) + 1; if (pr.kind === "week") st9.rev85 = Math.max(st9.rev85 || 0, pts); }
       if (pr.kind === "week") { S.rev = Object.assign({}, S.rev); const prev = S.rev[pr.wk] || 0; pr.prev = prev; S.rev[pr.wk] = Math.max(prev, pts);
         if (pts >= 70 && !(S.revPaid || {})[pr.wk]) { S.revPaid = Object.assign({}, S.revPaid, { [pr.wk]: 1 }); addYen(REV_YEN); pr.paid = true; } }
       sfx("done"); }
@@ -1217,6 +1307,7 @@ function finishSession() {
     S.streak.last = k;
   }
   if (session.done >= 10 && !session.rwDone) {
+    { const bd = boxDay(); if (!bd.lesson) { bd.lesson = 1; grantBox("bambou", "leçon du jour"); } }
     session.rwDone = true; const st = rw().st; st.sessions = (st.sessions || 0) + 1; track("session");
     if (session.done >= 15 && session.ok === session.done) st.perfect = (st.perfect || 0) + 1;
     const hr = new Date().getHours(); if (hr >= 22 || hr < 4) st.night = 1; if (hr >= 4 && hr < 8) st.morning = 1;
@@ -1323,7 +1414,7 @@ function viewSession() {
       h("div", { class: "track" }, h("i", { id: "bar", style: "width:" + Math.round(100 * s.done / Math.max(1, s.done + s.queue.length + 1)) + "%" })),
       h("span", { class: "combo", id: "combo", "aria-live": "polite" }, (s.combo || 0) >= 3 && !s.answered ? "🔥 " + s.combo : (s.combo || 0) >= 3 ? "🔥 " + s.combo : ""),
       h("div", { class: "time", id: "clock" }, String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0"))),
-    h("div", { class: "card enter" }, kids),
+    h("div", { class: "card enter cs-" + (owns("card", look().card) ? look().card : "base") }, kids),
     h("p", { class: "hint", style: "text-align:center" }, "Raccourcis : touches 1 à 4 pour répondre, Entrée pour continuer."));
 }
 function viewIntro(s, c) {
@@ -1345,6 +1436,7 @@ function viewIntro(s, c) {
 setInterval(() => { const el = $("clock"); if (el && session && !session.finished) { const e = now() - session.start; el.textContent = String(Math.floor(e / 60e3)).padStart(2, "0") + ":" + String(Math.floor(e / 1000) % 60).padStart(2, "0"); } }, 1000);
 document.addEventListener("keydown", e => {
   if (game && !game.done && view === "groupe" && /^[1-4]$/.test(e.key)) { gamePick(+e.key - 1); return; }
+  if (xp && !xp.done && view === "roles" && /^[1-4]$/.test(e.key)) { xpPick(+e.key - 1, document.querySelectorAll(".xopt")[+e.key - 1]); return; }
   if (test && !test.done && test.q && /^[1-4]$/.test(e.key) && e.target.tagName !== "INPUT") { const o = test.q.opts[+e.key - 1]; if (o) answerTest(o.ok); return; }
   if (view === "session" && session && session.card && session.card.type === "intro" && e.key === "Enter") { e.preventDefault(); const b = $("introgo"); if (b) b.click(); return; }
   if (view !== "session" || !session || session.finished || e.target.tagName === "INPUT") return;
@@ -1375,7 +1467,7 @@ function viewLex() {
     body = h("div", { class: "kgrid" }, cells.map(x => {
       if (!x) return h("div", { class: "kcell empty", "aria-hidden": "true" });
       const id = lexMode + ":" + x[0], bx = box(id);
-      return h("button", { class: "kcell lv" + bx, onclick: () => { say(x[0]); track("lex"); persist(); }, "aria-label": x[0] + " " + x[1] }, h("div", { class: "c jp" }, x[0]), h("div", { class: "r" }, x[1]), h("div", { class: "m" }));
+      return h("button", { class: "kcell lv" + bx, onclick: () => { say(x[0]); track("lex"); bumpSt("lex"); persist(); }, "aria-label": x[0] + " " + x[1] }, h("div", { class: "c jp" }, x[0]), h("div", { class: "r" }, x[1]), h("div", { class: "m" }));
     }));
   }
   const ids = lexMode === "j" ? ORDER.kanji : ORDER.kana.filter(id => id.startsWith(lexMode + ":"));
@@ -1383,7 +1475,7 @@ function viewLex() {
     const yo = lexMode === "h" ? HY : KY;
     body = h("div", {}, body, h("h3", { style: "margin-top:18px;font-size:15px" }, "Combinaisons"), h("div", { class: "kgrid", style: "grid-template-columns:repeat(3,minmax(0,1fr))" }, yo.map((c, i) => {
       const id = lexMode + ":" + c, bx = box(id);
-      return h("button", { class: "kcell lv" + bx, onclick: () => { say(c); track("lex"); persist(); }, "aria-label": c + " " + RY[i] }, h("div", { class: "c jp" }, c), h("div", { class: "r" }, RY[i]), h("div", { class: "m" }));
+      return h("button", { class: "kcell lv" + bx, onclick: () => { say(c); track("lex"); bumpSt("lex"); persist(); }, "aria-label": c + " " + RY[i] }, h("div", { class: "c jp" }, c), h("div", { class: "r" }, RY[i]), h("div", { class: "m" }));
     })));
   }
   return h("div", {}, h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Lexique"), h("span", { class: "muted" }, masteredPct(ids) + " % de progression")),
@@ -1416,7 +1508,7 @@ function examEnd() {
   const n = examSteps(role.sc), pts = Math.round(100 * role.score / Math.max(1, n)), id = role.sc.id, st = rw().st;
   const prev = examBest(id); role.pts = pts; role.record = pts > prev && prev > 0; role.prev = prev;
   st.ex = Object.assign({}, st.ex, { [id]: Math.max(prev, pts) });
-  if (pts >= 80) { st.sc = Object.assign({}, st.sc, { [id]: 1 }); track("scene"); setTimeout(confetti, 300); }
+  if (pts >= 80) { st.sc = Object.assign({}, st.sc, { [id]: 1 }); track("scene"); track("exam"); setTimeout(confetti, 300); }
   persist(); rwCheck(); if (CLOUD) cloudSync();
 }
 function examResult(wrap) {
@@ -1438,10 +1530,102 @@ function examResult(wrap) {
       h("button", { class: "btn ghost", onclick: () => startScripted(role.sc) }, "M’entraîner")));
 }
 function startFree(f) { role = { mode: "free", sc: f, log: [], busy: false, turns: 0, done: false }; render(); claudeTurn(null); window.scrollTo(0, 0); }
+/* ---------- Kana Express : le plus de bonnes réponses en 60 s ---------- */
+let xp = null, xpT = null;
+const XP_TIERS = { kana: [10, 20, 30, 40], kanji: [6, 12, 18, 25] }, XP_NM = ["Bronze", "Argent", "Or", "Arc-en-ciel"], XP_K = ["銅", "銀", "金", "虹"], XP_BOX = ["bois", "bambou", "bambou", "laque"], XP_MS = 60000;
+function xpPool(mode) { const cat = mode === "kanji" ? "kanji" : "kana"; let ids = Object.keys(S.srs).filter(id => ITEMS[id] && ITEMS[id].cat === cat);
+  if (ids.length < 8) ids = [...new Set(ids.concat(ORDER[cat].slice(0, mode === "kanji" ? 10 : 15)))]; return ids; }
+function xpQ() {
+  const ids = xp.pool; let it = ITEMS[ids[Math.floor(Math.random() * ids.length)]]; if (xp.last === it.id && ids.length > 1) it = ITEMS[ids[(ids.indexOf(it.id) + 1) % ids.length]]; xp.last = it.id;
+  if (xp.mode === "kanji") { const fr = Math.random() < .5, others = shuffle(ids.map(id => ITEMS[id]).filter(x => x.id !== it.id && (fr ? x.fr !== it.fr : x.ro !== it.ro))).slice(0, 3);
+    if (others.length < 3) others.push(...shuffle(Object.values(ITEMS).filter(x => x.cat === "kanji" && x.id !== it.id && !others.includes(x) && (fr ? x.fr !== it.fr : x.ro !== it.ro))).slice(0, 3 - others.length));
+    return { prompt: it.c, jp: true, sub: fr ? "Que veut dire ce kanji ?" : "Comment se lit ce kanji ?", long: fr, opts: shuffle([it, ...others]).map(o => ({ label: fr ? o.fr : o.ro, ok: o.id === it.id })) }; }
+  let others = shuffle(ids.map(id => ITEMS[id]).filter(x => x.script === it.script && x.ro !== it.ro)).slice(0, 3);
+  if (others.length < 3) others = others.concat(shuffle(Object.values(ITEMS).filter(x => x.cat === "kana" && x.script === it.script && x.ro !== it.ro && !others.some(o => o.ro === x.ro))).slice(0, 3 - others.length));
+  const rev = Math.random() < .5;
+  return rev ? { prompt: it.ro, sub: "Quel caractère fait ce son ?", speak: it.c, opts: shuffle([it, ...others]).map(o => ({ label: o.c, ok: o.id === it.id, jp: true })) }
+    : { prompt: it.c, jp: true, sub: "Quel son ?", opts: shuffle([it, ...others]).map(o => ({ label: o.ro, ok: o.id === it.id })) };
+}
+function startExpress(mode) {
+  clearInterval(xpT); const st = rw().st;
+  xp = { mode, pool: xpPool(mode), end: now() + XP_MS, ok: 0, n: 0, combo: 0, best: st[mode === "kanji" ? "kjBest" : "kxBest"] || 0, done: false, lock: 0 };
+  xp.q = xpQ(); view = "roles"; role = null; render(); window.scrollTo(0, 0);
+  xpT = setInterval(() => { if (!xp || xp.done) { clearInterval(xpT); return; } const left = xp.end - now();
+    const el = $("xptime"); if (el) { el.textContent = Math.max(0, Math.ceil(left / 1000)); el.classList.toggle("low", left < 10000); }
+    const bar = $("xpbar"); if (bar) bar.style.width = Math.max(0, 100 * left / XP_MS) + "%"; if (left <= 0) xpEnd(); }, 100);
+}
+function xpPick(i, btn) {
+  if (!xp || xp.done || now() < xp.lock) return; const o = xp.q.opts[i]; if (!o) return; xp.n++;
+  if (o.ok) { xp.ok++; xp.combo++; sfx(xp.combo % 10 === 0 ? "combo" : "ok"); burst(btn, true); btn && btn.classList.add("ok"); }
+  else { xp.combo = 0; xp.end -= 2000; sfx("ko"); if (btn) btn.classList.add("ko"); document.querySelectorAll(".xopt").forEach((b, k) => { if (xp.q.opts[k].ok) b.classList.add("ok"); });
+    const t = $("xptime"); if (t) { t.classList.remove("pen"); void t.offsetWidth; t.classList.add("pen"); } }
+  const sc = $("xpsc"); if (sc) sc.textContent = xp.ok;
+  const wait = o.ok ? 140 : 650; xp.lock = now() + wait;
+  setTimeout(() => { if (!xp || xp.done) return; xp.q = xpQ(); render(); }, wait);
+}
+function xpEnd() {
+  if (!xp || xp.done) return; xp.done = true; clearInterval(xpT);
+  const st = rw().st, key = xp.mode === "kanji" ? "kjBest" : "kxBest", score = xp.ok, acc = xp.n ? xp.ok / xp.n : 0, T = XP_TIERS[xp.mode];
+  let tier = -1; T.forEach((v, i) => { if (score >= v) tier = i; });
+  const prev = st[key] || 0; if (score > prev) st[key] = score; xp.record = score > prev && prev > 0;
+  const d = boxDay(); d.runs = (d.runs || 0) + 1; let box = null, why = "";
+  if (tier < 0) why = "Encore " + (T[0] - score) + " bonne(s) réponse(s) pour le palier Bronze.";
+  else if (acc < .7) why = "Précision sous 70 % : pas de boîte cette fois. Prends le temps de viser juste !";
+  else if (d.runs > 3) why = "Les boîtes comptent sur tes 3 premières parties du jour.";
+  else if ((d.gb || 0) >= 2) why = "Tu as déjà gagné tes 2 boîtes du jour avec Kana Express.";
+  else { let t = tier; if (xp.record) t = Math.max(t, 1); box = XP_BOX[t]; if (box === "laque") { if ((d.lq || 0) >= 1) box = "bambou"; else d.lq = 1; } d.gb = (d.gb || 0) + 1; grantBox(box, null, true); }
+  xp.tier = tier; xp.box = box; xp.acc = acc; xp.why = why;
+  track("kx"); track("kxok", score); sfx("done"); if (tier >= 2) setTimeout(confetti, 300);
+  persist(); rwCheck(); if (CLOUD) cloudSync(); render();
+}
+function quitExpress() { clearInterval(xpT); xp = null; }
+function viewExpress() {
+  const T = XP_TIERS[xp.mode], wrap = h("div", { class: "xp" });
+  if (xp.done) {
+    const B = xp.box ? BOXES[xp.box] : null;
+    wrap.append(h("div", { class: "done", style: "padding-top:8px" },
+      h("div", { class: "stamp jp stamp-drop" }, xp.tier >= 0 ? XP_K[xp.tier] : "可"),
+      h("h2", {}, "Kana Express · " + (xp.mode === "kanji" ? "kanji" : "kana")),
+      h("div", { class: "exam-pts" }, h("b", {}, xp.ok), h("span", {}, " bonnes réponses")),
+      h("p", { class: "muted" }, "Précision " + Math.round(100 * xp.acc) + " % · " + (xp.tier >= 0 ? "palier " + XP_NM[xp.tier] : "pas encore de palier") + " · record : " + Math.max(xp.best, xp.ok) + (xp.record ? " (nouveau record !)" : "")),
+      B ? h("div", { class: "rev", style: "max-width:420px;margin:10px auto;text-align:left" }, h("div", { class: "bxg jp", style: "--bc:" + B.col }, B.k), h("div", { class: "tx" }, h("b", {}, "+1 " + B.nm), h("small", {}, "À ouvrir dans Missions › Boîtes")), h("button", { class: "btn small", onclick: () => { quitExpress(); mTab = "boites"; go("missions"); } }, "Ouvrir"))
+        : h("p", { class: "hint" }, xp.why),
+      h("p", { class: "hint" }, "Paliers : " + T.map((v, i) => XP_NM[i] + " " + v).join(" · ") + ". Bronze donne une boîte en bois, Argent et Or une boîte en bambou, Arc-en-ciel une boîte en laque."),
+      h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
+        h("button", { class: "btn", onclick: () => startExpress(xp.mode) }, "Rejouer"),
+        h("button", { class: "btn ghost", onclick: () => { quitExpress(); render(); } }, "Retour à la pratique"))));
+    return wrap;
+  }
+  const q = xp.q, left = Math.max(0, xp.end - now()), next = T.find(v => v > xp.ok);
+  wrap.append(
+    h("div", { class: "sbar" }, h("button", { class: "back", style: "margin:0", onclick: () => { quitExpress(); render(); } }, "✕ Arrêter"),
+      h("div", { class: "xp-mid" }, h("span", { class: "xp-time" + (left < 10000 ? " low" : ""), id: "xptime" }, Math.ceil(left / 1000)), h("small", {}, "s")),
+      h("span", { class: "gsc" }, h("span", { id: "xpsc" }, xp.ok), " ✓")),
+    h("div", { class: "xp-bar" }, h("i", { id: "xpbar", style: "width:" + (100 * left / XP_MS) + "%" })),
+    h("p", { class: "hint", style: "text-align:center;margin:6px 0 0" }, next ? "Prochain palier : " + next + " · record " + xp.best : "Palier Arc-en-ciel atteint ! Record " + xp.best),
+    h("div", { class: "card cs-" + (owns("card", look().card) ? look().card : "base"), style: "margin-top:10px" },
+      h("div", { class: "kind" }, q.sub),
+      h("div", { class: "prompt" + (q.jp ? " jp" : "") + (q.prompt.length > 3 && !q.jp ? " mid" : "") }, q.prompt),
+      q.speak ? h("div", { class: "sub" }, audioBtn(q.speak)) : null,
+      h("div", { class: "choices" + (q.long ? " one" : "") }, q.opts.map((o, i) => h("button", { class: "choice xopt" + (o.jp ? " jp" : "") + (q.long ? " long" : ""), onclick: e => xpPick(i, e.currentTarget) }, h("span", { class: "k" }, i + 1), h("span", {}, o.label))))),
+    h("p", { class: "hint", style: "text-align:center" }, "Une erreur coûte 2 secondes. Touches 1 à 4 sur ordinateur."));
+  return wrap;
+}
+function xpBlock() {
+  const st = rw().st, d = boxDay();
+  return [h("div", { class: "sec-h" }, h("h2", {}, "Kana Express"), h("span", { class: "muted", style: "font-size:13px" }, "1 minute chrono")),
+    h("div", { class: "xpcard" },
+      h("div", { class: "xpk jp", "aria-hidden": "true" }, "速"),
+      h("div", { class: "tx" }, h("b", {}, "Le plus de bonnes réponses en 60 secondes"),
+        h("small", {}, "Une erreur coûte 2 s. Bronze, Argent, Or et Arc-en-ciel donnent des boîtes (2 par jour max). Records : kana " + (st.kxBest || 0) + " · kanji " + (st.kjBest || 0) + " · boîtes du jour " + Math.min(2, d.gb || 0) + "/2")),
+      h("div", { class: "xpgo" }, h("button", { class: "btn small", onclick: () => startExpress("kana") }, "かな Kana"), h("button", { class: "btn small ghost", onclick: () => startExpress("kanji") }, "漢字 Kanji")))];
+}
 function viewRoles() {
+  if (xp) return viewExpress();
   if (!role) {
     return h("div", {},
       h("header", { class: "top", style: "margin-bottom:0" }, h("div", {}, h("h1", { style: "font-size:24px" }, "Pratique"), h("small", { class: "muted" }, "Tout ce que tu peux rejouer, quand tu veux"))),
+      ...xpBlock(),
       ...revBlock(),
       h("div", { class: "sec-h" }, h("h2", {}, "Scènes"), romajiToggle()),
       h("p", { class: "hint", style: "margin-top:2px" }, "Des situations que tu vas vraiment vivre. « S’entraîner » : traductions et rōmaji disponibles, erreurs permises. « Examen » : sans aide, une seule chance par réplique, 80/100 pour réussir."),
@@ -1555,14 +1739,16 @@ async function claudeTurn(userText) {
 /* ---------- récompenses, missions, réglages ---------- */
 // Économie : ~¥450 par jour régulier (3 missions + omikuji), ¥900 par semaine. Environ ¥40 000 d'ici le départ :
 // assez pour une bonne partie de la boutique, pas tout. Les pièces les plus belles s'obtiennent par les exploits.
+const RAR = { c: { nm: "Commun", col: "#8A94A6" }, r: { nm: "Rare", col: "#3A7BD5" }, e: { nm: "Épique", col: "#9B4DCA" }, l: { nm: "Légendaire", col: "#D4A017" } };
+// Une seule source par objet : "shop" (yens), "ach" (exploit, exclusif) ou "box" (boîtes, avec une rareté r). Ce qui est déjà possédé reste possédé.
 const FRAMES = [
   { id: "none", nm: "Sans cadre", src: "free" },
-  { id: "bois", nm: "Cyprès", src: "shop", price: 300 },
-  { id: "torii", nm: "Torii vermillon", src: "shop", price: 900, orn: "⛩️" },
-  { id: "momiji", nm: "Momiji", src: "shop", price: 1200, orn: "🍁" },
+  { id: "bois", nm: "Cyprès", src: "shop", price: 400 },
+  { id: "torii", nm: "Torii vermillon", src: "shop", price: 1200, orn: "⛩️" },
+  { id: "momiji", nm: "Momiji", src: "shop", price: 1500, orn: "🍁" },
+  { id: "omikuji", nm: "Ruban d’omikuji", src: "shop", price: 1500 },
   { id: "vague", nm: "La Grande Vague", src: "shop", price: 1800, orn: "🌊" },
-  { id: "omikuji", nm: "Ruban d’omikuji", src: "shop", price: 2400 },
-  { id: "neon", nm: "Néon", src: "shop", price: 3500, spin: true },
+  { id: "neon", nm: "Néon", src: "shop", price: 4000, spin: true },
   { id: "bambou", nm: "Bambou", src: "ach", ach: "streak7", orn: "🎋" },
   { id: "sakura", nm: "Sakura", src: "ach", ach: "hira100", orn: "🌸" },
   { id: "cerf", nm: "Cerf de Nara", src: "ach", ach: "st1", orn: "🦌" },
@@ -1573,11 +1759,11 @@ const FRAMES = [
   { id: "couronne", nm: "Couronne", src: "ach", ach: "lead", spin: true, orn: "👑" }];
 const TITLES = [
   { id: "touriste", nm: "Touriste perdu", src: "free" },
-  { id: "curieux", nm: "Voyageur curieux", src: "shop", price: 300 },
-  { id: "ramen", nm: "Gourmand de ramen", src: "shop", price: 500 },
-  { id: "matcha", nm: "Amateur de matcha", src: "shop", price: 500 },
-  { id: "konbini", nm: "Fan de konbini", src: "shop", price: 500 },
-  { id: "tokyoite", nm: "Futur Tokyoïte", src: "shop", price: 900 },
+  { id: "curieux", nm: "Voyageur curieux", src: "ach", ach: "lex30" },
+  { id: "ramen", nm: "Gourmand de ramen", src: "ach", ach: "duel1" },
+  { id: "matcha", nm: "Amateur de matcha", src: "ach", ach: "rev1" },
+  { id: "konbini", nm: "Fan de konbini", src: "ach", ach: "box1" },
+  { id: "tokyoite", nm: "Futur Tokyoïte", src: "ach", ach: "kx20" },
   { id: "bienparti", nm: "Bien parti", src: "ach", ach: "streak3" },
   { id: "habitue", nm: "Habitué", src: "ach", ach: "s10" },
   { id: "sensei", nm: "Sensei", src: "ach", ach: "s100" },
@@ -1589,31 +1775,142 @@ const TITLES = [
   { id: "sansfaute", nm: "Sans faute", src: "ach", ach: "perfect" },
   { id: "inarretable", nm: "Inarrêtable", src: "ach", ach: "combo20" },
   { id: "impro", nm: "Roi de l’impro", src: "ach", ach: "scenes4" },
+  { id: "sansfilet", nm: "Sans filet", src: "ach", ach: "exam1" },
+  { id: "embarque", nm: "Prêt à embarquer", src: "ach", ach: "examall" },
   { id: "hibou", nm: "Oiseau de nuit", src: "ach", ach: "night" },
   { id: "leve", nm: "Lève-tôt", src: "ach", ach: "morning" },
   { id: "beni", nm: "Béni des dieux", src: "ach", ach: "daikichi" },
   { id: "champion", nm: "Tête de classement", src: "ach", ach: "lead" },
-  { id: "legende", nm: "Légende de Tokyo", src: "ach", ach: "st5" }];
+  { id: "legende", nm: "Légende de Tokyo", src: "ach", ach: "st5" },
+  { id: "humain", nm: "Shinkansen humain", src: "ach", ach: "kx40" },
+  { id: "oeil", nm: "Œil de kanji", src: "ach", ach: "kj18" },
+  { id: "duelliste", nm: "Duelliste", src: "ach", ach: "clash5" },
+  { id: "champjour", nm: "Champion du jour", src: "ach", ach: "champ" },
+  { id: "parfait", nm: "Dix sur dix", src: "ach", ach: "duel10" },
+  { id: "elephant", nm: "Mémoire d’éléphant", src: "ach", ach: "rev85" },
+  { id: "collec", nm: "Collectionneur", src: "ach", ach: "box50" },
+  { id: "otaku", nm: "Otaku du gashapon", src: "ach", ach: "stk20" },
+  { id: "gashamaster", nm: "Maître du gashapon", src: "ach", ach: "stkall" }];
 const ANIMS = [
   { id: "none", nm: "Aucune", src: "free" },
-  { id: "neon", nm: "Néon pulsé", src: "shop", price: 2000 },
-  { id: "onsen", nm: "Vapeur d’onsen", src: "shop", price: 2500 },
-  { id: "sakura", nm: "Pétales de sakura", src: "shop", price: 3000, sym: "🌸" },
-  { id: "hanabi", nm: "Hanabi", src: "shop", price: 4500 },
+  { id: "yuki", nm: "Neige", src: "box", r: "c", base: "sakura", sym: "❄" },
+  { id: "hoshi", nm: "Étoiles filantes", src: "box", r: "c", base: "sakura", sym: "⭐" },
+  { id: "furin", nm: "Fūrin", src: "box", r: "c", base: "lanterne", sym: "🎐" },
+  { id: "onsen", nm: "Vapeur d’onsen", src: "box", r: "r" },
+  { id: "momiji", nm: "Feuilles d’érable", src: "box", r: "r", base: "sakura", sym: "🍁" },
+  { id: "koinobori", nm: "Koinobori", src: "box", r: "r", base: "lanterne", sym: "🎏" },
+  { id: "neon", nm: "Néon pulsé", src: "box", r: "e" },
+  { id: "sakura", nm: "Pétales de sakura", src: "box", r: "e", sym: "🌸" },
+  { id: "hanabi", nm: "Hanabi", src: "box", r: "l" },
   { id: "hotaru", nm: "Lucioles", src: "ach", ach: "streak14" },
   { id: "lanterne", nm: "Lanternes", src: "ach", ach: "omi10", sym: "🏮" },
   { id: "eclair", nm: "Éclair du shinkansen", src: "ach", ach: "kanjiAll" }];
 const PALS = [
   { id: "jr", nm: "JR classique", src: "free", c: ["#EEF1F5", "#2B3A8C"] },
-  { id: "sakura", nm: "Sakura", src: "shop", price: 2000, c: ["#FBF0F3", "#B8235A"] },
-  { id: "matcha", nm: "Matcha", src: "shop", price: 2000, c: ["#EEF3E6", "#4A7424"] },
-  { id: "indigo", nm: "Indigo Hokusai", src: "shop", price: 2500, c: ["#ECEFF6", "#1F3A68"] },
-  { id: "fuji", nm: "Ciel de Fuji", src: "shop", price: 2500, c: ["#E9F2FA", "#1F5FB0"] },
-  { id: "or", nm: "Or impérial", src: "shop", price: 6000, c: ["#F6F1E2", "#8A650C"] },
+  { id: "sakura", nm: "Sakura", src: "shop", price: 3500, c: ["#FBF0F3", "#B8235A"] },
+  { id: "matcha", nm: "Matcha", src: "shop", price: 3500, c: ["#EEF3E6", "#4A7424"] },
+  { id: "indigo", nm: "Indigo Hokusai", src: "shop", price: 4500, c: ["#ECEFF6", "#1F3A68"] },
+  { id: "fuji", nm: "Ciel de Fuji", src: "shop", price: 4500, c: ["#E9F2FA", "#1F5FB0"] },
+  { id: "or", nm: "Or impérial", src: "shop", price: 10000, c: ["#F6F1E2", "#8A650C"] },
   { id: "kyoto", nm: "Laque de Kyoto", src: "ach", ach: "st2", c: ["#F4ECDF", "#9A2A1C"] },
   { id: "shibuya", nm: "Néon de Shibuya", src: "ach", ach: "st5", c: ["#0A0614", "#FF3FD8"] }];
-const KINDS = { frame: FRAMES, title: TITLES, anim: ANIMS, theme: PALS };
-const KIND_NM = { frame: "Cadre", title: "Titre", anim: "Animation", theme: "Thème" };
+const PINS = [{ id: "none", nm: "Aucun", src: "free", e: "" }].concat([
+  ["onigiri", "Onigiri", "🍙", "c"], ["dango", "Dango", "🍡", "c"], ["the", "Thé vert", "🍵", "c"], ["furin", "Fūrin", "🎐", "c"], ["lanterne", "Lanterne", "🏮", "c"], ["sushi", "Sushi", "🍣", "c"], ["koi", "Koinobori", "🎏", "c"], ["bento", "Bentō", "🍱", "c"],
+  ["kitsune", "Kitsune", "🦊", "r"], ["tanuki", "Tanuki", "🦝", "r"], ["tengu", "Tengu", "👺", "r"], ["oni", "Oni", "👹", "r"], ["hanafuda", "Hanafuda", "🎴", "r"], ["tsukimi", "Tsukimi", "🎑", "r"], ["naruto", "Naruto", "🍥", "r"], ["shiba", "Shiba", "🐕", "r"],
+  ["dragon", "Dragon", "🐉", "e"], ["fuji", "Fuji", "🗻", "e"], ["torii", "Torii", "⛩️", "e"], ["chateau", "Château", "🏯", "e"], ["sakura", "Sakura", "🌸", "e"],
+  ["maneki", "Maneki-neko d’or", "🐈", "l"], ["hina", "Poupées hina", "🎎", "l"]].map(([id, nm, e, r]) => ({ id, nm, e, r, src: "box" })));
+const BURSTS = [
+  { id: "base", nm: "Étincelles", src: "free" },
+  { id: "bulles", nm: "Bulles", src: "box", r: "c", col: ["#7FC8F8", "#BDE4FF", "#5AA9E6"] },
+  { id: "confettis", nm: "Confettis", src: "box", r: "c", col: ["#FF5E7E", "#FFC53D", "#47C1FF", "#7BD389"], sq: true },
+  { id: "etoiles", nm: "Étoiles", src: "box", r: "c", sym: ["✦", "✧"] },
+  { id: "sakura", nm: "Pétales de sakura", src: "box", r: "r", sym: ["🌸", "❀"] },
+  { id: "momiji", nm: "Momiji", src: "box", r: "r", sym: ["🍁", "🍂"] },
+  { id: "pluie", nm: "Pluie de juin", src: "box", r: "r", sym: ["💧"] },
+  { id: "flocons", nm: "Flocons", src: "box", r: "r", sym: ["❄", "❅"] },
+  { id: "hanabi", nm: "Hanabi", src: "box", r: "e", col: ["#FF5E7E", "#FFC53D", "#47C1FF", "#B388FF", "#7BD389"], big: true },
+  { id: "sumie", nm: "Encre sumi-e", src: "box", r: "e", col: ["#111", "#333", "#555"], big: true, blob: true },
+  { id: "tadashii", nm: "Kanji 正", src: "box", r: "e", sym: ["正", "〇"] },
+  { id: "kinpaku", nm: "Feuille d’or", src: "box", r: "l", sym: ["✨"], col: ["#F7E08A", "#C9A227", "#FFF3C2"], big: true },
+  { id: "dragon", nm: "Souffle du dragon", src: "box", r: "l", sym: ["🐉", "🔥", "🔥"], big: true }];
+const TRAILS = [
+  { id: "none", nm: "Aucun", src: "free", sym: "" },
+  { id: "vapeur", nm: "Vapeur", src: "box", r: "c", sym: "💨" },
+  { id: "notes", nm: "Mélodie de quai", src: "box", r: "c", sym: "♪" },
+  { id: "etincelles", nm: "Étincelles", src: "box", r: "r", sym: "✨" },
+  { id: "petales", nm: "Pétales", src: "box", r: "r", sym: "🌸" },
+  { id: "arc", nm: "Arc-en-ciel", src: "box", r: "e", sym: "🌈" },
+  { id: "flammes", nm: "Flammes", src: "box", r: "l", sym: "🔥" }];
+const STICKERS = [
+  ["onigiri", "Onigiri", "🍙", "c", "Gourmandises"], ["dango", "Dango", "🍡", "c", "Gourmandises"], ["ramen", "Ramen", "🍜", "c", "Gourmandises"], ["sushi", "Sushi", "🍣", "c", "Gourmandises"], ["ekiben", "Ekiben", "🍱", "c", "Gourmandises"], ["tempura", "Tempura", "🍤", "c", "Gourmandises"],
+  ["takoyaki", "Takoyaki", "🐙", "r", "Gourmandises"], ["oden", "Oden", "🍢", "r", "Gourmandises"], ["matcha", "Matcha", "🍵", "r", "Gourmandises"], ["crabe", "Crabe de Kanazawa", "🦀", "e", "Gourmandises"], ["fugu", "Fugu", "🐡", "l", "Gourmandises"],
+  ["shiba", "Shiba", "🐕", "c", "Animaux"], ["neko", "Chat", "🐈", "c", "Animaux"], ["cerf", "Cerf de Nara", "🦌", "c", "Animaux"], ["saru", "Macaque des neiges", "🐒", "c", "Animaux"],
+  ["kitsune", "Kitsune", "🦊", "r", "Animaux"], ["tanuki", "Tanuki", "🦝", "r", "Animaux"], ["koi", "Carpe koï", "🐟", "r", "Animaux"], ["grue", "Grue", "🦢", "e", "Animaux"], ["ryu", "Dragon", "🐉", "l", "Animaux"],
+  ["torii", "Torii", "⛩️", "c", "Lieux"], ["osakajo", "Château d’Osaka", "🏯", "c", "Lieux"], ["tower", "Tokyo Tower", "🗼", "c", "Lieux"],
+  ["fujisan", "Fuji-san", "🗻", "r", "Lieux"], ["onsen", "Onsen", "♨️", "r", "Lieux"], ["roue", "Grande roue", "🎡", "r", "Lieux"], ["pont", "Rainbow Bridge", "🌉", "e", "Lieux"], ["shinjuku", "Shinjuku la nuit", "🏙️", "e", "Lieux"], ["yoshino", "Cerisiers de Yoshino", "🌸", "l", "Lieux"],
+  ["koinobori", "Koinobori", "🎏", "c", "Fêtes"], ["furin", "Fūrin", "🎐", "c", "Fêtes"], ["chochin", "Chōchin", "🏮", "c", "Fêtes"],
+  ["hanabi", "Hanabi", "🎆", "r", "Fêtes"], ["tanabata", "Tanabata", "🎋", "r", "Fêtes"], ["hina", "Hina matsuri", "🎎", "r", "Fêtes"], ["tsukimi", "Tsukimi", "🎑", "e", "Fêtes"], ["kadomatsu", "Kadomatsu", "🎍", "e", "Fêtes"], ["kimono", "Kimono de fête", "👘", "l", "Fêtes"]
+].map(([id, nm, e, r, set]) => ({ id, nm, e, r, set, src: "box" }));
+const SOUNDS = [
+  { id: "classic", nm: "Classique", src: "free" },
+  { id: "taiko", nm: "Taiko", src: "shop", price: 1200 },
+  { id: "furin", nm: "Fūrin", src: "shop", price: 1200 },
+  { id: "koto", nm: "Koto", src: "shop", price: 1500 },
+  { id: "cloche", nm: "Cloche du temple", src: "shop", price: 1500 },
+  { id: "bit", nm: "Arcade 8-bit", src: "shop", price: 1800 },
+  { id: "quai", nm: "Mélodie de quai", src: "shop", price: 3500 }];
+const PLATES = [
+  { id: "none", nm: "Sans plaque", src: "free" },
+  { id: "ai", nm: "Indigo (ai)", src: "shop", price: 400 },
+  { id: "beni", nm: "Vermillon (beni)", src: "shop", price: 400 },
+  { id: "matsu", nm: "Pin (matsu)", src: "shop", price: 400 },
+  { id: "kogane", nm: "Or (kogane)", src: "shop", price: 1200 },
+  { id: "seigaiha", nm: "Vagues seigaiha", src: "shop", price: 1500 },
+  { id: "ichimatsu", nm: "Damier ichimatsu", src: "shop", price: 1500 },
+  { id: "asanoha", nm: "Feuilles de chanvre", src: "shop", price: 1500 },
+  { id: "sakura", nm: "Sakura", src: "shop", price: 1800 },
+  { id: "yoru", nm: "Néon de nuit", src: "shop", price: 4000 }];
+const LEDS = [
+  { id: "ambre", nm: "LED ambre", src: "free", c: "#FFB21E" },
+  { id: "vert", nm: "LED verte", src: "shop", price: 600, c: "#3DFF7A" },
+  { id: "bleu", nm: "LED bleue", src: "shop", price: 600, c: "#4FC3FF" },
+  { id: "rouge", nm: "LED rouge", src: "shop", price: 600, c: "#FF4D4D" },
+  { id: "blanc", nm: "LED blanche", src: "shop", price: 1200, c: "#F4F4F4" },
+  { id: "volets", nm: "Tableau à volets", src: "shop", price: 3500, c: "#FFFFFF" },
+  { id: "arc", nm: "LED arc-en-ciel", src: "shop", price: 4000, c: "#FF7AD9" }];
+const CARDS = [
+  { id: "base", nm: "Standard", src: "free" },
+  { id: "washi", nm: "Papier washi", src: "shop", price: 1200 },
+  { id: "ardoise", nm: "Ardoise", src: "shop", price: 1200 },
+  { id: "bois", nm: "Planche de cyprès", src: "shop", price: 1500 },
+  { id: "hanafuda", nm: "Hanafuda", src: "shop", price: 3500 },
+  { id: "laque", nm: "Laque et or", src: "shop", price: 4000 }];
+const TRAINS = [
+  { id: "n700", nm: "Shinkansen", src: "free", e: "🚄" },
+  { id: "kintetsu", nm: "Kintetsu de Nara", src: "ach", ach: "st1", e: "🚃" },
+  { id: "hayabusa", nm: "Hayabusa vert", src: "ach", ach: "combo20", e: "🚅", f: "hue-rotate(250deg) saturate(1.6)" },
+  { id: "nuit", nm: "Train de nuit", src: "ach", ach: "streak14", e: "🚂" },
+  { id: "yamanote", nm: "Ligne Yamanote", src: "ach", ach: "s50", e: "🚆", f: "hue-rotate(80deg) saturate(1.4)" },
+  { id: "yellow", nm: "Doctor Yellow", src: "ach", ach: "kx40", e: "🚄", f: "sepia(1) saturate(6) hue-rotate(5deg) brightness(1.05)" },
+  { id: "maglev", nm: "Maglev Chūō", src: "ach", ach: "st5", e: "🚝" }];
+const STAMPS = [
+  { id: "osaka", nm: "Gare d’Osaka", k: "大阪", eki: true, src: "ach", ach: "first" },
+  { id: "nara", nm: "Gare de Nara", k: "奈良", eki: true, src: "ach", ach: "st1" },
+  { id: "kyoto", nm: "Gare de Kyoto", k: "京都", eki: true, src: "ach", ach: "st2" },
+  { id: "kanazawa", nm: "Gare de Kanazawa", k: "金沢", eki: true, src: "ach", ach: "st3" },
+  { id: "fuji", nm: "Gare du Fuji", k: "富士", eki: true, src: "ach", ach: "st4" },
+  { id: "tokyo", nm: "Gare de Tokyo", k: "東京", eki: true, src: "ach", ach: "st5" },
+  { id: "hira", nm: "Sceau des hiragana", k: "平", src: "ach", ach: "hira100" },
+  { id: "kata", nm: "Sceau des katakana", k: "片", src: "ach", ach: "kata100" },
+  { id: "kanji10", nm: "Sceau des premiers kanji", k: "漢", src: "ach", ach: "kanji10" },
+  { id: "kanjiall", nm: "Sceau de tous les kanji", k: "極", src: "ach", ach: "kanjiAll" },
+  { id: "flamme", nm: "Sceau du mois sans pause", k: "炎", src: "ach", ach: "streak30" },
+  { id: "examen", nm: "Sceau du départ", k: "免", src: "ach", ach: "examall" }];
+const KINDS = { theme: PALS, frame: FRAMES, anim: ANIMS, title: TITLES, pin: PINS, burst: BURSTS, sound: SOUNDS, train: TRAINS, trail: TRAILS, plate: PLATES, led: LEDS, card: CARDS, sticker: STICKERS, stamp: STAMPS };
+const KIND_NM = { theme: "Thème", frame: "Cadre", anim: "Animation", title: "Titre", pin: "Porte-bonheur", burst: "Effet de réussite", sound: "Sons", train: "Train", trail: "Sillage", plate: "Plaque de nom", led: "Panneau", card: "Style de carte", sticker: "Autocollant", stamp: "Tampon" };
+const KIND_PL = { theme: "Thèmes", frame: "Cadres", anim: "Animations", title: "Titres", pin: "Porte-bonheur", burst: "Effets", sound: "Sons", train: "Trains", trail: "Sillages", plate: "Plaques", led: "Panneaux", card: "Cartes", sticker: "Album", stamp: "Tampons" };
+const NOEQUIP = { sticker: 1, stamp: 1 };
+const kindOf = (kind, id) => (KINDS[kind] || []).find(x => x.id === id);
 const FREEZE_PRICE = 500;
 
 // Exploits : t(st) renvoie [valeur, objectif] pour la barre de progression.
@@ -1623,9 +1920,9 @@ const kanjiDone = () => ORDER.kanji.filter(id => box(id) >= 4).length;
 const ACH = [
   { id: "first", g: "Régularité", nm: "Premier pas", d: "Termine ta première session", t: st => [st.sessions, 1], yen: 200, k: "初" },
   { id: "streak3", g: "Régularité", nm: "Trois jours", d: "3 jours d’affilée", t: () => [rwStreak(), 3], k: "三" },
-  { id: "streak7", g: "Régularité", nm: "Une semaine", d: "7 jours d’affilée", t: () => [rwStreak(), 7], k: "週" },
+  { id: "streak7", g: "Régularité", nm: "Une semaine", d: "7 jours d’affilée", t: () => [rwStreak(), 7], k: "週", box: "laque" },
   { id: "streak14", g: "Régularité", nm: "Quinze jours", d: "14 jours d’affilée", t: () => [rwStreak(), 14], k: "灯" },
-  { id: "streak30", g: "Régularité", nm: "Un mois", d: "30 jours d’affilée", t: () => [rwStreak(), 30], k: "炎" },
+  { id: "streak30", g: "Régularité", nm: "Un mois", d: "30 jours d’affilée", t: () => [rwStreak(), 30], k: "炎", box: "or" },
   { id: "streak60", g: "Régularité", nm: "Deux mois", d: "60 jours d’affilée", t: () => [rwStreak(), 60], k: "将" },
   { id: "s10", g: "Régularité", nm: "Habitué", d: "10 sessions", t: st => [st.sessions, 10], k: "十" },
   { id: "s50", g: "Régularité", nm: "Abonné JR", d: "50 sessions", t: st => [st.sessions, 50], k: "鉄" },
@@ -1638,7 +1935,7 @@ const ACH = [
   { id: "st2", g: "Trajet", nm: "Arrivée à Kyoto", d: "Atteindre la gare de Kyoto", t: () => [S.station || 0, 2], k: "京" },
   { id: "st3", g: "Trajet", nm: "Arrivée à Kanazawa", d: "Atteindre Kanazawa, la ville de la feuille d’or", t: () => [S.station || 0, 3], k: "金" },
   { id: "st4", g: "Trajet", nm: "Arrivée au Fuji", d: "Atteindre la gare du Fuji", t: () => [S.station || 0, 4], k: "富" },
-  { id: "st5", g: "Trajet", nm: "Arrivée à Tokyo", d: "Atteindre Tokyo, le terminus", t: () => [S.station || 0, 5], k: "東" },
+  { id: "st5", g: "Trajet", nm: "Arrivée à Tokyo", d: "Atteindre Tokyo, le terminus", t: () => [S.station || 0, 5], k: "東", box: "or" },
   { id: "scenes4", g: "Exploits", nm: "Prêt pour le Japon", d: "Réussir les 4 scènes", t: st => [Object.keys(st.sc || {}).length, 4], k: "話" },
   { id: "exam1", g: "Exploits", nm: "Sans filet", d: "Fais 100/100 à un examen de scène", t: st => [Object.values(st.ex || {}).filter(v => v >= 100).length, 1], yen: 300, k: "試" },
   { id: "examall", g: "Exploits", nm: "Bon pour le départ", d: "Réussis les 4 examens de scène (80/100 ou plus)", t: st => [Object.values(st.ex || {}).filter(v => v >= 80).length, 4], yen: 500, k: "免" },
@@ -1647,8 +1944,22 @@ const ACH = [
   { id: "daikichi", g: "Exploits", nm: "Grande chance", d: "Tirer 大吉 à l’omikuji", t: st => [st.daikichi || 0, 1], k: "吉" },
   { id: "omi10", g: "Exploits", nm: "Habitué du temple", d: "Tirer 10 omikuji", t: st => [st.omi || 0, 10], k: "籤" },
   { id: "m30", g: "Exploits", nm: "Missionnaire", d: "Valider 30 missions", t: st => [st.missions || 0, 30], yen: 1000, k: "務" },
+  { id: "lex30", g: "Exploits", nm: "Oreille fine", d: "Écoute 30 caractères dans le Lexique", t: st => [st.lex || 0, 30], k: "耳" },
+  { id: "rev1", g: "Exploits", nm: "Bonne mémoire", d: "Termine une révision", t: st => [st.revs || 0, 1], k: "復" },
+  { id: "rev85", g: "Exploits", nm: "Mémoire d’éléphant", d: "Fais 85/100 ou plus à une révision de la semaine", t: st => [st.rev85 || 0, 85], k: "憶" },
+  { id: "kx20", g: "Kana Express", nm: "Express", d: "20 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 20], k: "速" },
+  { id: "kx40", g: "Kana Express", nm: "Shinkansen humain", d: "40 bonnes réponses en une partie de Kana Express (kana)", t: st => [st.kxBest || 0, 40], k: "光" },
+  { id: "kj18", g: "Kana Express", nm: "Œil de kanji", d: "18 bonnes réponses en une partie de Kana Express (kanji)", t: st => [st.kjBest || 0, 18], k: "眼" },
+  { id: "box1", g: "Boîtes", nm: "Premier cadeau", d: "Ouvre ta première boîte", t: st => [st.boxes || 0, 1], k: "箱" },
+  { id: "box50", g: "Boîtes", nm: "Collectionneur", d: "Ouvre 50 boîtes", t: st => [st.boxes || 0, 50], k: "蔵" },
+  { id: "stk20", g: "Boîtes", nm: "Otaku du gashapon", d: "Colle 20 autocollants dans ton album", t: () => [STICKERS.filter(x => owns("sticker", x.id)).length, 20], k: "貼" },
+  { id: "stkall", g: "Boîtes", nm: "Album complet", d: "Complète tout l’album d’autocollants", t: () => [STICKERS.filter(x => owns("sticker", x.id)).length, STICKERS.length], k: "全" },
   { id: "photo", g: "Exploits", nm: "Une tête connue", d: "Ajouter ta photo de profil", t: () => [S.look && S.look.photo ? 1 : 0, 1], yen: 200, k: "顔" },
   { id: "group", g: "Groupe", nm: "Esprit d’équipe", d: "Rejoindre un groupe", t: () => [S.grp && S.grp.code ? 1 : 0, 1], yen: 300, k: "組", cloud: true },
+  { id: "duel1", g: "Groupe", nm: "Premier défi", d: "Joue ton premier défi du jour", t: st => [st.duels || 0, 1], k: "挑", cloud: true },
+  { id: "duel10", g: "Groupe", nm: "Dix sur dix", d: "10 bonnes réponses sur 10 au défi du jour", t: st => [st.duel10 || 0, 1], k: "満", cloud: true },
+  { id: "champ", g: "Groupe", nm: "Champion du jour", d: "Fais le meilleur score d’un défi du jour (2 joueurs min.)", t: st => [st.champ || 0, 1], k: "勝", cloud: true },
+  { id: "clash5", g: "Groupe", nm: "Duelliste", d: "Gagne 5 clashs", t: st => [st.clashW || 0, 5], k: "戦", cloud: true },
   { id: "lead", g: "Groupe", nm: "En tête", d: "Être 1er du classement de la semaine (2 joueurs min.)", t: st => [st.lead || 0, 1], k: "冠", cloud: true },
   { id: "night", g: "Secrets", nm: "Oiseau de nuit", d: "Une session après 22 h", t: st => [st.night || 0, 1], k: "夜", secret: true },
   { id: "morning", g: "Secrets", nm: "Lève-tôt", d: "Une session avant 8 h", t: st => [st.morning || 0, 1], k: "朝", secret: true }];
@@ -1662,18 +1973,29 @@ const DAILY = [
   { id: "combo5", nm: "Enchaîne 5 bonnes réponses", goal: 5, ev: "combo", max: true },
   { id: "review8", nm: "Revois 8 cartes des jours précédents", goal: 8, ev: "review" },
   { id: "scene", nm: "Réussis une scène (même déjà jouée)", goal: 1, ev: "scene" },
-  { id: "lex", nm: "Écoute 5 caractères dans le Lexique", goal: 5, ev: "lex" }];
+  { id: "lex", nm: "Écoute 5 caractères dans le Lexique", goal: 5, ev: "lex" },
+  { id: "kx", nm: "Joue une partie de Kana Express", goal: 1, ev: "kx" },
+  { id: "kx15", nm: "Fais 15 bonnes réponses en une partie de Kana Express", goal: 15, ev: "kxok", max: true },
+  { id: "revmix", nm: "Fais une révision mélangée", goal: 1, ev: "revmix", need: () => revPool("mix").length >= 8 },
+  { id: "duel", nm: "Joue le défi du jour du groupe", goal: 1, ev: "duel", need: () => inGroup() },
+  { id: "box", nm: "Ouvre une boîte", goal: 1, ev: "box" }];
+const inGroup = () => CLOUD && typeof linked === "function" && linked() && !!(S.grp && S.grp.code);
 const WEEKLY = [
   { id: "w5", nm: "Fais 5 sessions cette semaine", goal: 5, ev: "session" },
   { id: "wok", nm: "Donne 100 bonnes réponses", goal: 100, ev: "ok" },
   { id: "wnew", nm: "Découvre 20 nouveautés", goal: 20, ev: "new" },
   { id: "wset", nm: "Termine 4 fois toutes tes missions du jour", goal: 4, ev: "dayset" },
-  { id: "wsc", nm: "Réussis 2 scènes", goal: 2, ev: "scene" }];
+  { id: "wsc", nm: "Réussis 2 scènes", goal: 2, ev: "scene" },
+  { id: "wkx", nm: "Joue 5 parties de Kana Express", goal: 5, ev: "kx" },
+  { id: "wrev", nm: "Fais la révision de la semaine (samedi ou dimanche)", goal: 1, ev: "revweek" },
+  { id: "wexam", nm: "Réussis un examen de scène (80/100)", goal: 1, ev: "exam" },
+  { id: "wduel", nm: "Joue 4 défis du jour", goal: 4, ev: "duel", need: () => inGroup() },
+  { id: "wclash", nm: "Gagne 2 clashs", goal: 2, ev: "clashw", need: () => inGroup() }];
 const D_YEN = 100, W_YEN = 300;
 const OMI = [["大吉", "daikichi", "Grande chance", 300, 8], ["中吉", "chūkichi", "Chance moyenne", 200, 17], ["小吉", "shōkichi", "Petite chance", 150, 25], ["吉", "kichi", "Chance", 120, 30], ["末吉", "suekichi", "Chance à venir", 100, 20]];
 
 const blankRw = () => ({ earn: {}, spent: {}, fb: {}, fu: {}, own: {}, ach: {}, st: { sessions: 0, sc: {}, ex: {}, comboMax: 0, perfect: 0, omi: 0, daikichi: 0, missions: 0 }, day: null, wk: null });
-const blankLook = () => ({ frame: "none", title: "touriste", anim: "none", theme: "jr", mode: "auto", photo: "" });
+const blankLook = () => ({ frame: "none", title: "touriste", anim: "none", theme: "jr", mode: "auto", photo: "", pin: "none", burst: "base", sound: "classic", train: "n700", trail: "none", plate: "none", led: "ambre", card: "base" });
 function rw() { if (!S.rw) S.rw = blankRw(); const r = S.rw; if (!r.st) r.st = blankRw().st; if (!r.own) r.own = {}; if (!r.ach) r.ach = {};
   if (typeof r.yen === "number") { if (r.yen) r.earn = Object.assign({}, r.earn, { legacy: Math.max((r.earn || {}).legacy || 0, r.yen) }); delete r.yen; }
   if (typeof r.freeze === "number") { if (r.freeze) r.fb = Object.assign({}, r.fb, { legacy: Math.max((r.fb || {}).legacy || 0, r.freeze) }); delete r.freeze; }
@@ -1699,7 +2021,7 @@ function rwDay() {
   const r = rw(), k = todayKey();
   if (!r.day || r.day.k !== k) {
     const rnd = seeded(hashStr(k + ((prof() && prof().uid) || P.cur || "")));
-    const pool = DAILY.filter(m => m.id !== "session" && (m.id !== "review8" || dueIds().length >= 8));
+    const pool = DAILY.filter(m => m.id !== "session" && (m.id !== "review8" || dueIds().length >= 8) && (!m.need || m.need()));
     const pickd = []; while (pickd.length < 2 && pool.length) pickd.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0].id);
     r.day = { k, ids: ["session"].concat(pickd), p: {}, c: {}, omi: null };
   }
@@ -1713,7 +2035,7 @@ function rwDay() {
 function rwWeek() {
   const r = rw(), k = weekKeyOf();
   if (!r.wk || r.wk.k !== k) {
-    const rnd = seeded(hashStr("w" + k + ((prof() && prof().uid) || P.cur || ""))), pool = WEEKLY.filter(m => m.id !== "w5"), pickd = [];
+    const rnd = seeded(hashStr("w" + k + ((prof() && prof().uid) || P.cur || ""))), pool = WEEKLY.filter(m => m.id !== "w5" && (!m.need || m.need())), pickd = [];
     while (pickd.length < 2) pickd.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0].id);
     r.wk = { k, ids: ["w5"].concat(pickd), p: {}, c: {} };
   }
@@ -1733,7 +2055,87 @@ const claimable = () => { if (!P.cur) return 0; const d = rwDay(), w = rwWeek();
   d.ids.forEach(id => { if ((d.p[id] || 0) >= mDef(id).goal && !d.c[id]) n++; });
   w.ids.forEach(id => { if ((w.p[id] || 0) >= mDef(id).goal && !w.c[id]) n++; });
   if (d.ids.every(id => d.c[id]) && !d.omi) n++;
-  return n; };
+  if (!boxDay().free) n++;
+  return n + boxTotal(); };
+/* ---------- boîtes (coffres) : 4 raretés, pitié, jamais de doublon ---------- */
+const BOXES = {
+  bois: { k: "木", nm: "Boîte en bois", odds: { c: 65, r: 27, e: 7, l: 1 }, price: 350, col: "#B07A40" },
+  bambou: { k: "竹", nm: "Boîte en bambou", odds: { c: 0, r: 70, e: 25, l: 5 }, price: 1000, col: "#5E9E3A" },
+  laque: { k: "漆", nm: "Boîte en laque", odds: { c: 0, r: 0, e: 85, l: 15 }, price: 2500, col: "#9A2A1C" },
+  or: { k: "金", nm: "Boîte en or", odds: { c: 0, r: 0, e: 0, l: 100 }, col: "#C9A227" } };
+const BOX_ORDER = ["or", "laque", "bambou", "bois"], RORD = ["c", "r", "e", "l"];
+const FRAG = { c: 1, r: 3, e: 8, l: 25 }, FRAG_COST = { c: 10, r: 30, e: 80, l: 250 };
+const PITY_E = 10, PITY_L = 30;
+const BOX_POOL = () => Object.entries(KINDS).flatMap(([kind, L]) => L.filter(x => x.src === "box").map(x => ({ kind, x })));
+const nMap = m => sumMap(m);
+function boxCount(t) { const r = rw(); return Math.max(0, nMap((r.bx || {})[t]) - nMap((r.bo || {})[t])); }
+const boxTotal = () => BOX_ORDER.reduce((a, t) => a + boxCount(t), 0);
+function frags() { const r = rw(); return Math.max(0, nMap(r.fr) - nMap(r.fs)); }
+function bumpNest(key, t, n) { const r = rw(); r[key] = Object.assign({}, r[key]); r[key][t] = Object.assign({}, r[key][t]); r[key][t][DEV] = (r[key][t][DEV] || 0) + n; }
+function boxDay() { const r = rw(), k = todayKey(); if (!r.bd || r.bd.k !== k) r.bd = { k, free: 0, lesson: 0, runs: 0, gb: 0, lq: 0 }; return r.bd; }
+function grantBox(t, why, quiet) { bumpNest("bx", t, 1); persist(); if (!quiet) toast(BOXES[t].k + " " + BOXES[t].nm + " gagnée" + (why ? " : " + why : "") + " !"); renderNav(); }
+function claimFreeBox() { const d = boxDay(); if (d.free) return; d.free = 1; grantBox("bois", "ta boîte du jour"); if (CLOUD) cloudSync(); render(); }
+function pickReward(t) {
+  const st = rw().st, odds = BOXES[t].odds; let roll = Math.random() * 100, rar = "c", acc = 0;
+  for (const k of RORD) { acc += odds[k] || 0; if (roll < acc) { rar = k; break; } }
+  const pE = (st.pE || 0) + 1, pL = (st.pL || 0) + 1, firstL = (st.boxes || 0) === 9 && !BOX_POOL().some(({ kind, x }) => x.r === "l" && owns(kind, x.id));
+  const forced = pL >= PITY_L || firstL ? "l" : (pE >= PITY_E && (rar === "c" || rar === "r")) ? "e" : null;
+  if (forced) rar = forced;
+  const missing = r2 => BOX_POOL().filter(({ kind, x }) => x.r === r2 && !owns(kind, x.id));
+  let got = null, frag = 0, pool = missing(rar);
+  if (!pool.length) { const alt = RORD.slice(RORD.indexOf(rar)).concat(RORD.slice(0, RORD.indexOf(rar)).reverse()).find(r2 => missing(r2).length && (odds[r2] || forced === r2));
+    if (alt) { rar = alt; pool = missing(alt); } }
+  if (pool.length) got = pool[Math.floor(Math.random() * pool.length)]; else frag = FRAG[rar];
+  return { rar, got, frag, forced: !!forced };
+}
+function openBox(t) {
+  if (boxCount(t) < 1 || $("boxov")) return;
+  const res = pickReward(t), r = rw(), st = r.st;
+  bumpNest("bo", t, 1); st.boxes = (st.boxes || 0) + 1;
+  st.pE = res.rar === "e" || res.rar === "l" ? 0 : (st.pE || 0) + 1; st.pL = res.rar === "l" ? 0 : (st.pL || 0) + 1;
+  if (res.got) r.own[res.got.kind + ":" + res.got.x.id] = 1; else bump(r, "fr", res.frag);
+  track("box"); persist(); if (CLOUD) cloudSync();
+  boxReveal(t, res);
+}
+function boxReveal(t, res) {
+  const B = BOXES[t], minR = RORD.find(k => B.odds[k]) || "c", fi = RORD.indexOf(res.rar), mi = RORD.indexOf(minR);
+  const steps = [mi, Math.min(fi, mi + Math.round((fi - mi) / 2)), fi]; let tap = 0;
+  const glyph = h("div", { class: "bx-big jp", style: "--bc:" + B.col + ";--rc:" + RAR[minR].col }, B.k);
+  const hint = h("p", { class: "muted", style: "margin:10px 0 0" }, "Touche la boîte pour l’ouvrir");
+  const body = h("div", { class: "box bx-ov" }, h("div", { class: "eyebrow" }, B.nm), glyph, hint);
+  const ov = h("div", { class: "overlay", id: "boxov", role: "dialog", "aria-label": "Ouverture de boîte" }, body);
+  const close = () => { ov.remove(); rwCheck(); render(); };
+  const reveal = () => {
+    const R = RAR[res.rar], it = res.got;
+    body.replaceChildren(h("div", { class: "eyebrow", style: "color:" + R.col }, R.nm + (res.forced ? " · garanti" : "")),
+      it ? h("div", { class: "bx-item", style: "--rc:" + R.col }, preview(it.kind, it.x)) : h("div", { class: "bx-item", style: "--rc:" + R.col }, h("span", { style: "font-size:44px" }, "💠")),
+      h("h2", { style: "margin:6px 0 2px" }, it ? it.x.nm : "+" + res.frag + " fragment" + (res.frag > 1 ? "s" : "")),
+      h("p", { class: "muted", style: "margin:0 0 10px" }, it ? KIND_NM[it.kind] + " · nouveau !" : "Tu as déjà tous les objets de cette rareté : les fragments servent à choisir un objet qui te manque."),
+      h("div", { style: "display:flex;gap:8px;justify-content:center;flex-wrap:wrap" },
+        it && !NOEQUIP[it.kind] ? h("button", { class: "btn", onclick: () => { equip(it.kind, it.x.id); close(); } }, "Équiper") : null,
+        boxCount(t) ? h("button", { class: "btn ghost", onclick: () => { ov.remove(); openBox(t); } }, "Ouvrir la suivante (" + boxCount(t) + ")") : null,
+        h("button", { class: "btn ghost", onclick: close }, "Fermer")));
+    sfx(fi >= 2 ? "combo" : "ok"); if (fi >= 2) confetti();
+  };
+  const step = () => { if (tap >= 3) return; const lv = steps[tap]; tap++;
+    glyph.style.setProperty("--rc", RAR[RORD[lv]].col); glyph.classList.remove("shk"); void glyph.offsetWidth; glyph.classList.add("shk", "lv" + lv); sfx("tap");
+    hint.textContent = tap < 3 ? "Encore " + (3 - tap) + "…" : "";
+    if (tap >= 3) setTimeout(reveal, 450); };
+  glyph.addEventListener("click", step);
+  if (fi < 2) body.append(h("button", { class: "btn small ghost", style: "margin-top:12px", onclick: () => { tap = 3; reveal(); } }, "Passer"));
+  document.body.append(ov);
+}
+function buyBox(t, ev) {
+  const B = BOXES[t], r = rw(); if (!B.price || yen() < B.price) return;
+  if (t === "laque") { const wk = weekKeyOf(); if (r.bw && r.bw.k === wk && r.bw.n >= 1) return; r.bw = { k: wk, n: (r.bw && r.bw.k === wk ? r.bw.n : 0) + 1 }; }
+  bump(r, "spent", B.price); grantBox(t, "achetée", true); toast(B.nm + " achetée"); if (CLOUD) cloudSync(); render();
+}
+const laqueBought = () => { const r = rw(); return !!(r.bw && r.bw.k === weekKeyOf() && r.bw.n >= 1); };
+function craft(kind, id) {
+  const x = kindOf(kind, id); if (!x || x.src !== "box" || owns(kind, id)) return; const cost = FRAG_COST[x.r]; if (frags() < cost) return;
+  const r = rw(); bump(r, "fs", cost); r.own[kind + ":" + id] = 1; persist(); if (CLOUD) cloudSync(); toast("Fabriqué : " + x.nm); rwCheck(); render();
+}
+function bumpSt(k, n = 1) { const st = rw().st; st[k] = (st[k] || 0) + n; rwCheck(); }
 function addYen(n, ev) {
   bump(rw(), "earn", n);
   if (ev && ev.clientX != null) { const c = h("div", { class: "coin", style: "left:" + (ev.clientX - 20) + "px;top:" + (ev.clientY - 30) + "px" }, "+¥" + n); document.body.append(c); setTimeout(() => c.remove(), 1000); }
@@ -1784,15 +2186,21 @@ function rwCheck() {
   if (!P.cur) return;
   const r = rw();
   for (const a of ACH) {
-    if (r.ach[a.id] || (a.cloud && !CLOUD)) continue;
+    if (r.ach[a.id]) { // exploits déjà obtenus avant la 2.0 : on livre en silence les nouvelles récompenses qui y sont rattachées
+      rewardsOf(a.id).forEach(({ kind, x }) => { if (!r.own[kind + ":" + x.id]) { r.own[kind + ":" + x.id] = 1; } });
+      if (a.box && !(r.abx || {})[a.id]) { r.abx = Object.assign({}, r.abx, { [a.id]: 1 }); grantBox(a.box, "exploit « " + a.nm + " »", true); }
+      continue; }
+    if (a.cloud && !CLOUD) continue;
     const [v, g] = a.t(r.st); if (v < g) continue;
     r.ach[a.id] = todayKey();
     const gifts = rewardsOf(a.id); gifts.forEach(({ kind, x }) => { r.own[kind + ":" + x.id] = 1; });
     if (a.yen) addYen(a.yen);
+    if (a.box) { r.abx = Object.assign({}, r.abx, { [a.id]: 1 }); grantBox(a.box, null, true); }
     showOverlay(h("div", {}, h("div", { class: "stamp jp stamp-drop", style: "--lc:var(--ko);border-color:var(--ko);color:var(--ko);width:110px;height:110px;font-size:40px" }, a.k),
       h("div", { class: "eyebrow" }, "実績 · Exploit débloqué"), h("h2", { style: "margin:4px 0" }, a.nm), h("p", { class: "muted", style: "margin:0 0 10px" }, a.d),
-      gifts.length ? h("div", { class: "pick", style: "justify-content:center" }, gifts.map(({ kind, x }) => h("button", { onclick: e => { equip(kind, x.id); e.currentTarget.textContent = "Équipé ✓"; } }, preview(kind, x), h("span", {}, KIND_NM[kind] + " · " + x.nm), h("b", { style: "font-size:12px;color:var(--accent)" }, "Équiper")))) : null,
-      a.yen ? h("p", { style: "font-weight:700;margin:8px 0 0" }, "+¥" + a.yen) : null), true);
+      gifts.length ? h("div", { class: "pick", style: "justify-content:center" }, gifts.map(({ kind, x }) => h("button", { onclick: e => { if (NOEQUIP[kind]) return; equip(kind, x.id); e.currentTarget.lastChild.textContent = "Équipé ✓"; } }, preview(kind, x), h("span", {}, KIND_NM[kind] + " · " + x.nm), h("b", { style: "font-size:12px;color:var(--accent)" }, NOEQUIP[kind] ? "Ajouté au carnet" : "Équiper")))) : null,
+      a.yen ? h("p", { style: "font-weight:700;margin:8px 0 0" }, "+¥" + a.yen) : null,
+      a.box ? h("p", { style: "font-weight:700;margin:8px 0 0" }, "+1 " + BOXES[a.box].nm + " " + BOXES[a.box].k) : null), true);
     persist();
   }
 }
@@ -1804,7 +2212,7 @@ function buy(kind, id, ev) {
   const x = KINDS[kind].find(i => i.id === id); if (!x || x.src !== "shop" || owns(kind, id)) return;
   const r = rw(); if (yen() < x.price) return;
   bump(r, "spent", x.price); r.own[kind + ":" + id] = 1;
-  persist(); toast("Acheté : " + x.nm + ". Équipé !"); equip(kind, id);
+  persist(); toast("Acheté : " + x.nm + ". Équipé !"); rwCheck(); equip(kind, id);
 }
 function buyFreeze() { const r = rw(); if (yen() < FREEZE_PRICE || freezes() >= 2) return; bump(r, "spent", FREEZE_PRICE); bump(r, "fb", 1); persist(); toast("Gel de série prêt 🧊"); render(); }
 
@@ -1875,22 +2283,33 @@ function avatar(lk, name, size, extra) {
   lk = Object.assign(blankLook(), lk || {});
   const f = FRAMES.find(x => x.id === lk.frame) || FRAMES[0], a = ANIMS.find(x => x.id === lk.anim) || ANIMS[0];
   const pic = h("div", { class: "pic" }, lk.photo ? h("img", { src: lk.photo, alt: "" }) : (name || "?").trim().charAt(0).toUpperCase());
-  const fx = a.id !== "none" && a.id !== "neon" ? h("div", { class: "fx", "aria-hidden": "true" }, [0, 1, 2, 3, 4].map(() => h("i", {}, a.sym || ""))) : null;
-  return h("div", { class: "av f-" + f.id + " a-" + a.id + (extra ? " " + extra : ""), style: "--s:" + size + "px", "aria-hidden": "true" },
-    h("div", { class: "fr" + (f.spin ? " spin" : "") }), pic, f.orn ? h("span", { class: "orn" }, f.orn) : null, fx);
+  const ab = a.base || a.id, pn = PINS.find(x => x.id === lk.pin);
+  const fx = ab !== "none" && ab !== "neon" ? h("div", { class: "fx", "aria-hidden": "true" }, [0, 1, 2, 3, 4].map(() => h("i", {}, a.sym || ""))) : null;
+  return h("div", { class: "av f-" + f.id + " a-" + ab + (extra ? " " + extra : ""), style: "--s:" + size + "px", "aria-hidden": "true" },
+    h("div", { class: "fr" + (f.spin ? " spin" : "") }), pic, f.orn ? h("span", { class: "orn" }, f.orn) : null, fx, pn && pn.e ? h("span", { class: "pinb" + (pn.r === "l" ? " gold" : "") }, pn.e) : null);
 }
 function preview(kind, x) {
   const L = look(), nm = prof() ? prof().name : "?";
   if (kind === "frame") return avatar(Object.assign({}, L, { frame: x.id, anim: "none" }), nm, 54);
   if (kind === "anim") return avatar(Object.assign({}, L, { anim: x.id }), nm, 54);
   if (kind === "title") return h("span", { class: "ttl", style: "margin:10px 0" }, x.nm);
+  if (kind === "pin" || kind === "sticker") return h("span", { class: "pv-emo" + (kind === "sticker" ? " stk" : "") + (x.r === "l" ? " gold" : "") }, x.e || "∅");
+  if (kind === "burst") return h("span", { class: "pv-emo", onclick: e => { e.stopPropagation(); burst(e.currentTarget, true, x.id); } }, x.sym ? x.sym[0] : h("span", { class: "dots", style: x.col ? "--d1:" + x.col[0] + ";--d2:" + x.col[1 % x.col.length] : "" }));
+  if (kind === "sound") return h("span", { class: "pv-emo", onclick: e => { e.stopPropagation(); sfx("ok", x.id); setTimeout(() => sfx("combo", x.id), 450); } }, "🔊");
+  if (kind === "train") return h("span", { class: "pv-emo" }, h("span", { style: "display:inline-block;transform:scaleX(-1);" + (x.f ? "filter:" + x.f : "") }, x.e));
+  if (kind === "trail") return h("span", { class: "pv-emo", style: "font-size:22px" }, h("span", { style: "opacity:.7" }, x.sym || "·"), h("span", { style: "display:inline-block;transform:scaleX(-1)" }, "🚄"));
+  if (kind === "plate") return h("span", { class: "np np-" + x.id, style: "margin:10px 0" }, nm);
+  if (kind === "led") return h("span", { class: "pv-led led-" + x.id }, h("span", {}, "あと 84 日"));
+  if (kind === "card") return h("span", { class: "pv-card card cs-" + x.id }, h("span", { class: "jp" }, "あ"));
+  if (kind === "stamp") return h("span", { class: "pv-stamp jp" + (x.eki ? " eki" : "") }, x.k);
   return h("span", { class: "swatch" }, h("i", { style: "background:" + x.c[0] }), h("i", { style: "background:" + x.c[1] }));
 }
+const plateName = (lk, txt) => { const id = (lk || {}).plate; return id && id !== "none" && PLATES.some(x => x.id === id) ? h("span", { class: "np np-" + id }, txt) : txt; };
 const titleOf = lk => { const t = TITLES.find(x => x.id === (lk || {}).title); return t ? t.nm : TITLES[0].nm; };
-const howTo = x => x.src === "ach" ? "Exploit : " + ((ACH.find(a => a.id === x.ach) || {}).nm || "") : x.src === "shop" ? "Boutique · ¥" + x.price : "";
+const howTo = x => x.src === "ach" ? "Exploit : " + ((ACH.find(a => a.id === x.ach) || {}).nm || "") : x.src === "shop" ? "Boutique · ¥" + x.price : x.src === "box" ? "Boîtes · " + RAR[x.r].nm : x.src === "free" ? "Offert" : "";
 
 /* ---- onglet Missions ---- */
-let mTab = "missions";
+let mTab = "missions", colKind = "theme";
 function revBlock() {
   const wk = weekKeyOf(), fmt = k => new Date(k + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
   const weeks = [wk, dayAdd(wk, -7), dayAdd(wk, -14), dayAdd(wk, -21)];
@@ -1914,7 +2333,8 @@ function todayPlan() {
   if (inGrp && !(S.duel || {})[todayKey()]) row("勝", "Défi du jour du groupe", (todayKey() >= DUEL_V2 ? "10 questions sur ce que tu as vu hier" : "10 questions, les mêmes pour tout le groupe") + " · ¥" + DUEL_YEN, () => go("groupe"), true);
   if (inc.length) row("戦", inc.length > 1 ? inc.length + " potes te défient" : inc[0].fromName + " te défie", "Relève le clash, ¥" + CLASH_YEN + " pour le gagnant", () => go("groupe"), true);
   if (weekRevReady()) { const wk = weekKeyOf(); row("週", "Révision de la semaine", "Les cartes de ta semaine · ¥" + REV_YEN + " à 70/100", () => startRevision("week", wk), true); }
-  const dd = rwDay(), nDone = dd.ids.filter(id => (dd.p[id] || 0) >= mDef(id).goal).length, cl = claimable();
+  { const fb2 = !boxDay().free, nb = boxTotal(); if (fb2 || nb) row("箱", fb2 ? "Ta boîte du jour t’attend" : nb + " boîte" + (nb > 1 ? "s" : "") + " à ouvrir", "Effets, sons, porte-bonheur, autocollants… jamais de doublon", () => { mTab = "boites"; go("missions"); }, true); }
+  const dd = rwDay(), nDone = dd.ids.filter(id => (dd.p[id] || 0) >= mDef(id).goal).length, cl = claimable() - (boxDay().free ? 0 : 1) - boxTotal();
   row("賞", cl ? cl + " récompense(s) à récupérer" : "Missions du jour : " + nDone + " / " + dd.ids.length, "¥" + yen().toLocaleString("fr-FR") + " en poche · cadres, titres et thèmes à gagner", () => go("missions"), !!cl);
   return [h("div", { class: "sec-h" }, h("h2", {}, "Aussi aujourd’hui")), h("div", { class: "revs" }, rows)];
 }
@@ -1932,7 +2352,8 @@ function viewMissions() {
   const omi = d.omi ? h("div", { class: "omi" }, h("div", { class: "bx jp" }, d.omi.k), h("div", {}, h("b", {}, "Omikuji du jour : " + d.omi.k), h("div", { style: "font-size:13px;opacity:.85" }, "+¥" + d.omi.yen + " · reviens demain pour un nouveau tirage")))
     : allClaimed ? h("div", { class: "omi" }, h("div", { class: "bx" }, "🎋"), h("div", { style: "flex:1" }, h("b", {}, "Toutes tes missions du jour sont faites"), h("div", { style: "font-size:13px;opacity:.85" }, "Tire ton omikuji, le papier de chance du temple.")), h("button", { class: "btn small claim", onclick: e => drawOmikuji(e.currentTarget) }, "Tirer"))
     : h("div", { class: "omi locked" }, h("div", { class: "bx" }, "🎋"), h("div", {}, h("b", {}, "Omikuji"), h("div", { class: "muted", style: "font-size:13px" }, "Récupère tes 3 missions du jour pour tirer un papier de chance (¥100 à ¥300).")));
-  const seg = h("div", { class: "seg", style: "margin-top:16px" }, [["missions", "Missions"], ["boutique", "Boutique"], ["exploits", "Exploits"]].map(([k, l]) => h("button", { "aria-pressed": mTab === k ? "true" : "false", onclick: () => { mTab = k; render(); } }, l)));
+  const nbx = boxTotal() + (boxDay().free ? 0 : 1);
+  const seg = h("div", { class: "seg tabs5", style: "margin-top:16px" }, [["missions", "Missions"], ["boites", "Boîtes"], ["boutique", "Boutique"], ["collection", "Collection"], ["exploits", "Exploits"]].map(([k, l]) => h("button", { "aria-pressed": mTab === k ? "true" : "false", onclick: () => { mTab = k; render(); } }, l, k === "boites" && nbx ? h("span", { class: "sdot" }, nbx) : null)));
   let body;
   const toClaim = (() => { const d = rwDay(), w = rwWeek(); let n = 0, y = 0; for (const [set, wk] of [[d, false], [w, true]]) for (const id of set.ids) if (!set.c[id] && (set.p[id] || 0) >= mDef(id).goal) { n++; y += wk ? W_YEN : D_YEN; } return { n, y }; })();
   if (mTab === "missions") {
@@ -1943,20 +2364,60 @@ function viewMissions() {
       h("div", { class: "sec-h" }, h("h2", {}, "Missions de la semaine"), h("span", { class: "muted", style: "font-size:13px" }, left ? "encore " + left + " j" : "dernier jour")),
       h("div", { class: "mlist" }, w.ids.map(id => row(w, id, true))),
       h("p", { class: "hint" }, "Les missions se valident toutes seules pendant tes sessions normales. Les yens servent dans la boutique, ils ne comptent pas dans le classement. Les révisions sont dans l’onglet Pratique."));
+  } else if (mTab === "boites") {
+    const d = boxDay(), st = r.st, own = BOX_POOL().filter(({ kind, x }) => owns(kind, x.id)).length, tot = BOX_POOL().length;
+    const oddsTxt = t => RORD.filter(k => BOXES[t].odds[k]).map(k => h("span", {}, h("b", { style: "color:" + RAR[k].col }, "● "), RAR[k].nm + " " + BOXES[t].odds[k] + " %"));
+    const mine = BOX_ORDER.filter(t => boxCount(t) > 0);
+    const missingByR = RORD.map(k => [k, BOX_POOL().filter(({ kind, x }) => x.r === k && !owns(kind, x.id))]).filter(([, L]) => L.length);
+    body = h("div", {},
+      h("div", { class: "sec-h" }, h("h2", {}, "Aujourd’hui"), h("span", { class: "muted", style: "font-size:13px" }, "tout est gratuit")),
+      h("div", { class: "revs" },
+        h("div", { class: "rev" + (d.free ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:" + BOXES.bois.col }, "木"), h("div", { class: "tx" }, h("b", {}, "Boîte du jour"), h("small", {}, d.free ? "Reçue ✓ · la prochaine demain" : "Une boîte en bois offerte chaque jour")), d.free ? h("span", { class: "muted" }, "✓") : h("button", { class: "btn small claim", onclick: claimFreeBox }, "Récupérer")),
+        h("div", { class: "rev" + (d.lesson ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:" + BOXES.bambou.col }, "竹"), h("div", { class: "tx" }, h("b", {}, "Leçon du jour"), h("small", {}, d.lesson ? "Reçue ✓" : "Fais au moins 10 cartes de ta session pour gagner une boîte en bambou")), d.lesson ? h("span", { class: "muted" }, "✓") : h("button", { class: "btn small ghost", onclick: () => go("trajet") }, "Y aller")),
+        h("div", { class: "rev" + ((d.gb || 0) >= 2 ? " lock" : "") }, h("div", { class: "bxg jp", style: "--bc:var(--accent)" }, "速"), h("div", { class: "tx" }, h("b", {}, "Kana Express"), h("small", {}, Math.min(2, d.gb || 0) + "/2 boîtes gagnées aujourd’hui · palier Bronze → bois, Argent/Or → bambou, Arc-en-ciel → laque")), h("button", { class: "btn small ghost", onclick: () => startExpress("kana") }, "Jouer"))),
+      h("div", { class: "sec-h" }, h("h2", {}, "Mes boîtes"), h("span", { class: "muted", style: "font-size:13px" }, own + " / " + tot + " objets trouvés")),
+      mine.length ? h("div", { class: "revs" }, mine.map(t => h("div", { class: "rev bxrow" }, h("div", { class: "bxg jp", style: "--bc:" + BOXES[t].col }, BOXES[t].k),
+        h("div", { class: "tx" }, h("b", {}, BOXES[t].nm + " × " + boxCount(t)), h("small", { class: "odds" }, ...oddsTxt(t))),
+        h("button", { class: "btn small claim", onclick: () => openBox(t) }, "Ouvrir")))) : h("p", { class: "muted" }, "Aucune boîte à ouvrir pour l’instant."),
+      h("p", { class: "hint" }, "Jamais de doublon : tu tombes toujours sur un objet que tu n’as pas. Épique ou mieux garanti dans " + Math.max(1, PITY_E - (st.pE || 0)) + " boîte(s), Légendaire garanti dans " + Math.max(1, PITY_L - (st.pL || 0)) + ". Les objets des boîtes ne s’achètent pas en yens."),
+      h("div", { class: "sec-h" }, h("h2", {}, "Atelier"), h("span", { class: "muted", style: "font-size:13px" }, "💠 " + frags() + " fragment" + (frags() > 1 ? "s" : ""))),
+      h("p", { class: "hint", style: "margin-top:0" }, "Quand tu as tous les objets d’une rareté, les boîtes donnent des fragments (1, 3, 8 ou 25). Ils servent à fabriquer l’objet de boîte de ton choix : " + RORD.map(k => RAR[k].nm.toLowerCase() + " " + FRAG_COST[k]).join(", ") + "."),
+      frags() >= FRAG_COST.c ? h("div", { class: "cgrid" }, missingByR.flatMap(([k, L]) => L.map(({ kind, x }) => h("div", { class: "ctile lock" }, preview(kind, x), h("span", { class: "rd", style: "background:" + RAR[k].col }), h("span", { class: "nm" }, x.nm), h("button", { class: "btn small", disabled: frags() < FRAG_COST[k], onclick: () => craft(kind, x.id) }, "💠 " + FRAG_COST[k]))))) : null);
   } else if (mTab === "boutique") {
     const card = (kind, x) => {
       const has = owns(kind, x.id), on = L[kind] === x.id;
       return h("div", { class: "item" + (on ? " on" : "") + (has ? "" : " lock") }, preview(kind, x), h("div", { class: "nm" }, x.nm), kind === "theme" ? h("button", { class: "btn small ghost", onclick: () => startPreview(x.id) }, "👁 Aperçu") : null,
         has ? h("button", { class: "btn small" + (on ? " ghost" : ""), disabled: on, onclick: () => equip(kind, x.id) }, on ? "Équipé" : "Équiper")
-          : h("button", { class: "btn small", disabled: yen() < x.price, onclick: e => buy(kind, x.id, e) }, "Acheter ¥" + x.price), has || yen() >= x.price ? null : h("div", { class: "how" }, "Il te manque ¥" + (x.price - yen())));
+          : h("button", { class: "btn small", disabled: yen() < x.price, onclick: e => buy(kind, x.id, e) }, "Acheter ¥" + x.price.toLocaleString("fr-FR")), has || yen() >= x.price ? null : h("div", { class: "how" }, "Il te manque ¥" + (x.price - yen()).toLocaleString("fr-FR")));
     };
-    const sec = (kind, label) => [h("div", { class: "sec-h" }, h("h2", {}, label)), h("div", { class: "shop" }, KINDS[kind].filter(x => x.src === "shop").map(x => card(kind, x)))];
+    const sec = (kind, label, hint) => [h("div", { class: "sec-h" }, h("h2", {}, label), hint ? h("span", { class: "muted", style: "font-size:13px" }, hint) : null), h("div", { class: "shop" }, KINDS[kind].filter(x => x.src === "shop").map(x => card(kind, x)))];
+    const boxCard = t => { const B = BOXES[t], lim = t === "laque" && laqueBought();
+      return h("div", { class: "item" }, h("div", { class: "bxg jp", style: "--bc:" + B.col + ";width:56px;height:56px;font-size:28px;margin:4px auto" }, B.k), h("div", { class: "nm" }, B.nm),
+        h("div", { class: "how" }, RORD.filter(k => B.odds[k]).map(k => RAR[k].nm.slice(0, 3) + ". " + B.odds[k] + " %").join(" · ")),
+        h("button", { class: "btn small", disabled: lim || yen() < B.price, onclick: e => buyBox(t, e) }, lim ? "1 par semaine ✓" : "Acheter ¥" + B.price.toLocaleString("fr-FR"))); };
     body = h("div", {},
+      h("div", { class: "sec-h" }, h("h2", {}, "Boîtes"), h("span", { class: "muted", style: "font-size:13px" }, "contenu au hasard, jamais de doublon")),
+      h("div", { class: "shop" }, ["bois", "bambou", "laque"].map(boxCard)),
       h("div", { class: "sec-h" }, h("h2", {}, "Objets")),
       h("div", { class: "shop" }, h("div", { class: "item" }, h("div", { style: "font-size:40px" }, "🧊"), h("div", { class: "nm" }, "Gel de série"), h("div", { class: "how" }, "Protège ta série si tu rates un jour. " + freezes() + "/2 en réserve."),
         h("button", { class: "btn small", disabled: yen() < FREEZE_PRICE || freezes() >= 2, onclick: buyFreeze }, freezes() >= 2 ? "Réserve pleine" : "Acheter ¥" + FREEZE_PRICE))),
-      sec("frame", "Cadres"), sec("anim", "Animations de profil"), sec("theme", "Thèmes de l’appli"), sec("title", "Titres"),
-      h("p", { class: "hint" }, "Les plus belles pièces ne s’achètent pas : elles se gagnent avec les exploits."));
+      ...sec("theme", "Thèmes de l’appli", "touche 👁 pour essayer"), ...sec("sound", "Sons", "touche 🔊 pour écouter"), ...sec("plate", "Plaques de nom", "vues au classement"),
+      ...sec("led", "Panneau de l’accueil"), ...sec("card", "Style des cartes", "en session et en Kana Express"), ...sec("frame", "Cadres"),
+      h("p", { class: "hint" }, "La boutique vend ce que tu choisis. Les boîtes cachent les effets, porte-bonheur, animations et autocollants. Les exploits gardent les titres, les trains et les tampons : impossible de les acheter."));
+  } else if (mTab === "collection") {
+    const list = KINDS[colKind] || PALS, ownedN = k => KINDS[k].filter(x => owns(k, x.id)).length;
+    const tile = x => { const has = owns(colKind, x.id), on = L[colKind] === x.id, sec2 = !has && x.ach && (ACH.find(a => a.id === x.ach) || {}).secret;
+      return h("div", { class: "ctile" + (has ? "" : " lock") + (on ? " on" : "") }, preview(colKind, x), x.r ? h("span", { class: "rd", title: RAR[x.r].nm, style: "background:" + RAR[x.r].col }) : null,
+        h("span", { class: "nm" }, sec2 ? "Secret" : x.nm),
+        has ? (NOEQUIP[colKind] ? h("span", { class: "how" }, "✓ Obtenu") : h("button", { class: "btn small" + (on ? " ghost" : ""), disabled: on, onclick: () => equip(colKind, x.id) }, on ? "Équipé" : "Équiper"))
+          : colKind === "theme" ? h("button", { class: "btn small ghost", onclick: () => startPreview(x.id) }, "👁 Aperçu") : h("span", { class: "how" }, sec2 ? "Exploit secret" : "🔒 " + howTo(x))); };
+    const grid = colKind === "sticker" ? [...new Set(STICKERS.map(x => x.set))].flatMap(st2 => { const L2 = STICKERS.filter(x => x.set === st2);
+      return [h("div", { class: "sec-h" }, h("h3", { style: "margin:0;font-size:15px" }, st2), h("span", { class: "muted", style: "font-size:13px" }, L2.filter(x => owns("sticker", x.id)).length + " / " + L2.length)), h("div", { class: "cgrid" }, L2.map(tile))]; })
+      : [h("div", { class: "cgrid", style: "margin-top:10px" }, list.map(tile))];
+    body = h("div", {},
+      h("div", { class: "kinds" }, Object.keys(KINDS).map(k => h("button", { class: "toggle", "aria-pressed": colKind === k ? "true" : "false", onclick: () => { colKind = k; render(); } }, KIND_PL[k] + " " + ownedN(k) + "/" + KINDS[k].length))),
+      ...grid,
+      h("p", { class: "hint" }, colKind === "sticker" ? "Chaque autocollant vient des boîtes. Complète l’album pour un titre exclusif." : colKind === "stamp" ? "Un tampon de gare à chaque gare atteinte, un sceau pour chaque grand exploit." : "Chaque objet a une seule source : boutique, exploit ou boîtes."));
   } else {
     const groups = [...new Set(ACH.map(a => a.g))];
     body = h("div", {}, groups.flatMap(g => [h("div", { class: "sec-h" }, h("h2", {}, g), h("span", { class: "muted", style: "font-size:13px" }, ACH.filter(a => a.g === g && r.ach[a.id]).length + " / " + ACH.filter(a => a.g === g && (!a.cloud || CLOUD)).length)),
@@ -1969,7 +2430,7 @@ function viewMissions() {
   }
   return h("div", {},
     h("div", { class: "wallet" }, h("button", { class: "me-btn", onclick: () => go("reglages"), "aria-label": "Modifier mon profil" }, avatar(L, p.name, 64)),
-      h("div", { class: "who" }, h("b", {}, p.name), h("span", { class: "ttl" }, titleOf(L))),
+      h("div", { class: "who" }, h("b", {}, plateName(L, p.name)), h("span", { class: "ttl" }, titleOf(L))),
       h("div", { class: "yen" }, "¥" + yen().toLocaleString("fr-FR"), h("small", {}, Object.keys(r.ach).length + " exploits"))),
     seg, mTab === "missions" && toClaim.n >= 2 ? h("button", { class: "btn claim-all", onclick: e => claimAll(e) }, "🎁 Tout récupérer · " + toClaim.n + " récompenses · +¥" + toClaim.y) : null, body);
 }
@@ -2019,10 +2480,8 @@ function viewSettings() {
       h("div", { style: "display:flex;gap:8px;margin-top:6px" }, nick, h("button", { class: "btn small", onclick: saveNick }, "Enregistrer")),
       h("p", { class: "hint" }, CLOUD ? "C’est le nom que voit ton groupe dans le classement." : "C’est le nom affiché sur ton accueil.")),
     h("section", { class: "set" }, h("h2", {}, "Ma collection"),
-      h("div", { class: "seg col", style: "margin-bottom:12px" }, [["theme", "Thèmes", PALS], ["frame", "Cadres", FRAMES], ["anim", "Animations", ANIMS], ["title", "Titres", TITLES]].map(([k, l, list]) =>
-        h("button", { "aria-pressed": colTab === k ? "true" : "false", onclick: () => { colTab = k; render(); } }, l, h("small", { class: "cnt" }, list.filter(x => owns(k, x.id)).length + "/" + list.length)))),
-      colTab === "title" ? titles : picker(colTab, KINDS[colTab]),
-      h("p", { class: "hint" }, colTab === "theme" ? "Touche un thème 🔒 pour l’essayer en aperçu." : "Les éléments 🔒 se gagnent dans l’onglet Missions : boutique ou exploits.")),
+      h("p", { class: "muted", style: "margin:0 0 10px" }, Object.keys(KINDS).reduce((n, k) => n + KINDS[k].filter(x => owns(k, x.id)).length, 0) + " objets sur " + Object.keys(KINDS).reduce((n, k) => n + KINDS[k].length, 0) + " : thèmes, cadres, sons, trains, porte-bonheur, autocollants…"),
+      h("button", { class: "btn small", onclick: () => { mTab = "collection"; go("missions"); } }, "Ouvrir ma collection")),
     h("section", { class: "set" }, h("h2", {}, "Affichage"), modeSeg,
       h("div", { style: "margin-top:10px" }, h("button", { class: "toggle", "aria-pressed": L.bgfx !== false ? "true" : "false", onclick: () => { setLook({ bgfx: L.bgfx === false }); persist(); applyTheme(); render(); } }, L.bgfx !== false ? "Effets animés : activés" : "Effets animés : coupés"))),
     h("section", { class: "set" }, h("h2", {}, "Apprentissage"), h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, romajiToggle(),
@@ -2095,9 +2554,13 @@ function mergeState(a, b) {
   { const ra = rwNorm(a.rw), rb = rwNorm(b.rw);
     if (ra || rb) { const A2 = ra || {}, B2 = rb || {}, maxMap = (x, y) => { const o = Object.assign({}, x); for (const k in (y || {})) o[k] = Math.max(o[k] || 0, y[k] || 0); return o; };
       const o = { earn: maxMap(A2.earn, B2.earn), spent: maxMap(A2.spent, B2.spent), fb: maxMap(A2.fb, B2.fb), fu: maxMap(A2.fu, B2.fu),
-        own: Object.assign({}, B2.own, A2.own), ach: Object.assign({}, B2.ach, A2.ach) };
+        own: Object.assign({}, B2.own, A2.own), ach: Object.assign({}, B2.ach, A2.ach), fr: maxMap(A2.fr, B2.fr), fs: maxMap(A2.fs, B2.fs) };
+      const nest = (x, y) => { const z = {}; for (const t of new Set([...Object.keys(x || {}), ...Object.keys(y || {})])) z[t] = maxMap((x || {})[t], (y || {})[t]); return z; };
+      o.bx = nest(A2.bx, B2.bx); o.bo = nest(A2.bo, B2.bo);
+      const dayM = (x, y) => { if (!x) return y || null; if (!y) return x; if (x.k !== y.k) return x.k > y.k ? x : y; const z = Object.assign({}, x); for (const kk in y) if (kk !== "k") z[kk] = Math.max(x[kk] || 0, y[kk] || 0); return z; };
+      o.bd = dayM(A2.bd, B2.bd); o.bw = dayM(A2.bw, B2.bw); o.abx = Object.assign({}, B2.abx, A2.abx);
       const sa2 = A2.st || {}, sb2 = B2.st || {}; o.st = Object.assign({}, sb2, sa2);
-      for (const kk of ["sessions", "comboMax", "perfect", "omi", "daikichi", "missions", "night", "morning", "lead"]) o.st[kk] = Math.max(sa2[kk] || 0, sb2[kk] || 0);
+      for (const kk of ["sessions", "comboMax", "perfect", "omi", "daikichi", "missions", "night", "morning", "lead", "lex", "revs", "rev85", "kxBest", "kjBest", "boxes", "duels", "duel10", "champ", "clashW", "pE", "pL"]) o.st[kk] = Math.max(sa2[kk] || 0, sb2[kk] || 0);
       o.st.sc = Object.assign({}, sb2.sc, sa2.sc);
       o.st.ex = Object.assign({}, sb2.ex, sa2.ex); for (const kk in (sb2.ex || {})) o.st.ex[kk] = Math.max((sa2.ex || {})[kk] || 0, sb2.ex[kk] || 0);
       const mergeSet = (x, y) => { if (!x) return y || null; if (!y) return x; if (x.k !== y.k) return x.k > y.k ? x : y;
@@ -2271,7 +2734,7 @@ function viewGroupe() {
     h("div", { class: "sec-h" }, h("h2", {}, "Classement"), h("div", { class: "seg" }, h("button", { "aria-pressed": lbMode === "week" ? "true" : "false", onclick: () => { lbMode = "week"; render(); } }, "Semaine"), h("button", { "aria-pressed": lbMode === "total" ? "true" : "false", onclick: () => { lbMode = "total"; render(); } }, "Total"))),
     h("div", { class: "plist" }, list.length ? list.map((m, i) => h("div", { class: "ph", style: m.uid === cloudUser.uid ? "border-color:var(--accent);border-width:2px" : "" },
       h("div", { style: "display:flex;gap:10px;align-items:center;min-width:0" }, h("span", { style: "font-size:18px;width:24px;text-align:center;flex:none" }, medal(i)), avatar(m.look || {}, m.name, 44),
-        h("div", { style: "min-width:0;flex:1" }, h("div", { class: "j", style: "font-size:16px" }, (m.name || "?") + (m.uid === cloudUser.uid ? " (toi)" : "")), h("span", { class: "ttl" }, titleOf(m.look)),
+        h("div", { style: "min-width:0;flex:1" }, h("div", { class: "j", style: "font-size:16px" }, plateName(m.look, (m.name || "?") + (m.uid === cloudUser.uid ? " (toi)" : ""))), h("span", { class: "ttl" }, titleOf(m.look)),
           h("div", { class: "ro" }, "🔥 " + (m.streak || 0) + " j · " + (CH[Math.max(0, Math.min(5, m.station || 0))].ro) + " · " + m.wses + " session(s) cette semaine"),
           h("div", { style: "height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden" }, h("i", { style: "display:block;height:100%;border-radius:3px;background:var(--accent);width:" + Math.round(100 * (m[key] || 0) / maxV) + "%;transition:width .8s" })))),
       h("div", { class: "j", style: "grid-row:1/span 2;grid-column:2;font-variant-numeric:tabular-nums" }, (m[key] || 0) + " pts"))) : h("p", { class: "muted" }, "Chargement du classement…")),
@@ -2339,12 +2802,12 @@ function gamePick(k) {
 }
 function gameEnd() {
   const g = game; g.done = true; clearTimeout(gameT); const today = todayKey(); S.gPaid = Object.assign({}, S.gPaid);
-  if (g.kind === "duel") { S.duel[today] = { s: g.s, ok: g.ok };
+  if (g.kind === "duel") { S.duel[today] = { s: g.s, ok: g.ok }; track("duel"); { const st9 = rw().st; st9.duels = (st9.duels || 0) + 1; if (g.ok >= g.qs.length) st9.duel10 = 1; }
     if (!S.gPaid["duel:" + today]) { S.gPaid["duel:" + today] = 1; addYen(DUEL_YEN); addPts(20); g.paid = DUEL_YEN; } }
   else if (g.kind === "clash") { S.clashOut = (S.clashOut || []).concat([{ id: g.seed, to: g.to, toName: g.toName, s: g.s, ok: g.ok, at: now() }]); }
   else if (g.kind === "reply") { S.clashIn = Object.assign({}, S.clashIn, { [g.seed]: { s: g.s, ok: g.ok, at: now(), from: g.from } });
     const res = g.s > g.theirs ? CLASH_YEN : g.s === g.theirs ? CLASH_YEN / 2 : 0;
-    if (res && !S.gPaid["clash:" + g.seed]) { S.gPaid["clash:" + g.seed] = 1; addYen(res); if (res === CLASH_YEN) addPts(30); g.paid = res; } }
+    if (res && !S.gPaid["clash:" + g.seed]) { S.gPaid["clash:" + g.seed] = 1; addYen(res); if (res === CLASH_YEN) { addPts(30); track("clashw"); rw().st.clashW = (rw().st.clashW || 0) + 1; } g.paid = res; } }
   gTrim(); sfx("done"); if (g.s >= 1000) setTimeout(confetti, 300); persist(); rwCheck(); render(); if (CLOUD) cloudSync();
 }
 function quitGame() { clearTimeout(gameT); if (game && !game.done && game.kind === "duel") { S.duel[todayKey()] = { s: game.s, ok: game.ok }; persist(); if (CLOUD) cloudSync(); } game = null; render(); }
@@ -2353,10 +2816,10 @@ function gameRewards() {
   if (!cloudUser || !members.length) return; const me = cloudUser.uid; S.gPaid = Object.assign({}, S.gPaid); let changed = false;
   const yd = yday(), ys = members.filter(m => m.duel && m.duel[yd] && m.duel[yd].s > 0);
   if (ys.length >= 2 && !S.gPaid["champ:" + yd]) { const top = Math.max(...ys.map(m => m.duel[yd].s)), mine = ys.find(m => m.uid === me);
-    if (mine && mine.duel[yd].s === top) { S.gPaid["champ:" + yd] = 1; addYen(CHAMP_YEN); toast("🏆 Champion du défi d’hier : +¥" + CHAMP_YEN); changed = true; } }
+    if (mine && mine.duel[yd].s === top) { S.gPaid["champ:" + yd] = 1; addYen(CHAMP_YEN); rw().st.champ = (rw().st.champ || 0) + 1; toast("🏆 Champion du défi d’hier : +¥" + CHAMP_YEN); changed = true; } }
   for (const c of S.clashOut || []) { if (S.gPaid["clash:" + c.id]) continue; const o = members.find(m => m.uid === c.to), r = o && o.cin && o.cin[c.id]; if (!r) continue;
     const res = c.s > r.s ? CLASH_YEN : c.s === r.s ? CLASH_YEN / 2 : 0; S.gPaid["clash:" + c.id] = 1; changed = true;
-    if (res) { addYen(res); if (res === CLASH_YEN) addPts(30); toast(res === CLASH_YEN ? "⚔️ Tu as gagné ton clash contre " + (o.name || "ton pote") + " : +¥" + res : "⚔️ Égalité contre " + (o.name || "ton pote") + " : +¥" + res); } }
+    if (res) { addYen(res); if (res === CLASH_YEN) { addPts(30); track("clashw"); rw().st.clashW = (rw().st.clashW || 0) + 1; } toast(res === CLASH_YEN ? "⚔️ Tu as gagné ton clash contre " + (o.name || "ton pote") + " : +¥" + res : "⚔️ Égalité contre " + (o.name || "ton pote") + " : +¥" + res); } }
   if (changed) { persist(); rwCheck(); if (CLOUD) cloudSync(); }
 }
 function incomingClashes() { if (!cloudUser) return []; const me = cloudUser.uid, out = [];
@@ -2399,7 +2862,7 @@ function gamesBlock() {
     h("div", { class: "gcard duel" },
       h("div", { class: "gh" }, h("span", { class: "big" }, "⚡"), h("div", {}, h("b", {}, "Défi du jour"), h("small", {}, todayKey() >= DUEL_V2 ? "10 questions sur ce que tu as appris hier, 10 s chacune. Un seul essai !" : "10 questions, 10 s chacune, les mêmes pour tout le groupe. Un seul essai !")),
         mine ? h("span", { class: "gsc" }, mine.s + " pts") : h("button", { class: "btn small", onclick: () => startGame("duel") }, "Jouer")),
-      dl.length ? h("ol", { class: "glb" }, dl.map((x, i) => h("li", { class: x.uid === me ? "me" : "" }, h("span", {}, ["🥇", "🥈", "🥉"][i] || i + 1), avatar(x.look || {}, x.name, 26), h("span", { class: "n" }, x.name + (x.uid === me ? " (toi)" : "")), h("b", {}, x.s)))) : null,
+      dl.length ? h("ol", { class: "glb" }, dl.map((x, i) => h("li", { class: x.uid === me ? "me" : "" }, h("span", {}, ["🥇", "🥈", "🥉"][i] || i + 1), avatar(x.look || {}, x.name, 26), h("span", { class: "n" }, plateName(x.look, x.name + (x.uid === me ? " (toi)" : ""))), h("b", {}, x.s)))) : null,
       notYet.length ? h("small", { class: "muted" }, "Pas encore joué : " + notYet.join(", ")) : null,
       h("small", { class: "muted" }, "¥" + DUEL_YEN + " pour jouer · le meilleur score du jour gagne ¥" + CHAMP_YEN + " le lendemain")),
     h("div", { class: "gcard" },
