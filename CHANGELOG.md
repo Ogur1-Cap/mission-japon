@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 2.5 · 26 novembre 2026
+- **Illustrations estampe, lot 1** : les 20 autocollants Gourmandises et Animaux sont redessinés à la main en style estampe (ciel en dégradé, grain de papier, vagues seigaiha, tampon rouge avec le kanji). Les porte-bonheur correspondants (onigiri, dango, thé vert, sushi, bentō, kitsune, tanuki, shiba, dragon) aussi, dans un médaillon rond
+- Tant qu'un objet n'est pas obtenu, l'album montre seulement sa silhouette
+- Le porte-bonheur équipé s'affiche en illustration sur ton avatar
+- **Frise du groupe** : chaque membre y apparaît avec sa photo de profil (la lettre reste pour qui n'en a pas), et les membres sur la même gare ne se cachent plus les uns les autres
+
 ## 2.4.1 · 26 novembre 2026
 - Journal de supervision : sans aucun groupe, on joue en pur solo et anonyme (ni prénom ni identifiant envoyés). Le journal n'est lisible que par le compte de supervision
 
