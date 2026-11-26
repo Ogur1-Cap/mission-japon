@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 2.6 · 26 novembre 2026
+- **Illustrations estampe, lot 2** : les 18 autocollants Lieux et Fêtes sont redessinés (torii, château d'Osaka, Tokyo Tower, Fuji, onsen, grande roue, Rainbow Bridge, Shinjuku, cerisiers de Yoshino, koinobori, fūrin, chōchin, hanabi, tanabata, hina, tsukimi, kadomatsu, kimono)
+- Tous les porte-bonheur ont maintenant leur illustration, dont le tengu, l'oni, le hanafuda, le naruto et le maneki-neko d'or. L'album et les porte-bonheur n'utilisent plus aucun emoji
+
 ## 2.5 · 26 novembre 2026
 - **Illustrations estampe, lot 1** : les 20 autocollants Gourmandises et Animaux sont redessinés à la main en style estampe (ciel en dégradé, grain de papier, vagues seigaiha, tampon rouge avec le kanji). Les porte-bonheur correspondants (onigiri, dango, thé vert, sushi, bentō, kitsune, tanuki, shiba, dragon) aussi, dans un médaillon rond
 - Tant qu'un objet n'est pas obtenu, l'album montre seulement sa silhouette
