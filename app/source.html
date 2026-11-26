@@ -631,8 +631,27 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.0.1";
+const APP_VERSION = "2.0.2";
 const CLOUD = !window.claude;
+/* ---------- journal léger (supervision : activité + erreurs, lu par l'alerte bug et le bilan du lundi) ---------- */
+let jrQ = (() => { try { return JSON.parse(localStorage.getItem("mj.jr") || "[]"); } catch (e) { return []; } })(), jrBusy = false; const jrSeen = {};
+function jlog(t, x) { if (!CLOUD) return; try {
+  const msg = x == null ? "" : String(x).slice(0, 300), key = t + "|" + msg;
+  if (t === "sync" && navigator.onLine === false) return;
+  if ((t === "err" || t === "sync") && jrSeen[key] && Date.now() - jrSeen[key] < 36e5) return; jrSeen[key] = Date.now();
+  let nm = ""; try { nm = (prof() || {}).name || ""; } catch (e) {}
+  jrQ.push({ t, at: Date.now(), x: msg, name: nm.slice(0, 40) }); jrQ = jrQ.slice(-80); localStorage.setItem("mj.jr", JSON.stringify(jrQ)); } catch (e) {} }
+function jlogOpen() { try { const l = +localStorage.getItem("mj.jrOpen") || 0; if (Date.now() - l < 18e5) return; localStorage.setItem("mj.jrOpen", Date.now()); } catch (e) {} jlog("open"); }
+async function jrFlush() {
+  if (!CLOUD || jrBusy || !jrQ.length || !fb || !cloudUser) return; jrBusy = true;
+  const batch = jrQ.slice(0, 25), { F, db } = fb, uid = linked() ? cloudUser.uid.slice(0, 8) : "";
+  try { await Promise.all(batch.map(e => F.addDoc(F.collection(db, "journal"), { t: e.t, at: e.at, x: e.x, name: e.name, uid, v: APP_VERSION })));
+    jrQ = jrQ.slice(batch.length); try { localStorage.setItem("mj.jr", JSON.stringify(jrQ)); } catch (e) {} } catch (e) {}
+  jrBusy = false; }
+if (CLOUD) {
+  window.addEventListener("error", e => { const m = (e && e.message) || ""; if (!m || /^Script error|ResizeObserver/.test(m)) return; jlog("err", m + " @" + String(e.filename || "").split("/").pop() + ":" + (e.lineno || 0)); });
+  window.addEventListener("unhandledrejection", e => { const r = e && e.reason; jlog("err", "promesse : " + ((r && (r.code || r.message)) || String(r))); });
+}
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 const RB = "a i u e o ka ki ku ke ko sa shi su se so ta chi tsu te to na ni nu ne no ha hi fu he ho ma mi mu me mo ya yu yo ra ri ru re ro wa wo n".split(" ");
@@ -1294,7 +1313,7 @@ function finishSession() {
   clearAdv(); const k = todayKey();
   if (session.practice) { const pr = session.practice;
     if (!session.finished && session.done) { const pts = Math.round(100 * session.ok / Math.max(1, session.total)); pr.pts = pts;
-      if (session.done >= session.total) { track(pr.kind === "week" ? "revweek" : "revmix"); const st9 = rw().st; st9.revs = (st9.revs || 0) + 1; if (pr.kind === "week") st9.rev85 = Math.max(st9.rev85 || 0, pts); }
+      if (session.done >= session.total) { track(pr.kind === "week" ? "revweek" : "revmix"); jlog("revision", pr.kind + " " + pts); const st9 = rw().st; st9.revs = (st9.revs || 0) + 1; if (pr.kind === "week") st9.rev85 = Math.max(st9.rev85 || 0, pts); }
       if (pr.kind === "week") { S.rev = Object.assign({}, S.rev); const prev = S.rev[pr.wk] || 0; pr.prev = prev; S.rev[pr.wk] = Math.max(prev, pts);
         if (pts >= 70 && !(S.revPaid || {})[pr.wk]) { S.revPaid = Object.assign({}, S.revPaid, { [pr.wk]: 1 }); addYen(REV_YEN); pr.paid = true; } }
       sfx("done"); }
@@ -1308,7 +1327,7 @@ function finishSession() {
   }
   if (session.done >= 10 && !session.rwDone) {
     { const bd = boxDay(); if (!bd.lesson) { bd.lesson = 1; grantBox("bambou", "leçon du jour"); } }
-    session.rwDone = true; const st = rw().st; st.sessions = (st.sessions || 0) + 1; track("session");
+    session.rwDone = true; const st = rw().st; st.sessions = (st.sessions || 0) + 1; track("session"); jlog("session", session.ok + "/" + session.done);
     if (session.done >= 15 && session.ok === session.done) st.perfect = (st.perfect || 0) + 1;
     const hr = new Date().getHours(); if (hr >= 22 || hr < 4) st.night = 1; if (hr >= 4 && hr < 8) st.morning = 1;
   }
@@ -1507,7 +1526,7 @@ const examSteps = sc => sc.steps.filter(st => st[3]).length;
 function examEnd() {
   const n = examSteps(role.sc), pts = Math.round(100 * role.score / Math.max(1, n)), id = role.sc.id, st = rw().st;
   const prev = examBest(id); role.pts = pts; role.record = pts > prev && prev > 0; role.prev = prev;
-  st.ex = Object.assign({}, st.ex, { [id]: Math.max(prev, pts) });
+  st.ex = Object.assign({}, st.ex, { [id]: Math.max(prev, pts) }); jlog("exam", id + " " + pts);
   if (pts >= 80) { st.sc = Object.assign({}, st.sc, { [id]: 1 }); track("scene"); track("exam"); setTimeout(confetti, 300); }
   persist(); rwCheck(); if (CLOUD) cloudSync();
 }
@@ -1567,7 +1586,7 @@ function xpEnd() {
   if (!xp || xp.done) return; xp.done = true; clearInterval(xpT);
   const st = rw().st, key = xp.mode === "kanji" ? "kjBest" : "kxBest", score = xp.ok, acc = xp.n ? xp.ok / xp.n : 0, T = XP_TIERS[xp.mode];
   let tier = -1; T.forEach((v, i) => { if (score >= v) tier = i; });
-  const prev = st[key] || 0; if (score > prev) st[key] = score; xp.record = score > prev && prev > 0;
+  jlog("express", xp.mode + " " + score); const prev = st[key] || 0; if (score > prev) st[key] = score; xp.record = score > prev && prev > 0;
   const d = boxDay(); d.runs = (d.runs || 0) + 1; let box = null, why = "";
   if (tier < 0) why = "Encore " + (T[0] - score) + " bonne(s) réponse(s) pour le palier Bronze.";
   else if (acc < .7) why = "Précision sous 70 % : pas de boîte cette fois. Prends le temps de viser juste !";
@@ -2094,7 +2113,7 @@ function openBox(t) {
   bumpNest("bo", t, 1); st.boxes = (st.boxes || 0) + 1;
   st.pE = res.rar === "e" || res.rar === "l" ? 0 : (st.pE || 0) + 1; st.pL = res.rar === "l" ? 0 : (st.pL || 0) + 1;
   if (res.got) r.own[res.got.kind + ":" + res.got.x.id] = 1; else bump(r, "fr", res.frag);
-  track("box"); persist(); if (CLOUD) cloudSync();
+  track("box"); jlog("box", t + " " + res.rar); persist(); if (CLOUD) cloudSync();
   boxReveal(t, res);
 }
 function boxReveal(t, res) {
@@ -2150,7 +2169,7 @@ function claimAll(ev) {
 }
 function claim(set, id, ev, weekly) {
   if (set.c[id] || (set.p[id] || 0) < mDef(id).goal) return;
-  set.c[id] = true; addYen(weekly ? W_YEN : D_YEN, ev); rw().st.missions = (rw().st.missions || 0) + 1;
+  set.c[id] = true; jlog("mission", id); addYen(weekly ? W_YEN : D_YEN, ev); rw().st.missions = (rw().st.missions || 0) + 1;
   if (!weekly && set.ids.every(x => set.c[x])) track("dayset");
   persist(); rwCheck(); render();
 }
@@ -2509,6 +2528,7 @@ const cloudErr = e => (e && e.code) || "inconnue";
 
 async function cloudInit() {
   if (!CLOUD) return;
+  jlogOpen();
   try {
     const [A, Au, F] = await Promise.all([import(FB_BASE + "firebase-app.js"), import(FB_BASE + "firebase-auth.js"), import(FB_BASE + "firebase-firestore.js")]);
     const app = A.initializeApp(FB_CONFIG);
@@ -2524,7 +2544,7 @@ async function cloudInit() {
       if (linked()) await cloudPull(); else stopMembers();
       if (!session && !test) render();
     });
-  } catch (e) { cloudState = "error"; if (view === "groupe" && !session) render(); }
+  } catch (e) { cloudState = "error"; jlog("sync", "chargement Firebase impossible : " + ((e && e.message) || e)); if (view === "groupe" && !session) render(); }
 }
 async function finishEmailLink(email) {
   try { await fb.Au.signInWithEmailLink(fb.auth, email, location.href); try { localStorage.removeItem("mj.email"); } catch (e) {} toast("Connecté !"); }
@@ -2589,7 +2609,7 @@ async function cloudPull() {
     try { localStorage.setItem(keyFor(P.cur), JSON.stringify(S)); } catch (e) {}
     cloudDirty = true; await cloudPush();
     if (S.grp && S.grp.code) { await pushMember(); watchMembers(); }
-  } catch (e) { cloudState = "error"; cloudMsg = "Synchro impossible pour l’instant (" + cloudErr(e) + "). Ta progression reste enregistrée sur ce téléphone."; }
+  } catch (e) { cloudState = "error"; jlog("sync", "pull " + cloudErr(e)); cloudMsg = "Synchro impossible pour l’instant (" + cloudErr(e) + "). Ta progression reste enregistrée sur ce téléphone."; }
 }
 async function cloudPush() {
   if (!linked() || !cloudDirty) return; cloudDirty = false;
@@ -2600,8 +2620,8 @@ async function cloudPush() {
       if (JSON.stringify([S.look, S.nick]) !== before) { if (S.nick && p.name !== S.nick) { p.name = S.nick; saveP(); } applyTheme(); if (!session && !test) render(); } } } catch (e) {}
     await F.setDoc(ref, { json: JSON.stringify(S), updatedAt: Date.now(), v: 2 });
     await F.setDoc(F.doc(db, "users", uid), { name: p.name, level: p.level || "zero", group: (S.grp && S.grp.code) || null, updatedAt: Date.now() }, { merge: true });
-    cloudState = "synced"; lastSync = Date.now(); cloudMsg = "";
-  } catch (e) { cloudDirty = true; cloudState = "error"; cloudMsg = "Synchro impossible pour l’instant (" + cloudErr(e) + ")."; }
+    cloudState = "synced"; lastSync = Date.now(); cloudMsg = ""; jrFlush();
+  } catch (e) { cloudDirty = true; cloudState = "error"; jlog("sync", "push " + cloudErr(e)); cloudMsg = "Synchro impossible pour l’instant (" + cloudErr(e) + ")."; }
   updateSync();
 }
 async function pushMember() {
@@ -2801,7 +2821,7 @@ function gamePick(k) {
   render(); gameT = setTimeout(() => { if (game !== g) return; g.i++; if (g.i >= g.qs.length) gameEnd(); else gameAsk(); }, ok ? 900 : 1600);
 }
 function gameEnd() {
-  const g = game; g.done = true; clearTimeout(gameT); const today = todayKey(); S.gPaid = Object.assign({}, S.gPaid);
+  const g = game; g.done = true; clearTimeout(gameT); const today = todayKey(); jlog(g.kind === "duel" ? "defi" : g.kind === "clash" ? "clash" : "clash_reponse", g.s); S.gPaid = Object.assign({}, S.gPaid);
   if (g.kind === "duel") { S.duel[today] = { s: g.s, ok: g.ok }; track("duel"); { const st9 = rw().st; st9.duels = (st9.duels || 0) + 1; if (g.ok >= g.qs.length) st9.duel10 = 1; }
     if (!S.gPaid["duel:" + today]) { S.gPaid["duel:" + today] = 1; addYen(DUEL_YEN); addPts(20); g.paid = DUEL_YEN; } }
   else if (g.kind === "clash") { S.clashOut = (S.clashOut || []).concat([{ id: g.seed, to: g.to, toName: g.toName, s: g.s, ok: g.ok, at: now() }]); }
@@ -2881,8 +2901,8 @@ function accountFooter(inGroup) {
     h("button", { class: "toggle", onclick: cloudSignOut }, "Se déconnecter"),
     inGroup ? h("button", { class: "toggle", onclick: leaveGroup }, "Quitter le groupe") : null);
 }
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") cloudPush(); else if (linked() && !session && !test) { cloudDirty = true; cloudPush(); } });
-setInterval(() => { cloudPush(); }, 60000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") jlogOpen(); if (document.visibilityState === "hidden") { cloudPush(); jrFlush(); } else if (linked() && !session && !test) { cloudDirty = true; cloudPush(); } });
+setInterval(() => { cloudPush(); jrFlush(); }, 60000);
 cloudInit();
 
 applyTheme();
