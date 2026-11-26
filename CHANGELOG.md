@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 1.9 · 26 novembre 2026
+- Nouvelle organisation des onglets, chacun avec un rôle clair : Trajet pour apprendre, Pratique pour rejouer, Lexique pour consulter, Missions pour les récompenses, Groupe pour jouer avec les potes
+- Nouvel onglet **Pratique** (練), à la place de Scènes : les révisions (sorties de Missions) et les scènes. Chaque scène a ses deux boutons « S'entraîner » et « Examen » avec ton meilleur score, au lieu de deux listes séparées. Un point rouge apparaît quand la révision de la semaine t'attend
+- Accueil : sous ta session, une liste « Aussi aujourd'hui » montre ce qui reste à faire dans l'ordre (défi du jour du groupe, clash reçu, révision de la semaine, missions). Le bouton « Partager mon score » disparaît, le classement se met à jour tout seul
+- Groupe : les jeux et le classement passent en premier ; le code, le défi collectif et le train du groupe descendent en bas (ils restent en haut tant que tu es seul, pour inviter tes potes)
+- Une révision terminée ramène à l'onglet Pratique
+
 ## 1.8.1 · 26 novembre 2026
 - Défi du jour, à partir du 27 novembre : 10 questions sur ce que chacun a appris la veille (rappel espacé), complétées par les jours d'avant si besoin. Un vrai débutant n'a donc que des questions sur ce qu'il a déjà vu. Le défi du 26 reste commun à tout le groupe
 

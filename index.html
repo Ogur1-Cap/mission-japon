@@ -446,6 +446,13 @@ body.pv #app{padding-top:calc(var(--pvh,58px) + 4px)}
 .claim-all{display:block;width:100%;margin-top:14px;animation:glowA 1.8s ease-in-out infinite}
 @keyframes glowA{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 25%,transparent)}}
 .revs{display:grid;gap:8px}
+.rev.plan{width:100%;text-align:left;color:var(--ink);font:inherit;cursor:pointer}
+.rev.plan .arr{font-size:20px;color:var(--accent)}
+.rev.plan:not(.hot) .ic{background:var(--line);color:var(--ink)}
+.rev.plan.hot{border-color:var(--accent)}
+.scene .sc-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.scene .sc-act .btn{flex:1 1 auto}
+.scene .sc-act .btn.pass{border-color:var(--ok);color:var(--ok)}
 .rev{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
 .rev .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:18px}
 .rev.lock .ic{background:var(--line);color:var(--muted)}
@@ -558,7 +565,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.8.1";
+const APP_VERSION = "1.9";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -878,9 +885,9 @@ function buildCard(id) {
 
 /* ---------- views ---------- */
 let view = "trajet", session = null, chapter = null, lexMode = "h", role = null;
-const TABS = [["trajet", "道", "Trajet"], ["lexique", "字", "Lexique"], ["roles", "話", "Scènes"], ["missions", "賞", "Missions"]].concat(CLOUD ? [["groupe", "組", "Groupe"]] : []);
+const TABS = [["trajet", "道", "Trajet"], ["lexique", "字", "Lexique"], ["roles", "練", "Pratique"], ["missions", "賞", "Missions"]].concat(CLOUD ? [["groupe", "組", "Groupe"]] : []);
 function renderNav() {
-  const n = $("nav"); n.replaceChildren(...TABS.map(([id, g, l]) => h("button", { "aria-current": view === id ? "page" : false, onclick: () => go(id) }, h("span", { class: "g jp" }, g), l, (id === "missions" && claimable()) || (id === "groupe" && typeof incomingClashes === "function" && incomingClashes().length) ? h("span", { class: "dot", "aria-label": id === "groupe" ? "Un pote te défie" : "Récompense à récupérer" }) : null)));
+  const n = $("nav"); n.replaceChildren(...TABS.map(([id, g, l]) => h("button", { "aria-current": view === id ? "page" : false, onclick: () => go(id) }, h("span", { class: "g jp" }, g), l, (id === "missions" && claimable()) || (id === "groupe" && typeof incomingClashes === "function" && incomingClashes().length) || (id === "roles" && weekRevReady()) ? h("span", { class: "dot", "aria-label": id === "groupe" ? "Un pote te défie" : id === "roles" ? "Révision de la semaine disponible" : "Récompense à récupérer" }) : null)));
 }
 function go(v) { if (game && (v !== "groupe" || v === view)) quitGame(); const again = v === view; view = v; if (v !== "trajet" || again) chapter = null; if (v !== "roles" || again) stopRole(); render(); window.scrollTo(0, 0); }
 let lastViewKey = "";
@@ -975,8 +982,7 @@ function viewHome() {
           h("div", { class: "stat" }, h("b", {}, rwStreak()), h("span", {}, "jours d’affilée" + (freezes() ? " · 🧊" + freezes() : ""))),
           h("div", { class: "stat" }, h("b", {}, mastered + "/" + all.length), h("span", {}, "maîtrisés")))),
       h("div", { class: "go" }, session && !session.finished ? h("button", { class: "btn", onclick: () => go("session") }, "Reprendre ma session") : h("button", { class: "btn", onclick: startSession }, doneToday ? "Continuer" : "Commencer"), romajiToggle())),
-    (() => { const dd = rwDay(), nDone = dd.ids.filter(id => (dd.p[id] || 0) >= mDef(id).goal).length, cl = claimable();
-      return h("button", { class: "today", style: "width:100%;text-align:left;cursor:pointer;grid-template-columns:auto 1fr auto;gap:12px", onclick: () => go("missions") }, h("span", { style: "font-size:26px" }, cl ? "🎁" : "🎯"), h("span", {}, h("b", {}, cl ? cl + " récompense(s) à récupérer" : "Missions du jour : " + nDone + " / " + dd.ids.length), h("span", { class: "muted", style: "display:block;font-size:13px" }, "¥" + yen().toLocaleString("fr-FR") + " en poche · cadres, titres et thèmes à gagner")), h("span", { style: "font-size:20px;color:var(--accent)" }, "→")); })(),
+    ...todayPlan(),
     CLOUD && !linked() ? h("button", { class: "today", style: "width:100%;text-align:left;cursor:pointer;grid-template-columns:auto 1fr auto;gap:12px", onclick: () => go("groupe") }, h("span", { style: "font-size:26px" }, "☁️"), h("span", {}, h("b", {}, "Sauvegarde ta progression et rejoins le classement"), h("span", { class: "muted", style: "display:block;font-size:13px" }, "Compte gratuit, connexion avec Google ou par e-mail")), h("span", { style: "font-size:20px;color:var(--accent)" }, "→")) : null,
     h("div", { class: "sec-h" }, h("h2", {}, "Ta ligne Osaka → Tokyo"), h("span", { class: "muted", style: "font-size:13px" }, "Kana : " + kanaPct + " %")),
     railView(cur),
@@ -991,7 +997,7 @@ function viewHome() {
         h("div", { class: "stripe" }, h("span", {}, prev ? "← " + prev.kana : "← 関空"), h("span", {}, pct + " %"), h("span", {}, next ? next.kana + " →" : "空港 →")));
     })),
     h("p", { class: "hint" }, "La gare entourée, c’est ton étape en cours. Elle passe à la suivante quand tu en maîtrises 70 %. Touche une gare pour revoir ses phrases."),
-    h("div", { style: "display:flex;gap:10px;flex-wrap:wrap;margin-top:14px" }, h("button", { class: "btn", onclick: shareScore }, "Partager mon score au groupe")),
+    CLOUD ? null : h("div", { style: "display:flex;gap:10px;flex-wrap:wrap;margin-top:14px" }, h("button", { class: "btn", onclick: shareScore }, "Partager mon score au groupe")),
     h("p", { class: "sync", id: "sync" }),
     CLOUD ? null : backupBox(),
     h("p", { class: "sync", style: "margin-top:14px" }, "Mission Japon · version " + APP_VERSION, window.claude ? null : [" · ", h("a", { href: "guide.html", style: "color:var(--accent)" }, "Guide d’utilisation")]));
@@ -1175,6 +1181,7 @@ function revPool(kind, wk) {
   return seenBetween(wk, dayAdd(wk, 6));
 }
 const weekOpen = wk => wk < weekKeyOf() || [0, 6].includes(new Date().getDay());
+const weekRevReady = () => { const wk = weekKeyOf(); return weekOpen(wk) && !(S.rev || {})[wk] && revPool("week", wk).length >= 8; };
 const REV_N = 20, REV_YEN = 200;
 function startRevision(kind, wk) {
   const pool = revPool(kind, wk); if (pool.length < 8) { toast("Pas encore assez de cartes vues pour cette révision."); return; }
@@ -1282,7 +1289,7 @@ function viewSession() {
       h("p", { class: "hint" }, "Les cartes ratées reviendront plus vite dans tes sessions."),
       h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
         h("button", { class: "btn ghost", onclick: () => startRevision(pr.kind, pr.wk) }, "Recommencer"),
-        h("button", { class: "btn", onclick: () => { session = null; mTab = "missions"; go("missions"); } }, "Retour aux missions")));
+        h("button", { class: "btn", onclick: () => { session = null; go("roles"); } }, "Retour à la pratique")));
   }
   if (s.finished) {
     const rate = s.done ? Math.round(100 * s.ok / s.done) : 0;
@@ -1435,18 +1442,14 @@ function startFree(f) { role = { mode: "free", sc: f, log: [], busy: false, turn
 function viewRoles() {
   if (!role) {
     return h("div", {},
-      h("div", { class: "sec-h", style: "margin-top:0" }, h("h2", {}, "Scènes"), romajiToggle()),
-      h("p", { class: "muted" }, "Des situations que tu vas vraiment vivre au Japon. Entraîne-toi avec les aides, puis passe l’examen sans filet."),
-      h("h3", { class: "sc-h" }, h("span", { class: "jp" }, "練習"), "Entraînement"),
-      h("p", { class: "hint", style: "margin-top:2px" }, "Traductions et rōmaji disponibles, tu peux te tromper autant que tu veux."),
-      h("div", { class: "scenes" }, SCENES.map(sc => { const c = CH.find(x => x.id === sc.ch), done = !!(rw().st.sc || {})[sc.id];
-        return h("button", { class: "scene", style: "--lc:var(" + c.lc + ")", onclick: () => startScripted(sc) }, h("span", { class: "jp" }, c.name + " · " + c.ro + (done ? "  ✓" : "")), h("b", {}, sc.title), h("span", {}, sc.desc)); })),
-      h("h3", { class: "sc-h", style: "margin-top:26px" }, h("span", { class: "jp" }, "試験"), "Mode examen"),
-      h("p", { class: "hint", style: "margin-top:2px" }, "Comme en vrai : pas de traduction, pas de rōmaji, une seule chance par réplique. Score sur 100, il faut 80 pour réussir. Le bilan détaillé arrive à la fin."),
-      h("div", { class: "exams" }, SCENES.map(sc => { const c = CH.find(x => x.id === sc.ch), b = examBest(sc.id);
-        return h("button", { class: "exam", style: "--lc:var(" + c.lc + ")", onclick: () => startExam(sc) },
-          h("span", { class: "nm" }, h("b", {}, sc.title), h("small", { class: "jp" }, c.name + " · " + c.ro)),
-          h("span", { class: "sc" + (b >= 80 ? " pass" : "") }, b ? b + "/100" : "À passer")); })),
+      h("header", { class: "top", style: "margin-bottom:0" }, h("div", {}, h("h1", { style: "font-size:24px" }, "Pratique"), h("small", { class: "muted" }, "Tout ce que tu peux rejouer, quand tu veux"))),
+      ...revBlock(),
+      h("div", { class: "sec-h" }, h("h2", {}, "Scènes"), romajiToggle()),
+      h("p", { class: "hint", style: "margin-top:2px" }, "Des situations que tu vas vraiment vivre. « S’entraîner » : traductions et rōmaji disponibles, erreurs permises. « Examen » : sans aide, une seule chance par réplique, 80/100 pour réussir."),
+      h("div", { class: "scenes" }, SCENES.map(sc => { const c = CH.find(x => x.id === sc.ch), done = !!(rw().st.sc || {})[sc.id], b = examBest(sc.id);
+        return h("div", { class: "scene", style: "--lc:var(" + c.lc + ")" }, h("span", { class: "jp" }, c.name + " · " + c.ro + (done ? "  ✓" : "")), h("b", {}, sc.title), h("span", {}, sc.desc),
+          h("div", { class: "sc-act" }, h("button", { class: "btn small", onclick: () => startScripted(sc) }, "S’entraîner"),
+            h("button", { class: "btn small ghost" + (b >= 80 ? " pass" : ""), onclick: () => startExam(sc) }, "試験 Examen" + (b ? " · " + b + "/100" : "")))); })),
       !window.claude ? null : h("h3", { style: "margin-top:22px;font-size:16px" }, "Conversation libre avec Claude"),
       !window.claude ? null : h("p", { class: "muted", style: "margin:4px 0 0" }, sample ? "Claude joue le personnage. Réponds comme tu peux, en rōmaji, en kana ou même en français : il te corrige à chaque réplique." : "La conversation libre marche seulement dans la version Claude de l’appli. Les scènes guidées marchent partout."),
       !window.claude ? null : h("div", { class: "scenes" }, FREE.map(f => { const c = CH.find(x => x.id === f.ch);
@@ -1905,6 +1908,17 @@ function revBlock() {
   });
   return [h("div", { class: "sec-h" }, h("h2", {}, "Révisions"), h("span", { class: "muted", style: "font-size:13px" }, "sans limite")), h("div", { class: "revs" }, rows)];
 }
+/* accueil : ce qui t'attend aujourd'hui en plus de la session, dans l'ordre où le faire */
+function todayPlan() {
+  const rows = [], row = (ic, title, sub, on, hot) => rows.push(h("button", { class: "rev plan" + (hot ? " hot" : ""), onclick: on }, h("div", { class: "ic jp" }, ic), h("div", { class: "tx" }, h("b", {}, title), h("small", {}, sub)), h("span", { class: "arr", "aria-hidden": "true" }, "→")));
+  const inGrp = CLOUD && linked() && S.grp && S.grp.code, inc = inGrp ? incomingClashes() : [];
+  if (inGrp && !(S.duel || {})[todayKey()]) row("勝", "Défi du jour du groupe", (todayKey() >= DUEL_V2 ? "10 questions sur ce que tu as vu hier" : "10 questions, les mêmes pour tout le groupe") + " · ¥" + DUEL_YEN, () => go("groupe"), true);
+  if (inc.length) row("戦", inc.length > 1 ? inc.length + " potes te défient" : inc[0].fromName + " te défie", "Relève le clash, ¥" + CLASH_YEN + " pour le gagnant", () => go("groupe"), true);
+  if (weekRevReady()) { const wk = weekKeyOf(); row("週", "Révision de la semaine", "Les cartes de ta semaine · ¥" + REV_YEN + " à 70/100", () => startRevision("week", wk), true); }
+  const dd = rwDay(), nDone = dd.ids.filter(id => (dd.p[id] || 0) >= mDef(id).goal).length, cl = claimable();
+  row("賞", cl ? cl + " récompense(s) à récupérer" : "Missions du jour : " + nDone + " / " + dd.ids.length, "¥" + yen().toLocaleString("fr-FR") + " en poche · cadres, titres et thèmes à gagner", () => go("missions"), !!cl);
+  return [h("div", { class: "sec-h" }, h("h2", {}, "Aussi aujourd’hui")), h("div", { class: "revs" }, rows)];
+}
 function viewMissions() {
   const r = rw(), d = rwDay(), w = rwWeek(), L = look(), p = prof();
   rwCheck();
@@ -1929,8 +1943,7 @@ function viewMissions() {
       h("div", { class: "mlist" }, d.ids.map(id => row(d, id, false))), omi,
       h("div", { class: "sec-h" }, h("h2", {}, "Missions de la semaine"), h("span", { class: "muted", style: "font-size:13px" }, left ? "encore " + left + " j" : "dernier jour")),
       h("div", { class: "mlist" }, w.ids.map(id => row(w, id, true))),
-      revBlock(),
-      h("p", { class: "hint" }, "Les missions se valident toutes seules pendant tes sessions normales. Les yens servent dans la boutique, ils ne comptent pas dans le classement."));
+      h("p", { class: "hint" }, "Les missions se valident toutes seules pendant tes sessions normales. Les yens servent dans la boutique, ils ne comptent pas dans le classement. Les révisions sont dans l’onglet Pratique."));
   } else if (mTab === "boutique") {
     const card = (kind, x) => {
       const has = owns(kind, x.id), on = L[kind] === x.id;
@@ -2143,7 +2156,7 @@ async function pushMember() {
 function watchMembers() {
   if (membersUnsub || !S.grp || !S.grp.code) return;
   const { F, db } = fb;
-  membersUnsub = F.onSnapshot(F.collection(db, "groups", S.grp.code, "members"), snap => { members = snap.docs.map(d => Object.assign({ uid: d.id }, d.data())); leadCheck(); gameRewards(); if (view === "groupe" && !session && !test) render(); }, () => { membersUnsub = null; });
+  membersUnsub = F.onSnapshot(F.collection(db, "groups", S.grp.code, "members"), snap => { members = snap.docs.map(d => Object.assign({ uid: d.id }, d.data())); leadCheck(); gameRewards(); if ((view === "groupe" || (view === "trajet" && !chapter)) && !session && !test && P.cur && !adding) render(); else if (P.cur && !test && !adding && view !== "session") renderNav(); }, () => { membersUnsub = null; });
 }
 function leadCheck() {
   if (!cloudUser || members.length < 2 || rw().st.lead) return;
@@ -2246,12 +2259,15 @@ function viewGroupe() {
   const copyCode = async () => { try { if (navigator.share) { await navigator.share({ text: shareTxt }); return; } } catch (e) { if (e && e.name === "AbortError") return; } try { await navigator.clipboard.writeText(shareTxt); toast("Invitation copiée"); } catch (e) { toast("Code : " + S.grp.code); } };
   const medal = i => ["🥇", "🥈", "🥉"][i] || String(i + 1);
   const pctSt = i => "calc(12px + (100% - 24px) * " + (i / (CH.length - 1)) + ")";
-  wrap.append(
+  const info = [
     h("section", { class: "led", "aria-label": "Code du groupe" }, h("div", { class: "lbl" }, "グループ"), h("div", { class: "dest" }, S.grp.code), h("div", { class: "lbl" }, list.length + " 人"),
       h("div", { class: "row" }, h("span", {}, "Défi de la semaine : " + done + "/" + target + " sessions"), h("button", { class: "btn small", style: "padding:4px 10px;font-size:13px", onclick: copyCode }, "Inviter"))),
     h("div", { style: "margin-top:10px;height:10px;border-radius:99px;background:var(--line);overflow:hidden" }, h("i", { style: "display:block;height:100%;width:" + Math.min(100, Math.round(100 * done / target)) + "%;background:var(--ok);transition:width .8s" })),
     h("div", { class: "rail", style: "margin-top:18px" }, h("div", { class: "line" }), CH.map((c, i) => h("div", { class: "st", style: "left:" + pctSt(i) + ";--lc:var(" + c.lc + ")" })),
-      list.map((m, i) => h("div", { title: m.name, style: "position:absolute;top:" + (2 + (i % 3) * 3) + "px;left:" + pctSt(Math.max(0, Math.min(5, m.station || 0))) + ";margin-left:" + (-13 + (i % 3) * 8) + "px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(" + CH[i % 6].lc + ");border:2px solid var(--surface)" }, (m.name || "?").charAt(0).toUpperCase()))),
+      list.map((m, i) => h("div", { title: m.name, style: "position:absolute;top:" + (2 + (i % 3) * 3) + "px;left:" + pctSt(Math.max(0, Math.min(5, m.station || 0))) + ";margin-left:" + (-13 + (i % 3) * 8) + "px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(" + CH[i % 6].lc + ");border:2px solid var(--surface)" }, (m.name || "?").charAt(0).toUpperCase())))];
+  const alone = list.length < 2;
+  wrap.append(
+    ...(alone ? info : []),
     ...gamesBlock(),
     h("div", { class: "sec-h" }, h("h2", {}, "Classement"), h("div", { class: "seg" }, h("button", { "aria-pressed": lbMode === "week" ? "true" : "false", onclick: () => { lbMode = "week"; render(); } }, "Semaine"), h("button", { "aria-pressed": lbMode === "total" ? "true" : "false", onclick: () => { lbMode = "total"; render(); } }, "Total"))),
     h("div", { class: "plist" }, list.length ? list.map((m, i) => h("div", { class: "ph", style: m.uid === cloudUser.uid ? "border-color:var(--accent);border-width:2px" : "" },
@@ -2261,6 +2277,7 @@ function viewGroupe() {
           h("div", { style: "height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden" }, h("i", { style: "display:block;height:100%;border-radius:3px;background:var(--accent);width:" + Math.round(100 * (m[key] || 0) / maxV) + "%;transition:width .8s" })))),
       h("div", { class: "j", style: "grid-row:1/span 2;grid-column:2;font-variant-numeric:tabular-nums" }, (m[key] || 0) + " pts"))) : h("p", { class: "muted" }, "Chargement du classement…")),
     h("p", { class: "hint" }, "Points : 50 par session du jour, 2 par bonne réponse, 10 par carte maîtrisée, 30 par scène réussie, plus un bonus de série. Le classement de la semaine repart à zéro chaque lundi."),
+    ...(alone ? [] : [h("div", { class: "sec-h" }, h("h2", {}, "Code et défi collectif"), h("span", { class: "muted", style: "font-size:13px" }, "où en est chacun")), ...info]),
     msg, accountFooter(true));
   return wrap;
 }
