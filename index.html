@@ -784,7 +784,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.3";
+const APP_VERSION = "2.4";
 const CLOUD = !window.claude;
 /* ---------- journal léger (supervision : activité + erreurs, lu par l'alerte bug et le bilan du lundi) ---------- */
 let jrQ = (() => { try { return JSON.parse(localStorage.getItem("mj.jr") || "[]"); } catch (e) { return []; } })(), jrBusy = false; const jrSeen = {};
@@ -2801,7 +2801,18 @@ async function switchGroup(code) {
   try { await pushMember(); watchMembers(); cloudDirty = true; await cloudPush(); } catch (e) {}
   render();
 }
-let grpAddOpen = false;
+let grpAddOpen = false, grpRenOpen = false, grpDocUnsub = null;
+const GRP_DEF = "Mission Japon";
+const cleanGrpName = v => String(v || "").replace(/\s+/g, " ").trim().slice(0, 28);
+/* nom affiché d’un groupe : son nom s’il a été changé, sinon son code (plusieurs groupes peuvent garder le nom par défaut) */
+const grpLabel = g => g && g.name && g.name !== GRP_DEF ? g.name : (g && g.code) || "";
+async function renameGroup(v) {
+  const nm = cleanGrpName(v), code = S.grp && S.grp.code; if (!code) return;
+  if (!nm) { toast("Donne un nom au groupe"); return; }
+  try { await fb.F.updateDoc(fb.F.doc(fb.db, "groups", code), { name: nm }); if (S.grp && S.grp.code === code) S.grp.name = nm; persist(); cloudDirty = true; grpRenOpen = false; toast("Groupe renommé"); }
+  catch (e) { toast(e && e.code === "permission-denied" ? "Seule la personne qui a créé le groupe peut le renommer" : "Renommage impossible (" + cloudErr(e) + ")"); }
+  render();
+}
 function linked() { return !!(cloudUser && prof() && prof().uid === cloudUser.uid); }
 const cloudErr = e => (e && e.code) || "inconnue";
 
@@ -2935,6 +2946,9 @@ async function pushMemberB(g, duel, cout, cin) {
 function watchMembers() {
   if (membersUnsub || !S.grp || !S.grp.code) return;
   const { F, db } = fb;
+  const gcode = S.grp.code;
+  grpDocUnsub = F.onSnapshot(F.doc(db, "groups", gcode), d => { if (!d.exists() || !S.grp || S.grp.code !== gcode) return; const x = d.data() || {}, nm = cleanGrpName(x.name) || GRP_DEF;
+    if (S.grp.name !== nm || S.grp.owner !== x.owner) { S.grp.name = nm; S.grp.owner = x.owner || ""; persist(); if (view === "groupe" && !game && !grpRenOpen && !grpAddOpen && !session && !test) render(); } }, () => {});
   membersUnsub = F.onSnapshot(F.collection(db, "groups", S.grp.code, "members"), snap => { members = snap.docs.map(d => Object.assign({ uid: d.id }, d.data())); leadCheck(); gameRewards(); if ((view === "groupe" || (view === "trajet" && !chapter)) && !session && !test && P.cur && !adding) render(); else if (P.cur && !test && !adding && view !== "session") renderNav(); }, () => { membersUnsub = null; });
 }
 function leadCheck() {
@@ -2942,7 +2956,7 @@ function leadCheck() {
   const wk = weekKeyOf(), sc = m => m.weekKey === wk ? (m.week || 0) : 0, top = members.slice().sort((x, y) => sc(y) - sc(x));
   if (top[0].uid === cloudUser.uid && sc(top[0]) > sc(top[1])) { rw().st.lead = 1; persist(); rwCheck(); }
 }
-function stopMembers() { if (membersUnsub) { membersUnsub(); membersUnsub = null; } members = []; }
+function stopMembers() { if (grpDocUnsub) { grpDocUnsub(); grpDocUnsub = null; } grpRenOpen = false; if (membersUnsub) { membersUnsub(); membersUnsub = null; } members = []; }
 let lastSync = 0;
 async function syncNow(btn) { if (!linked()) return; if (btn) { btn.disabled = true; btn.textContent = "Synchro…"; }
   await cloudPull(); toast(cloudState === "error" ? (cloudMsg || "Synchro impossible pour l’instant") : "Synchronisé ✓"); if (!session && !test) render(); }
@@ -2953,7 +2967,7 @@ async function createGroup() {
   const prevCode = S.grp && S.grp.code;
   try {
     await F.setDoc(F.doc(db, "groups", code), { name: "Mission Japon", owner: cloudUser.uid, createdAt: Date.now() });
-    stashActive(); clearSlots(); S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf() }; stopMembers(); persist();
+    stashActive(); clearSlots(); S.grp = { code, points: 0, week: 0, sessions: 0, weekKey: weekKeyOf(), name: GRP_DEF, owner: cloudUser.uid }; stopMembers(); persist();
     await pushMember(); cloudDirty = true; await cloudPush(); watchMembers(); grpAddOpen = false; toast("Groupe créé : " + code);
   } catch (e) { if (!S.grp || S.grp.code !== prevCode) { clearSlots(); if (prevCode) loadGroup(prevCode); } cloudMsg = "Création impossible (" + cloudErr(e) + ")."; }
   cloudBusy = false; render();
@@ -3029,11 +3043,19 @@ function viewGroupe() {
   if (!S.grp || !S.grp.code) { joinBox(); wrap.append(msg, accountFooter()); return wrap; }
   { const codes = allGroups();
     wrap.append(h("div", { class: "grpsel" }, h("span", { class: "muted", style: "font-size:13px" }, codes.length > 1 ? "Mes groupes" : "Mon groupe"),
-      ...codes.map(c => h("button", { class: "toggle", "aria-pressed": c === S.grp.code ? "true" : "false", disabled: !!game, onclick: () => switchGroup(c) }, c)),
+      ...codes.map(c => h("button", { class: "toggle", title: c, "aria-pressed": c === S.grp.code ? "true" : "false", disabled: !!game, onclick: () => switchGroup(c) }, grpLabel(c === S.grp.code ? S.grp : ((S.grpOff || {})[c] || {}).grp) || c)),
       h("button", { class: "toggle", "aria-pressed": grpAddOpen ? "true" : "false", onclick: () => { grpAddOpen = !grpAddOpen; render(); } }, grpAddOpen ? "✕ Fermer" : "＋ Autre groupe")));
     if (grpAddOpen) { joinBox(); wrap.append(h("p", { class: "hint" }, "Chaque groupe a son classement, son défi du jour et ses clashs. Tes sessions comptent dans tous tes groupes, mais personne ne voit tes autres groupes.")); } }
   grpEnsureWeek();
   if (game) return viewGame();
+  { const isOwner = !!(S.grp.owner && cloudUser && S.grp.owner === cloudUser.uid);
+    if (grpRenOpen && isOwner) {
+      const ri = h("input", { id: "grpName", value: S.grp.name || GRP_DEF, maxlength: "28", style: inputStyle, autocomplete: "off" });
+      ri.addEventListener("keydown", e => { if (e.key === "Enter") renameGroup(ri.value); if (e.key === "Escape") { grpRenOpen = false; render(); } });
+      wrap.append(h("div", { class: "today", style: "grid-template-columns:1fr;margin-top:0" }, h("div", {}, h("div", { class: "eyebrow" }, "Renommer le groupe"), h("p", { class: "muted", style: "margin:4px 0 0" }, "Tout le groupe verra le nouveau nom. Le code ne change pas.")),
+        h("div", { style: "display:flex;gap:8px;flex-wrap:wrap" }, ri, h("button", { class: "btn", onclick: () => renameGroup(ri.value) }, "Enregistrer"), h("button", { class: "btn ghost", onclick: () => { grpRenOpen = false; render(); } }, "Annuler"))));
+      setTimeout(() => { try { ri.focus(); ri.select(); } catch (e) {} }, 30);
+    } else wrap.append(h("div", { class: "sec-h grp-name", style: "margin-top:0" }, h("h2", {}, S.grp.name || GRP_DEF), isOwner ? h("button", { class: "btn small ghost", onclick: () => { grpRenOpen = true; render(); } }, "✎ Renommer") : null)); }
   gameRewards();
   const wk = weekKeyOf();
   const list = members.map(m => Object.assign({}, m, { wpts: m.weekKey === wk ? (m.week || 0) : 0, wses: m.weekKey === wk ? (m.sessions || 0) : 0 }));
@@ -3041,7 +3063,7 @@ function viewGroupe() {
   list.sort((a, b) => (b[key] || 0) - (a[key] || 0));
   const maxV = Math.max(1, ...list.map(m => m[key] || 0));
   const target = Math.max(10, 5 * list.length), done = list.reduce((s2, m) => s2 + m.wses, 0);
-  const shareTxt = "Rejoins-moi sur Mission Japon 🇯🇵 " + location.origin + location.pathname + " · code du groupe : " + S.grp.code;
+  const shareTxt = "Rejoins " + (S.grp.name && S.grp.name !== GRP_DEF ? "mon groupe « " + S.grp.name + " »" : "moi") + " sur Mission Japon 🇯🇵 " + location.origin + location.pathname + " · code du groupe : " + S.grp.code;
   const copyCode = async () => { try { if (navigator.share) { await navigator.share({ text: shareTxt }); return; } } catch (e) { if (e && e.name === "AbortError") return; } try { await navigator.clipboard.writeText(shareTxt); toast("Invitation copiée"); } catch (e) { toast("Code : " + S.grp.code); } };
   const medal = i => ["🥇", "🥈", "🥉"][i] || String(i + 1);
   const pctSt = i => "calc(12px + (100% - 24px) * " + (i / (CH.length - 1)) + ")";

@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 2.4 · 26 novembre 2026
+- **Renommer un groupe** : la personne qui a créé le groupe voit « ✎ Renommer » sous la liste de ses groupes. Le nouveau nom s'affiche en direct chez tous les membres, le code ne change pas
+- Les groupes apparaissent par leur nom dans la liste du haut (par leur code tant qu'ils gardent le nom par défaut), et l'invitation partagée mentionne le nom
+- Seul le créateur peut renommer : un autre membre ou une personne extérieure est refusé par les règles Firebase
+
 ## 2.3 · 26 novembre 2026
 - **Plusieurs groupes à la fois** : dans l'onglet Groupe, tes groupes apparaissent en haut, touche un code pour passer de l'un à l'autre, et « ＋ Autre groupe » pour en rejoindre ou en créer un nouveau
 - Chaque groupe garde son classement, son défi du jour et ses clashs. Tes sessions et tes points comptent dans tous tes groupes
