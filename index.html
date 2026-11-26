@@ -647,7 +647,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.0.2";
+const APP_VERSION = "2.0.3";
 const CLOUD = !window.claude;
 /* ---------- journal léger (supervision : activité + erreurs, lu par l'alerte bug et le bilan du lundi) ---------- */
 let jrQ = (() => { try { return JSON.parse(localStorage.getItem("mj.jr") || "[]"); } catch (e) { return []; } })(), jrBusy = false; const jrSeen = {};
@@ -660,8 +660,9 @@ function jlog(t, x) { if (!CLOUD) return; try {
 function jlogOpen() { try { const l = +localStorage.getItem("mj.jrOpen") || 0; if (Date.now() - l < 18e5) return; localStorage.setItem("mj.jrOpen", Date.now()); } catch (e) {} jlog("open"); }
 async function jrFlush() {
   if (!CLOUD || jrBusy || !jrQ.length || !fb || !cloudUser) return; jrBusy = true;
-  const batch = jrQ.slice(0, 25), { F, db } = fb, uid = linked() ? cloudUser.uid.slice(0, 8) : "";
-  try { await Promise.all(batch.map(e => F.addDoc(F.collection(db, "journal"), { t: e.t, at: e.at, x: e.x, name: e.name, uid, v: APP_VERSION })));
+  const solo = !(S && S.grp && S.grp.code); // sans groupe = pur solo : anonyme, personne ne sait qui utilise l'appli
+  const batch = jrQ.slice(0, 25), { F, db } = fb, uid = linked() && !solo ? cloudUser.uid.slice(0, 8) : "";
+  try { await Promise.all(batch.map(e => F.addDoc(F.collection(db, "journal"), { t: e.t, at: e.at, x: e.x, name: solo ? "" : e.name, uid, v: APP_VERSION })));
     jrQ = jrQ.slice(batch.length); try { localStorage.setItem("mj.jr", JSON.stringify(jrQ)); } catch (e) {} } catch (e) {}
   jrBusy = false; }
 if (CLOUD) {
