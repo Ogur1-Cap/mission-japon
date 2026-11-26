@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 1.8 · 26 novembre 2026
+- Groupe : nouveaux jeux. Le **défi du jour** : 10 questions chronométrées (10 s chacune), les mêmes pour tout le groupe, un seul essai. Plus tu réponds vite, plus tu marques. ¥50 pour jouer, ¥150 le lendemain pour le meilleur score
+- **Clashs** : défie un pote sur 10 questions ; il ou elle joue les mêmes et le meilleur score gagne ¥100 (¥50 chacun en cas d'égalité). Un point rouge sur l'onglet Groupe signale qu'on te défie
+
+## 1.7 · 26 novembre 2026
+- Thèmes : chaque thème change aussi la forme des boutons, des cartes et des onglets. Sakura en pilules dégradées avec une fleur en coin, Matcha façon céramique épaisse, Indigo en estampe avec une vague sous les boutons, Fuji en verre givré, Or impérial en métal doré avec un reflet qui passe, Kyoto en laque brillante avec une barre vermillon, Shibuya en néon qui grésille et « glitche » au toucher
+- Effets au toucher : pétales, feuilles, gouttes, flocons, paillettes, érables ou néons jaillissent de chaque bouton selon ton thème. L'interrupteur « Effets animés » coupe tout
+
 ## 1.6 · 26 novembre 2026
 - Missions : nouvelle rubrique « Révisions », sans limite et sans toucher à ta session du jour
 - Révision mélangée : 20 questions tirées de tes jours précédents, en priorité les cartes qui te résistent. Disponible tout le temps
