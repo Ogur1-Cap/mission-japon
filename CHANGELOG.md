@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 2.2 · 26 novembre 2026
+- **Les récompenses transforment l'app, d'autant plus qu'elles sont rares**
+- Thèmes épiques : reflet qui passe sur les boutons, fond animé plus dense, onglet actif lumineux. Thèmes légendaires : en plus, bordures animées autour des cartes, titre de l'app qui scintille, sceau et barre du bas qui brillent, fond deux fois plus dense
+- Animations : rare = quelques symboles qui flottent dans toute l'app, épique = pétales de sakura, lucioles ou néon sur tout l'écran, légendaire = feux d'artifice (Hanabi) ou shinkansen éclair qui traverse l'écran (Éclair). L'ambiance s'efface pendant les sessions et Kana Express
+- Effets de bonne réponse : plus de particules selon la rareté, onde et halo pour les épiques, pluie d'or ou de flammes et dragon qui traverse l'écran pour les légendaires
+- Titres, cadres, porte-bonheur, trains, sillages, plaques, style de cartes et panneau : couleur, lueur, reflet ou animation selon leur rareté
+- Équiper un objet épique ou légendaire lance une vague de couleur sur tout l'écran : « ton app se transforme »
+
 ## 2.1 · 26 novembre 2026
 - **Une rareté pour chaque récompense** : les objets de la boutique (selon leur prix) et ceux des exploits (selon la difficulté de l'exploit) ont maintenant aussi une rareté, affichée dans la collection et la boutique
 - **Ouvertures épiques** : la boîte se charge et tremble, l'écran vire au violet, puis elle explose en éclats avec un flash, une onde de choc, des rayons qui tournent et une fanfare
