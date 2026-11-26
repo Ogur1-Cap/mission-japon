@@ -1,5 +1,8 @@
 # Journal des versions
 
+## 2.4.1 · 26 novembre 2026
+- Journal de supervision : sans aucun groupe, on joue en pur solo et anonyme (ni prénom ni identifiant envoyés). Le journal n'est lisible que par le compte de supervision
+
 ## 2.4 · 26 novembre 2026
 - **Renommer un groupe** : la personne qui a créé le groupe voit « ✎ Renommer » sous la liste de ses groupes. Le nouveau nom s'affiche en direct chez tous les membres, le code ne change pas
 - Les groupes apparaissent par leur nom dans la liste du haut (par leur code tant qu'ils gardent le nom par défaut), et l'invitation partagée mentionne le nom
