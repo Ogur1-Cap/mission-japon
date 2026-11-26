@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 1.9.1 · 26 novembre 2026
+- Révisions : quand tu te trompes, une vraie correction s'affiche (« Ta réponse » en rouge, « Bonne réponse » en vert, avec la lecture) et la suite automatique se met en pause. Tu passes à la suite avec « Suivant » quand tu as compris
+- Fin de révision : la liste « Tes erreurs à retenir » reprend chaque erreur avec la bonne réponse
+- Les examens de scène gardent leur fonctionnement : aucune correction pendant l'examen, le bilan réplique par réplique arrive à la fin
+
 ## 1.9 · 26 novembre 2026
 - Nouvelle organisation des onglets, chacun avec un rôle clair : Trajet pour apprendre, Pratique pour rejouer, Lexique pour consulter, Missions pour les récompenses, Groupe pour jouer avec les potes
 - Nouvel onglet **Pratique** (練), à la place de Scènes : les révisions (sorties de Missions) et les scènes. Chaque scène a ses deux boutons « S'entraîner » et « Examen » avec ton meilleur score, au lieu de deux listes séparées. Un point rouge apparaît quand la révision de la semaine t'attend

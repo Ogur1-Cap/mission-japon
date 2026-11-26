@@ -118,6 +118,11 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .feedback.ok{background:var(--ok-bg)}
 .feedback.ko{background:var(--ko-bg)}
 .feedback .t{font-weight:700}
+.feedback .corr{display:grid;gap:4px;margin:6px 0 8px}
+.feedback .corr div{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.feedback .corr span{font-size:12px;color:var(--muted);min-width:96px}
+.feedback .corr b.ko{color:var(--ko)}
+.feedback .corr b.ok{color:var(--ok)}
 .typein{display:flex;gap:8px;margin-top:18px}
 .typein input{flex:1;min-width:0;font:inherit;font-size:20px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--surface-2);color:var(--ink)}
 .audio{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;width:44px;height:44px;display:inline-grid;place-items:center;font-size:18px;vertical-align:middle}
@@ -549,7 +554,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "1.9";
+const APP_VERSION = "1.9.1";
 const CLOUD = !window.claude;
 const HB = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
 const KB = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
@@ -1244,7 +1249,12 @@ function answer(ok, btn) {
     if (ok) { const f = h("div", { class: "float jp", "aria-hidden": "true" }, ["正解！", "いいね！", "すごい！"][Math.floor(Math.random() * 3)]); cardEl.append(f); setTimeout(() => f.remove(), 950); }
     else { try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} } }
   const fb = $("fb"); fb.className = "feedback show " + (ok ? "ok" : "ko");
-  fb.replaceChildren(h("div", { style: "display:flex;gap:10px;align-items:center" }, h("div", { style: "flex:1;min-width:0" }, h("div", { class: "t" }, ok ? "Bien joué !" : "Pas tout à fait."), h("div", { class: "jp" }, c.reveal)), c.speak ? audioBtn(c.speak) : null),
+  const corr = !ok && !!s.practice, lbl = el => el ? (el.querySelector("span:not(.k)") || el).innerText.split("\n")[0].trim() : "";
+  const mine = btn ? lbl(btn) : (($("typein") || {}).value || "").trim() || "(rien)", goodTxt = c.type === "type" ? c.answer : lbl(document.querySelector('.choice[data-ok="1"]'));
+  if (corr) (s.misses = s.misses || []).push({ q: c.listen ? "🔊 " + c.listen : c.prompt, mine, good: goodTxt, reveal: c.reveal });
+  fb.replaceChildren(h("div", { style: "display:flex;gap:10px;align-items:center" }, h("div", { style: "flex:1;min-width:0" }, h("div", { class: "t" }, ok ? "Bien joué !" : corr ? "Correction" : "Pas tout à fait."),
+      corr ? h("div", { class: "corr" }, h("div", {}, h("span", {}, "Ta réponse"), h("b", { class: "jp ko" }, "✗ " + mine)), h("div", {}, h("span", {}, "Bonne réponse"), h("b", { class: "jp ok" }, "✓ " + goodTxt))) : null,
+      h("div", { class: "jp" }, c.reveal)), c.speak ? audioBtn(c.speak) : null),
     h("button", { class: "adv", "aria-label": "Mettre en pause ou reprendre la suite automatique", onclick: toggleAdv }, h("i", { id: "advbar" })),
     h("div", { class: "adv-lbl", id: "advlbl" }, ""),
     h("button", { class: "btn", id: "next", style: "width:100%;margin-top:6px", onclick: () => { if (s.answered && now() - s.answeredAt > 250) nextCard(); } }, "Suivant ↵"));
@@ -1252,7 +1262,9 @@ function answer(ok, btn) {
   s.answeredAt = now();
   $("bar").style.width = Math.round(100 * s.done / (s.done + s.queue.length)) + "%";
   const isPhrase = ITEMS[c.id].cat === "phrase";
-  s.adv = { ms: (ok ? ADV_OK : ADV_KO) + (isPhrase ? 1500 : 0), left: 0, t0: now(), paused: false }; s.adv.left = s.adv.ms; runAdv();
+  s.adv = { ms: (ok ? ADV_OK : ADV_KO) + (isPhrase ? 1500 : 0), left: 0, t0: now(), paused: false }; s.adv.left = s.adv.ms;
+  if (corr) { s.adv.paused = true; const l2 = $("advlbl"); if (l2) l2.textContent = "En pause pendant la correction · touche Suivant quand c’est bon"; setTimeout(() => fb.scrollIntoView({ block: "nearest", behavior: "smooth" }), 60); }
+  else runAdv();
   $("next") && $("next").focus({ preventScroll: true });
 }
 function viewSession() {
@@ -1271,6 +1283,9 @@ function viewSession() {
       h("p", { class: "muted" }, s.ok + " bonnes réponses sur " + s.total + (pr.kind === "week" ? " · meilleur score de la semaine : " + ((S.rev || {})[pr.wk] || pts) + "/100" : "")),
       pr.paid ? h("p", {}, "+¥" + REV_YEN + " pour ta première révision réussie de cette semaine !") : pr.kind === "week" && pts < 70 && !(S.revPaid || {})[pr.wk] ? h("p", { class: "hint" }, "Fais 70/100 ou plus pour gagner ¥" + REV_YEN + ".") : null,
       h("p", { class: "hint" }, "Les cartes ratées reviendront plus vite dans tes sessions."),
+      (s.misses || []).length ? h("div", { style: "text-align:left;margin:14px 0" }, h("h3", { style: "margin:0 0 8px;font-size:16px" }, "Tes erreurs à retenir (" + s.misses.length + ")"),
+        h("div", { class: "recap" }, s.misses.map(m => h("div", { class: "rc ko" }, h("div", { class: "q" }, h("span", { class: "jp" }, m.q)),
+          h("div", { class: "a" }, h("b", {}, "✗ "), h("span", { class: "jp" }, m.mine)), h("div", { class: "a good" }, h("b", {}, "→ "), h("span", { class: "jp" }, m.good), h("small", {}, m.reveal)))))) : null,
       h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" },
         h("button", { class: "btn ghost", onclick: () => startRevision(pr.kind, pr.wk) }, "Recommencer"),
         h("button", { class: "btn", onclick: () => { session = null; go("roles"); } }, "Retour à la pratique")));
