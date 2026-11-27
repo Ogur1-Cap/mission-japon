@@ -1,5 +1,8 @@
 # Journal des versions
 
+## 2.7.1 · 27 novembre 2026
+- Vapeurs d'onsen plus discrètes : moins de bouffées, plus petites et bien plus transparentes, pour ne plus gêner la lecture. Elles ne bloquent aucun clic
+
 ## 2.7 · 27 novembre 2026
 - **Plus aucun emoji dans les récompenses** : animations, effets de réussite, sillages, ornements des cadres et ambiance des thèmes utilisent maintenant des petits dessins en style estampe (flocon, étoile, fūrin, momiji, koinobori, sakura, lanterne, goutte, feuille d'or, flamme, vapeur, note, arc-en-ciel, torii, vague, bambou, Fuji, couronne, éclair, dragon…)
 - **Vapeur d'onsen** : l'ambiance de la page utilise la même vapeur que celle autour du cadre, à la place du symbole ♨
