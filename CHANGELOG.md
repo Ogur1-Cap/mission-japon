@@ -1,5 +1,8 @@
 # Journal des versions
 
+## 2.7.2 · 27 novembre 2026
+- Ambiances des animations plus discrètes, au niveau des vapeurs d'onsen : calque à moitié transparent, moins de pétales, lanternes, carpes, feuilles et lucioles, feux d'artifice plus espacés, éclair moins éblouissant. Les ambiances des thèmes restent derrière le contenu. Aucune ne bloque les clics
+
 ## 2.7.1 · 27 novembre 2026
 - Vapeurs d'onsen plus discrètes : moins de bouffées, plus petites et bien plus transparentes, pour ne plus gêner la lecture. Elles ne bloquent aucun clic
 
