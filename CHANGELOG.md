@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 2.7 · 27 novembre 2026
+- **Plus aucun emoji dans les récompenses** : animations, effets de réussite, sillages, ornements des cadres et ambiance des thèmes utilisent maintenant des petits dessins en style estampe (flocon, étoile, fūrin, momiji, koinobori, sakura, lanterne, goutte, feuille d'or, flamme, vapeur, note, arc-en-ciel, torii, vague, bambou, Fuji, couronne, éclair, dragon…)
+- **Vapeur d'onsen** : l'ambiance de la page utilise la même vapeur que celle autour du cadre, à la place du symbole ♨
+- **Les 7 trains de la frise sont dessinés** : Shinkansen, Kintetsu de Nara, Hayabusa, train de nuit à vapeur, ligne Yamanote, Doctor Yellow et Maglev
+
 ## 2.6 · 26 novembre 2026
 - **Illustrations estampe, lot 2** : les 18 autocollants Lieux et Fêtes sont redessinés (torii, château d'Osaka, Tokyo Tower, Fuji, onsen, grande roue, Rainbow Bridge, Shinjuku, cerisiers de Yoshino, koinobori, fūrin, chōchin, hanabi, tanabata, hina, tsukimi, kadomatsu, kimono)
 - Tous les porte-bonheur ont maintenant leur illustration, dont le tengu, l'oni, le hanafuda, le naruto et le maneki-neko d'or. L'album et les porte-bonheur n'utilisent plus aucun emoji
