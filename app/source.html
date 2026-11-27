@@ -798,7 +798,7 @@ let toastT; const toast = m => { const t = $("toast"); t.textContent = m; t.clas
 
 /* ---------- data ---------- */
 const DEPART = new Date(2027, 1, 18);
-const APP_VERSION = "2.7.2";
+const APP_VERSION = "2.7.3";
 const CLOUD = !window.claude;
 /* ---------- journal léger (supervision : activité + erreurs, lu par l'alerte bug et le bilan du lundi) ---------- */
 let jrQ = (() => { try { return JSON.parse(localStorage.getItem("mj.jr") || "[]"); } catch (e) { return []; } })(), jrBusy = false; const jrSeen = {};
@@ -894,6 +894,9 @@ const KANJI = [
  ["水","mizu","eau"],["肉","niku","viande"],["魚","sakana","poisson"],["鶏","tori","poulet"],["豚","buta","porc"],["牛","gyū","bœuf"],
  ["人","hito","personne"],["日本","Nihon","Japon"],["山","yama","montagne"]
 ];
+
+/* lecture en kana des kanji : un kanji seul envoyé à la synthèse vocale est souvent mal lu (lecture chinoise, autre lecture, voire autre mot) */
+const KANJI_KANA = {"一": "いち", "二": "に", "三": "さん", "四": "よん", "五": "ご", "六": "ろく", "七": "なな", "八": "はち", "九": "きゅう", "十": "じゅう", "百": "ひゃく", "千": "せん", "万": "まん", "駅": "えき", "出口": "でぐち", "入口": "いりぐち", "円": "えん", "大人": "おとな", "小人": "こども", "男": "おとこ", "女": "おんな", "湯": "ゆ", "北": "きた", "南": "みなみ", "東": "ひがし", "西": "にし", "切符": "きっぷ", "改札": "かいさつ", "番線": "ばんせん", "新幹線": "しんかんせん", "指定席": "していせき", "自由席": "じゆうせき", "号車": "ごうしゃ", "乗換": "のりかえ", "大阪": "おおさか", "奈良": "なら", "京都": "きょうと", "金沢": "かなざわ", "富士山": "ふじさん", "東京": "とうきょう", "寺": "てら", "神社": "じんじゃ", "営業中": "えいぎょうちゅう", "準備中": "じゅんびちゅう", "押": "おす", "引": "ひく", "非常口": "ひじょうぐち", "無料": "むりょう", "税込": "ぜいこみ", "禁煙": "きんえん", "水": "みず", "肉": "にく", "魚": "さかな", "鶏": "とり", "豚": "ぶた", "牛": "ぎゅう", "人": "ひと", "日本": "にほん", "山": "やま"};
 
 /* scripted scenes: [npc jp, npc romaji, npc fr, [[jp, romaji, ok, feedback], ...]] */
 const SCENES = [
@@ -1017,11 +1020,15 @@ let jaVoice = null;
 const loadVoices = () => { try { jaVoice = speechSynthesis.getVoices().find(v => /^ja/i.test(v.lang)) || null; } catch (e) {} };
 try { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; } catch (e) {}
 async function say(text) {
-  const clean = text.replace(/（…）/g, "");
+  let clean = String(text).replace(/（…）/g, "").trim();
+  if (KANJI_KANA[clean]) clean = KANJI_KANA[clean];
   if (tts) { try { await tts.speak(clean, { language: "ja", rate: 0.9 }); return; } catch (e) { if (e && e.code === "not_granted") tts = null; } }
   try {
     if (!("speechSynthesis" in window)) throw 0;
-    speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(clean); u.lang = "ja-JP"; u.rate = 0.85; if (jaVoice) u.voice = jaVoice; speechSynthesis.speak(u);
+    const busy = speechSynthesis.speaking || speechSynthesis.pending; speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(clean); u.lang = "ja-JP"; u.rate = 0.85; if (!jaVoice) loadVoices(); if (jaVoice) u.voice = jaVoice;
+    /* Android Chrome : un speak() juste après cancel() peut rejouer l'ancien mot ou être ignoré, on laisse un court délai */
+    if (busy) setTimeout(() => speechSynthesis.speak(u), 120); else speechSynthesis.speak(u);
   } catch (e) { toast("Audio indisponible sur cet appareil"); }
 }
 const audioBtn = (text, big) => h("button", { class: "audio" + (big ? " big" : ""), "aria-label": "Écouter", title: "Écouter", onclick: e => { e.stopPropagation(); say(text); } }, "🔊");

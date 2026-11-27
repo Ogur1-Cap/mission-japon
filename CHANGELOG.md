@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 2.7.3 · 27 novembre 2026
+- **Prononciation des kanji corrigée** : le bouton son lisait mal certains kanji seuls (三 « san » et 四 « yon » sortaient « ni » sur Android). Chaque kanji du lexique est maintenant envoyé à la voix dans sa lecture en kana (さん, よん, きた, おす…), donc la voix dit exactement la lecture affichée
+- Sur Android, un nouveau son ne rejoue plus le mot précédent quand on appuie pendant qu'un autre est encore lu
+
 ## 2.7.2 · 27 novembre 2026
 - Ambiances des animations plus discrètes, au niveau des vapeurs d'onsen : calque à moitié transparent, moins de pétales, lanternes, carpes, feuilles et lucioles, feux d'artifice plus espacés, éclair moins éblouissant. Les ambiances des thèmes restent derrière le contenu. Aucune ne bloque les clics
 
